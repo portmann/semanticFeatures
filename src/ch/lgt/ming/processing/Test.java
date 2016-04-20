@@ -33,8 +33,6 @@ public class Test {
 		// initialize corenlp
 		StanfordCore.init();
 		
-		
-
 		// load corpus
 		String path = "corpus";
 		File folder = new File(path);
