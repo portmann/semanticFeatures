@@ -57,6 +57,7 @@ public class Test {
 			System.out.println("Document: " + i + " done.");
 		}
 
+		double start = System.currentTimeMillis();
 		// load positive words
 		positiveWords.setMap(fileHandler.loadFileToMap("dictionaries/HARVPos.txt", true));
 
@@ -69,11 +70,11 @@ public class Test {
 		// Loop over all documents
 		for (Integer key : documentText.getMap().keySet()) {
 
-			Annotation annotation = StanfordCore.pipeline.process(documentText.getValue(key));
+			Annotation document = StanfordCore.pipeline.process(documentText.getValue(key));
 
 			// Loop over all sentences in a document
 			List<Integer> CompIdinADoc = new ArrayList<>();
-			for (CoreMap sentenceStanford : annotation.get(CoreAnnotations.SentencesAnnotation.class)) {
+			for (CoreMap sentenceStanford : document.get(CoreAnnotations.SentencesAnnotation.class)) {
 				// Put text contents into textSentenceID
 				textSentenceId.putValue(sentenceStanford.get(CoreAnnotations.TextAnnotation.class), sentenceIndex);
 
@@ -103,10 +104,10 @@ public class Test {
 					
 					// Count positive/negative words by checking if they appear
 					// in the HARV dictionary
-					if (positiveWords.getMap().keySet().contains(Word.toLowerCase())) {
+					if (positiveWords.getMap().containsKey(Word.toLowerCase())) {
 						countPos++;
 					}
-					if (negativeWords.getMap().keySet().contains(Word.toLowerCase())) {
+					if (negativeWords.getMap().containsKey(Word.toLowerCase())) {
 						countNeg++;
 					}
 
@@ -142,6 +143,7 @@ public class Test {
 		// Sentence-negation
 		System.out.println("5. sentenceNegation: ID of Sentence = existence of Negation" + sentenceNegation.getMap());
 
+		System.out.println(System.currentTimeMillis()-start);
 		System.out.println("Whoop whoop!!");
 
 	}
