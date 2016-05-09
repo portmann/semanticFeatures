@@ -38,7 +38,7 @@ public class CompaniesAll implements Extractor<IdString> {
 				String ner = token.get(CoreAnnotations.NamedEntityTagAnnotation.class);
 				int tokenIndex = token.get(CoreAnnotations.IndexAnnotation.class);
 				if (ner.equals("ORGANIZATION")) {
-
+					//System.out.println(word);
 					index = tokenIndex;
 					companyname = companyname + " " + word;
 				}

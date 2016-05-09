@@ -50,7 +50,7 @@ public class Test3 {
         File[] listOfFiles = folder.listFiles();
 
         // for (int i = 0; i < listOfFiles.length; i++) {
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 3; i++) {
             documentText.putValue(i, fileHandler.loadFileToString(path + "/" + listOfFiles[i].getName()));
 
             System.out.println("Document: " + i + " done.");
@@ -75,6 +75,7 @@ public class Test3 {
             System.out.println("NegationCount: " + Doc_SentNegationCount.get(key).getMap());
             System.out.println("Company: " + Doc_SentCompany.get(key).getMap());
             System.out.println("Tense: " + Doc_SentTense.get(key).getMap());
+
         }
         System.out.println("Whoop whoop!!");
         System.out.println(System.currentTimeMillis() - start);
