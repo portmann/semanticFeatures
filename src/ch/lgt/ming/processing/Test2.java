@@ -1,7 +1,6 @@
 package ch.lgt.ming.processing;
 
 import java.io.File;
-
 import ch.lgt.ming.corenlp.StanfordCore;
 import ch.lgt.ming.datastore.IdString;
 import ch.lgt.ming.extraction.sentnence.CompaniesAll;

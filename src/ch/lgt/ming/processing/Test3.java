@@ -4,7 +4,6 @@ import ch.lgt.ming.corenlp.StanfordCore;
 import ch.lgt.ming.datastore.*;
 import ch.lgt.ming.extraction.sentnence.*;
 import ch.lgt.ming.helper.FileHandler;
-import com.sun.org.apache.xpath.internal.SourceTree;
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.pipeline.Annotation;
@@ -55,8 +54,7 @@ public class Test3 {
 
             System.out.println("Document: " + i + " done.");
         }
-
-
+ 
         double start = System.currentTimeMillis();
         // set sentence index (uses Stanford sentence splitter "SentenceAnnotation.class")
         // Loop over all documents

@@ -38,10 +38,10 @@ public class PosWordCount implements Extractor<IdValue>{
 
             }
             sentencePos.putValue(sentenceIndex, SentenceCountPos);
+       
             sentenceIndex++;
 
         }
         return sentencePos;
     }
-
 }
