@@ -23,7 +23,7 @@ public class CompaniesAll implements Extractor<IdString> {
 	@Override
 	public IdString extract(Annotation document) {
 
-		IdString sentenceCompany = new IdString(); 
+		IdString sentenceCompany = new IdString();
 		
 		int sentenceIndex = 0;
 		String companyname = new String();

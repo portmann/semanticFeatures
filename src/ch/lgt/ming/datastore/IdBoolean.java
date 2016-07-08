@@ -13,24 +13,26 @@ public class IdBoolean implements Datastore<Integer, Boolean> {
 
 	@Override
 	public Boolean getValue(Integer key) {
+
 		return this.mapStore.get(key);
 	}
 
 	@Override
 	public void putValue(Integer key, Boolean value) {
-		this.mapStore.put(key, value);
 
+		this.mapStore.put(key, value);
 	}
 
 	@Override
 	public Map<Integer, Boolean> getMap() {
+
 		return this.mapStore;
 	}
 
 	@Override
 	public void setMap(Map<Integer, Boolean> map) {
-		this.mapStore = map;
 
+		this.mapStore = map;
 	}
 
 }

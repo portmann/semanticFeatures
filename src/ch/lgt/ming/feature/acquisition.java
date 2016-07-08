@@ -6,21 +6,20 @@ import edu.stanford.nlp.ling.tokensregex.TokenSequenceMatcher;
 import edu.stanford.nlp.ling.tokensregex.TokenSequencePattern;
 import edu.stanford.nlp.util.CoreMap;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Ming Deng on 5/9/2016.
+ * Created by Ming Deng on 6/25/2016.
  */
-public class merger {
+public class acquisition {
 
-    public boolean IsMerge(CoreMap sentence) {
+    public Boolean IsAcquisition(CoreMap sentence){
 
         TokenSequencePattern pattern = TokenSequencePattern.compile(
 
-                "([{ner:ORGANIZATION}][]*([{word:/merger?d?/}]([]*[{ner:ORGANIZATION}])?))|" +
-                        "([{ner: ORGANIZATION}][]*[{ner: ORGANIZATION}][]*[{word:/merger?d?/}])|" +
-                        "([{word:/merger?d?/}][]*[{ner: ORGANIZATION}]([]*[{ner: ORGANIZATION}])?)"
+                "([{ner:ORGANIZATION}][]*([{word:/acquired?/}]|[{word:/buy/}]|[{word:/bought/}]|[{word:/purchased?/}]|[{word:/takeover/}]|([{word:/taken?/}]|[{word:/took/}][{word:/over/}])|[{word:/acquisition/}])([]*[{ner:ORGANIZATION}])?)|" +
+                "([{ner: ORGANIZATION}][]*[{ner: ORGANIZATION}][]*([{word:/acquired?/}]|[{word:/buy/}]|[{word:/bought/}]|[{word:/purchased?/}]|[{word:/takeover/}]|([{word:/taken?/}]|[{word:/took/}][{word:/over/}])|[{word:/acquisition/}]))|" +
+                "(([{word:/acquired?/}]|[{word:/buy/}]|[{word:/bought/}]|[{word:/purchased?/}]|[{word:/takeover/}]|([{word:/taken?/}]|[{word:/took/}][{word:/over/}])|[{word:/acquisition/}])[]*[{ner: ORGANIZATION}]([]*[{ner: ORGANIZATION}])?)"
 
         );
         List<CoreLabel> tokens = sentence.get(CoreAnnotations.TokensAnnotation.class);
@@ -41,5 +40,6 @@ public class merger {
             System.out.format("No match found.%n");
         }
         return found;
+
     }
 }

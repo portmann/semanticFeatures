@@ -13,11 +13,11 @@ import java.util.List;
 public class company {
 
     private boolean mark = false;
-    private List<String> com = new ArrayList<>();
+    private List<String> com = new ArrayList<>();   //An ArrayList of company names of the sentence.
 
     public List<String> extract(CoreMap sentence) {
 
-        String comname = new String();
+        String comname = "";
 
         for (CoreLabel token : sentence.get(CoreAnnotations.TokensAnnotation.class)) {
 

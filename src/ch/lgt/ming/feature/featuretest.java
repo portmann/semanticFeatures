@@ -7,6 +7,8 @@ import edu.stanford.nlp.trees.Tree;
 import edu.stanford.nlp.trees.TreeCoreAnnotations;
 import edu.stanford.nlp.util.CoreMap;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
@@ -24,15 +26,39 @@ public class featuretest {
 
 /**
  * Different sentences to test company and merger
-  */
+ */
 
-//        Annotation document = new Annotation("At the peak of the financial crisis, in 2008, the Office of Fair Trading " +
-//                "objected to a merger between Lloyds TSB and HBOS, two big British banks, saying that competition would suffer.");
-        Annotation document = new Annotation("There was a merger between between Lloyds TSB and HBOS.");
+//        String[] myString = {
+//                "London Stock Exchange shareholders are to meet on Monday over whether to approve the merger " +
+//                        "with Deutsche Börse amid uncertainty created by Britain’s decision to leave the EU.",
+//                "German watchdog casts doubt on London Stock Exchange merger after Brexit",
+//                "Lloyds TSB and HBOS will have a merger.",
+//                "There is a merger between Lloyds TSB and HBOS.",
+//                "There is a merger related with Lloyds TSB."
+//        };  //sentences to test merger
+
+//        String[] myString = {
+//                "Sega Games announced today it has acquired Paris-based Amplitude Studios, saying the move will " +
+//                        "strengthen its roster of PC games and development in Europe.",
+//                "The acquisition of Amplitude Studios marks another purchase of a studio " +
+//                        "that specializes in strategy games for the publisher.",
+//                "Maersk might take over Hyundai Merchant Marine if the troubled Korean shipping company gets on its feet again."
+//        };  //sentences to test acquisition
+//        String[] myString = {
+//
+//                "If he did not decide to raise rates, markets would relax."
+//
+//        };
+
+
+
+        for (int i = 0; i < myString.length; i++) {
+            Annotation document = new Annotation(myString[i]);
+//        Annotation document = new Annotation("The outcome is higher than expected.");
 //        Annotation document = new Annotation( "If he did not decide to raise rates markets would relax.");
 /**
  * Different sentences to test tense
-  */
+ */
 //        System.out.println("-------------------------------aux-----------------------------------");
 //        Annotation document = new Annotation("I don't like animals.");
 //        Annotation document = new Annotation("I am fine.");
@@ -49,13 +75,12 @@ public class featuretest {
 //        Annotation document = new Annotation("Bill was an honest man.");
 //        System.out.println("------------------ Root -----------------------------------");
 //        Annotation document = new Annotation("I like animals.");
-        pipeline.annotate(document);
-
-        System.out.println("============================= Sentence Related Commands ==================================");
-        List<CoreMap> sentences = document.get(CoreAnnotations.SentencesAnnotation.class);
-        System.out.println("sentences: "+ sentences + "||" + sentences.getClass());        //List<CoreMap>
-
-        CoreMap sentence = sentences.get(0);
+            pipeline.annotate(document);
+            System.out.printf("-------------------------------------Sentence %d ---------------------------------\n",i);
+            System.out.println("============================= Sentence Related Commands ==================================");
+            List<CoreMap> sentences = document.get(CoreAnnotations.SentencesAnnotation.class);
+            System.out.println("sentences: " + sentences + "||" + sentences.getClass());        //List<CoreMap>
+            CoreMap sentence = sentences.get(0);
 //        System.out.println("sentence: " + sentence + "||" + sentence.getClass());          //CoreMap
 //        System.out.println("sentence.toShorterString(): " + sentence.toShorterString() + "||" + sentence.toShorterString().getClass());
 //        String sentenceText = sentence.get(CoreAnnotations.TextAnnotation.class);
@@ -76,8 +101,8 @@ public class featuretest {
 //        Integer tokenindex = token.get(CoreAnnotations.IndexAnnotation.class);
 //        System.out.println(tokenindex);
 
-        System.out.println("=============================== Tree Related Commands =================================");
-        Tree tree = sentence.get(TreeCoreAnnotations.TreeAnnotation.class);
+//            System.out.println("=============================== Tree Related Commands =================================");
+            Tree tree = sentence.get(TreeCoreAnnotations.TreeAnnotation.class);
 //        tree.pennPrint();
 //
 //        System.out.println("tree.value: " + tree.value() + "||" + tree.getClass());
@@ -176,19 +201,32 @@ public class featuretest {
 //        System.out.println("collapseGraph.getFirstRoot(): " + collapseGraph.getFirstRoot() + "||" + collapseGraph.getFirstRoot().getClass());
 
 //
-        System.out.println("======================================== Company Name ====================================");
-        company company = new company();
-        System.out.println(company.extract(sentence));
+            System.out.println("======================================== Company Name ====================================");
+            company company = new company();
+            System.out.println(company.extract(sentence));
+//
+//            System.out.println("======================================== Tense ===========================================");
+//            tense tense = new tense(sentence);
+//            System.out.println(tense.getTense());
 
-        System.out.println("======================================== Tense ========================================");
-        tense tense = new tense(sentence);
-        System.out.println(tense.getTense());
+            System.out.println("========================================= Merger =========================================");
+            merger merger = new merger();
+            System.out.println(merger.IsMerge(sentence));
 
-        System.out.println("======================================== Merger ========================================");
-        merger merger = new merger();
-        System.out.println(merger.IsMerge(sentence));
+//            System.out.println("========================================= Acquisition ======================================");
+//            acquisition acquisition = new acquisition();
+//            System.out.println(acquisition.IsAcquisition(sentence));
+
+//            System.out.println("========================================= Acquisition ======================================");
+//            uncertainty uncertainty = new uncertainty();
+//            System.out.println(uncertainty.IsUncertainty(sentence));
 
 
+//            System.out.println("======================================== Surprise ========================================");
+//            surprise surprise = new surprise();
+//            System.out.println(surprise.IsSurprise(sentence));
+
+
+        }
     }
-
 }

@@ -4,23 +4,22 @@ import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.ling.tokensregex.TokenSequenceMatcher;
 import edu.stanford.nlp.ling.tokensregex.TokenSequencePattern;
+import edu.stanford.nlp.trees.*;
 import edu.stanford.nlp.util.CoreMap;
 
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 /**
- * Created by Ming Deng on 5/9/2016.
+ * Created by Ming Deng on 6/25/2016.
  */
-public class merger {
+public class uncertainty {
 
-    public boolean IsMerge(CoreMap sentence) {
+    public Boolean IsUncertainty(CoreMap sentence){
 
         TokenSequencePattern pattern = TokenSequencePattern.compile(
-
-                "([{ner:ORGANIZATION}][]*([{word:/merger?d?/}]([]*[{ner:ORGANIZATION}])?))|" +
-                        "([{ner: ORGANIZATION}][]*[{ner: ORGANIZATION}][]*[{word:/merger?d?/}])|" +
-                        "([{word:/merger?d?/}][]*[{ner: ORGANIZATION}]([]*[{ner: ORGANIZATION}])?)"
+                "[{word:/[Ii]f/}][]*[{word:/then/}]?"
 
         );
         List<CoreLabel> tokens = sentence.get(CoreAnnotations.TokensAnnotation.class);
@@ -41,5 +40,6 @@ public class merger {
             System.out.format("No match found.%n");
         }
         return found;
+
     }
 }

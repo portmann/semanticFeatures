@@ -10,22 +10,25 @@ public class IdListId implements Datastore<Integer, List<Integer>> {
 
 	@Override
 	public List<Integer> getValue(Integer key) {
+
 		return this.mapStore.get(key);
 	}
 
 	@Override
 	public void putValue(Integer key, List<Integer> value) {
+
 		this.mapStore.put(key, value);
-		
 	}
 
 	@Override
 	public Map<Integer, List<Integer>> getMap() {
+
 		return this.mapStore;
 	}
 
 	@Override
 	public void setMap(Map<Integer, List<Integer>> map) {
+
 		this.mapStore = map;
 	}
 	

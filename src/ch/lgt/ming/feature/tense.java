@@ -10,44 +10,33 @@ import java.util.*;
  */
 public class tense {
 
-    private Map<String, List<String>> tense = new HashMap<>();
+    private Map<String, List<String>> tense = new HashMap<>(); // (tense name - POS pair), use the POS to determine the tense of the word
     private Tree tree;
     private String senttense = "NULL.";
     private Map<String, String> dep_word = new HashMap<>();
-    private List<String> typedDep = new ArrayList<>();
+    private List<String> typedDep = new ArrayList<>();  //"typedDep" contains the typed dependencies which determine the tense of sentence.
 
     public tense(CoreMap sentence) {
+
         this.tree = sentence.get(TreeCoreAnnotations.TreeAnnotation.class);
-        typedDep.add("aux");
-        typedDep.add("auxpass");
-        typedDep.add("root");
-        typedDep.add("cop");
+
+        typedDep.addAll(Arrays.asList("aux","auxpass","root","cop"));
+
         List<String> present = new ArrayList<>();
-        present.add("VB");
-        present.add("VBP");
-        present.add("VBZ");
-        present.add("VBG");
-        present.add("MD");
+        present.addAll(Arrays.asList("VB","VBP","VBZ","VBG","MD"));
         List<String> past = new ArrayList<>();
-        past.add("VBD");
-        past.add("VBN");
+        past.addAll(Arrays.asList("VBD","VBN"));
         List<String> pastModal = new ArrayList<>();
-        pastModal.add("could");
-        pastModal.add("would");
+        pastModal.addAll(Arrays.asList("could","would"));
         List<String> futureModal = new ArrayList<>();
-        futureModal.add("will");
-        futureModal.add("'ll");
-        futureModal.add("wo");
+        futureModal.addAll(Arrays.asList("will","'ll","wo"));
+        List<String> verb = new ArrayList<>();
+        verb.addAll(Arrays.asList("aux","cop","auxpass"));
         tense.put("Present", present);
         tense.put("Past", past);
         tense.put("PastModal", pastModal);
         tense.put("FutureModal", futureModal);
-        List<String> verb = new ArrayList<>();
-        verb.add("aux");
-        verb.add("cop");
-        verb.add("auxpass");
         tense.put("Verb", verb);
-
 
     }
 
@@ -64,15 +53,14 @@ public class tense {
 
         for (TypedDependency td1 : td) {
 //            System.out.println("----------------------------------------Begin-----------------------------------------");
-            System.out.println(td1);
-//            System.out.println(td1.);
+//            System.out.println(td1);
 //            System.out.println("-------------------------------------Relation-----------------------------------------");
             GrammaticalRelation relation = td1.reln();
             if (typedDep.contains(relation.getShortName())) {
-                System.out.printf(td1.dep() + "----------------------------Found %s----------------------------\n",
-                        relation.getShortName());
-                dep_word.put(relation.getShortName(), td1.dep().value());
-                dep_word.put(relation.getShortName() + "Tag", td1.dep().tag());
+//                System.out.printf(td1.dep() + "----------------------------Found %s----------------------------\n",
+//                        relation.getShortName());
+                dep_word.put(relation.getShortName(), td1.dep().value());           //(typedDep,word)
+                dep_word.put(relation.getShortName() + "POS", td1.dep().tag());     //(typedDepPOS,POS)
             }
 //            System.out.println("relation.getShortName(): " + relation.getShortName());
 //            System.out.println("relation.getLongName(): " + relation.getLongName());
@@ -101,7 +89,7 @@ public class tense {
         Map<String, String> Verb = getVerb(senttree);
         System.out.println(Verb);
         if (Verb.containsKey("aux")) {
-            switch (Verb.get("auxTag")) {
+            switch (Verb.get("auxPOS")) {
                 case "MD": {
                     switch (Verb.get("aux")) {
                         case "could":
@@ -130,7 +118,7 @@ public class tense {
                     senttense = "NULL";
             }
         } else if (Verb.containsKey("auxpass")) {
-            switch (Verb.get("auxpassTag")) {
+            switch (Verb.get("auxpassPOS")) {
                 case "VB":
                 case "VBP":
                 case "VBZ":
@@ -144,7 +132,7 @@ public class tense {
                     senttense = "NULL";
             }
         } else if (Verb.containsKey("cop")) {
-            switch (Verb.get("copTag")) {
+            switch (Verb.get("copPOS")) {
                 case "VB":
                 case "VBP":
                 case "VBZ":
@@ -158,7 +146,7 @@ public class tense {
                     senttense = "NULL";
             }
         } else if (Verb.containsKey("root")) {
-            switch (Verb.get("rootTag")) {
+            switch (Verb.get("rootPOS")) {
                 case "VB":
                 case "VBP":
                 case "VBZ":
@@ -173,8 +161,6 @@ public class tense {
             }
         }
 
-
-//        System.out.println(senttense);
         return senttense;
 
     }

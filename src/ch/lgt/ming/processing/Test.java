@@ -26,15 +26,17 @@ public class Test {
 		FileHandler fileHandler = new FileHandler();
 		IdString documentText = new IdString();        // hashmap (key-value pair) of texts (i.e. text1, text2, etc.)
 		StringId positiveWords = new StringId();       // hashmap containing positive words dictionary
-		StringId negativeWords = new StringId();
+		StringId negativeWords = new StringId();	   // hashmap containing negative words dictionary
 		StringId textSentenceId = new StringId();      // hashmap of all sentences contained in a text (indexing of sentences within a text)
 
 		// exercise variable
 		StringId companyId = new StringId();           // use NER (company is simply an example of an entity)
-		IdListId documentCompanys = new IdListId();    // use NER
+		IdListId documentCompanys = new IdListId();
 		IdValue sentencePosCount = new IdValue();
 		IdValue sentenceNegCount = new IdValue();
 		IdBoolean sentenceNegation = new IdBoolean();
+		IdBoolean sentenceMerger = new IdBoolean();
+		IdBoolean sentenceAcquisition = new IdBoolean();
 
 		// initialize corenlp
 		StanfordCore.init();
@@ -53,7 +55,6 @@ public class Test {
 		// for (int i = 0; i < listOfFiles.length; i++) {
 		for (int i = 0; i < 2; i++) {
 			documentText.putValue(i, fileHandler.loadFileToString(path + "/" + listOfFiles[i].getName()));
-
 			System.out.println("Document: " + i + " done.");
 		}
 
