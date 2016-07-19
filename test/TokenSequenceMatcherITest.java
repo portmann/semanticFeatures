@@ -1,5 +1,3 @@
-package ch.lgt.ming.feature;
-
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.ling.tokensregex.*;
@@ -20,7 +18,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.regex.Pattern;
 
-class TokenSequenceMatcherITest extends TestCase {
+public class TokenSequenceMatcherITest extends TestCase {
 
     private static AnnotationPipeline pipeline = null;
 
@@ -33,7 +31,7 @@ class TokenSequenceMatcherITest extends TestCase {
                 pipeline.addAnnotator(new WordsToSentencesAnnotator(false));
                 pipeline.addAnnotator(new POSTaggerAnnotator(false));
 //                pipeline.addAnnotator(new NumberAnnotator(false, false));
-//                pipeline.addAnnotator(new QuantifiableEntityNormalizingAnnotator(false));
+//        pipeline.addAnnotator(new QuantifiableEntityNormalizingAnnotator(false));
             }
         }
     }
@@ -45,7 +43,7 @@ class TokenSequenceMatcherITest extends TestCase {
     }
 
     private static SequencePattern.PatternExpr getSequencePatternExpr(String... textRegex) {
-        List<SequencePattern.PatternExpr> patterns = new ArrayList<>(textRegex.length);
+        List<SequencePattern.PatternExpr> patterns = new ArrayList<SequencePattern.PatternExpr>(textRegex.length);
         for (String s:textRegex) {
             patterns.add(new SequencePattern.NodePatternExpr(CoreMapNodePattern.valueOf(s)));
         }
@@ -53,7 +51,7 @@ class TokenSequenceMatcherITest extends TestCase {
     }
 
     private static SequencePattern.PatternExpr getOrPatternExpr(Pair<String,Object>... textRegex) {
-        List<SequencePattern.PatternExpr> patterns = new ArrayList<>(textRegex.length);
+        List<SequencePattern.PatternExpr> patterns = new ArrayList<SequencePattern.PatternExpr>(textRegex.length);
         for (Pair<String,Object> p:textRegex) {
             SequencePattern.PatternExpr pe = new SequencePattern.NodePatternExpr(CoreMapNodePattern.valueOf(p.first()));
             if (p.second() != null) {
@@ -74,7 +72,7 @@ class TokenSequenceMatcherITest extends TestCase {
 
         // Test simple sequence with value
         TokenSequencePattern p = TokenSequencePattern.compile(getOrPatternExpr(
-                new Pair<>("one", 1), new Pair<>("two", null), new Pair<>("fifty", 50)));
+                new Pair<String,Object>("one", 1), new Pair<String,Object>("two", null), new Pair<String,Object>("fifty", 50)));
         TokenSequenceMatcher m = p.getMatcher(doc.get(CoreAnnotations.TokensAnnotation.class));
 
         boolean match = m.find();
@@ -140,9 +138,7 @@ class TokenSequenceMatcherITest extends TestCase {
         assertFalse(match);
     }
 
-    private static final String testText1 = "Mellitus was the first Bishop of London, the third Archbishop " +
-            "of Canterbury, and a member of the Gregorian mission  sent to England to convert the Anglo-Saxons. " +
-            "He arrived in 601 AD, and was consecrated as Bishop of London in 604.";
+    private static final String testText1 = "Mellitus was the first Bishop of London, the third Archbishop of Canterbury, and a member of the Gregorian mission  sent to England to convert the Anglo-Saxons. He arrived in 601 AD, and was consecrated as Bishop of London in 604.";
     public void testTokenSequenceMatcher1() throws IOException {
         CoreMap doc = createDocument(testText1);
 
