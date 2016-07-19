@@ -28,14 +28,14 @@ public class featuretest {
  * Different sentences to test company and merger
  */
 
-//        String[] myString = {
-//                "London Stock Exchange shareholders are to meet on Monday over whether to approve the merger " +
-//                        "with Deutsche Börse amid uncertainty created by Britain’s decision to leave the EU.",
-//                "German watchdog casts doubt on London Stock Exchange merger after Brexit",
-//                "Lloyds TSB and HBOS will have a merger.",
-//                "There is a merger between Lloyds TSB and HBOS.",
-//                "There is a merger related with Lloyds TSB."
-//        };  //sentences to test merger
+        String[] myString = {
+                "London Stock Exchange shareholders are to meet on Monday over whether to approve the merger " +
+                        "with Deutsche Börse amid uncertainty created by Britain’s decision to leave the EU.",
+                "German watchdog casts doubt on London Stock Exchange merger after Brexit",
+                "Lloyds TSB and HBOS will have a merger.",
+                "There is a merger between Lloyds TSB and HBOS.",
+                "There is a merger related with Lloyds TSB."
+        };  //sentences to test merger
 
 //        String[] myString = {
 //                "Sega Games announced today it has acquired Paris-based Amplitude Studios, saying the move will " +
