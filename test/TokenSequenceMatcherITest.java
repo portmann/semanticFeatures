@@ -138,7 +138,9 @@ public class TokenSequenceMatcherITest extends TestCase {
         assertFalse(match);
     }
 
-    private static final String testText1 = "Mellitus was the first Bishop of London, the third Archbishop of Canterbury, and a member of the Gregorian mission  sent to England to convert the Anglo-Saxons. He arrived in 601 AD, and was consecrated as Bishop of London in 604.";
+    private static final String testText1 = "Mellitus was the first Bishop of London, the third Archbishop of " +
+            "Canterbury, and a member of the Gregorian mission  sent to England to convert the Anglo-Saxons. " +
+            "He arrived in 601 AD, and was consecrated as Bishop of London in 604.";
     public void testTokenSequenceMatcher1() throws IOException {
         CoreMap doc = createDocument(testText1);
 

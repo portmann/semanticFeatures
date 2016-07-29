@@ -16,6 +16,8 @@ public class tense {
     private Map<String, String> dep_word = new HashMap<>();
     private List<String> typedDep = new ArrayList<>();  //"typedDep" contains the typed dependencies which determine the tense of sentence.
 
+    public tense(){}
+
     public tense(CoreMap sentence) {
 
         this.tree = sentence.get(TreeCoreAnnotations.TreeAnnotation.class);
@@ -87,7 +89,7 @@ public class tense {
 
         Tree senttree = this.tree;
         Map<String, String> Verb = getVerb(senttree);
-        System.out.println(Verb);
+//        System.out.println(Verb);
         if (Verb.containsKey("aux")) {
             switch (Verb.get("auxPOS")) {
                 case "MD": {

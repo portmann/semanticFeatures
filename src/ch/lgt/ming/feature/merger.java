@@ -22,13 +22,13 @@ public class merger {
         env.setDefaultStringPatternFlags(Pattern.CASE_INSENSITIVE);
         env.bind("$MERGER", "/merger?d?/");
 
-        TokenSequencePattern pattern = TokenSequencePattern.compile(
+        TokenSequencePattern pattern = TokenSequencePattern.compile(env,
 
 //                "([{ner:ORGANIZATION}][]*([{word:/merger?d?/}]([]*[{ner:ORGANIZATION}])?))|" +
 //                        "([{ner: ORGANIZATION}][]*[{ner: ORGANIZATION}][]*[{word:/merger?d?/}])|" +
 //                        "([{word:/merger?d?/}][]*[{ner: ORGANIZATION}]([]*[{ner: ORGANIZATION}])?)"
 
-                "([ner:ORGANIZATION]+[]*($MERGER([]*[ner:ORGANIZATION]+)?))|" +
+                "([ner:ORGANIZATION]+[tense:Past]*($MERGER([]*[ner:ORGANIZATION]+)?))|" +
                         "([ner: ORGANIZATION]+[]*[ner: ORGANIZATION]+[]*$MERGER)|" +
                         "($MERGER[]*[ner: ORGANIZATION]+([]*[ner: ORGANIZATION]+)?)"
         );

@@ -1,6 +1,9 @@
 package ch.lgt.ming.feature;
 
+import ch.lgt.ming.feature.company;
+import ch.lgt.ming.feature.merger;
 import edu.stanford.nlp.ling.CoreAnnotations;
+import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.trees.Tree;
@@ -21,7 +24,9 @@ public class featuretest {
 
         System.out.println("--------------------------------------- Pipeline ------------------------------------------");
         Properties props = new Properties();
-        props.setProperty("annotators", "tokenize, ssplit, pos, lemma, ner, parse");
+        props.setProperty("customAnnotatorClass.tense", "ch.lgt.ming.feature.TenseAnnotator");
+        props.setProperty("annotators", "tokenize, ssplit, pos, lemma, ner, parse, tense");
+//        props.setProperty("annotators", "tokenize, ssplit, pos, lemma, ner, parse");
         StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
 
 /**
@@ -34,7 +39,7 @@ public class featuretest {
                 "German watchdog casts doubt on London Stock Exchange merger after Brexit",
                 "Lloyds TSB and HBOS will have a merger.",
                 "There is a merger between Lloyds TSB and HBOS.",
-                "There is a merger related with Lloyds TSB."
+                "There was a merger related with Lloyds TSB."
         };  //sentences to test merger
 
 //        String[] myString = {
@@ -87,10 +92,10 @@ public class featuretest {
 //        System.out.println("sentenceText: " + sentenceText + "||" + sentenceText.getClass());
 
 //        System.out.println("============================= Token Related Commands ==================================");
-//        List<CoreLabel> tokens = sentence.get(CoreAnnotations.TokensAnnotation.class);
-//        System.out.println("tokens: " + tokens + "||" + tokens.getClass());
+        List<CoreLabel> tokens = sentence.get(CoreAnnotations.TokensAnnotation.class);
+        System.out.println("tokens: " + tokens + "||" + tokens.getClass());
 //
-//        CoreLabel token = tokens.get(0);
+        CoreLabel token = tokens.get(0);
 //        System.out.println("token: " + token + "||" + token.getClass());
 //        System.out.println("token.toShorterString(): " + token.toShorterString() + "||" + token.toShorterString().getClass());
 //
@@ -100,9 +105,11 @@ public class featuretest {
 //        System.out.println("pos: " + pos + "||" + pos.getClass());
 //        Integer tokenindex = token.get(CoreAnnotations.IndexAnnotation.class);
 //        System.out.println(tokenindex);
+            String tense = token.get(TenseAnnotation.class);
+            System.out.println("tense: " + tense + "||" + tense.getClass());
 
 //            System.out.println("=============================== Tree Related Commands =================================");
-            Tree tree = sentence.get(TreeCoreAnnotations.TreeAnnotation.class);
+//            Tree tree = sentence.get(TreeCoreAnnotations.TreeAnnotation.class);
 //        tree.pennPrint();
 //
 //        System.out.println("tree.value: " + tree.value() + "||" + tree.getClass());
@@ -201,13 +208,13 @@ public class featuretest {
 //        System.out.println("collapseGraph.getFirstRoot(): " + collapseGraph.getFirstRoot() + "||" + collapseGraph.getFirstRoot().getClass());
 
 //
-            System.out.println("======================================== Company Name ====================================");
-            company company = new company();
-            System.out.println(company.extract(sentence));
-//
+//            System.out.println("======================================== Company Name ====================================");
+//            company company = new company();
+//            System.out.println(company.extract(sentence));
+
 //            System.out.println("======================================== Tense ===========================================");
-//            tense tense = new tense(sentence);
-//            System.out.println(tense.getTense());
+//            tense tense1 = new tense(sentence);
+//            System.out.println(tense1.getTense());
 
             System.out.println("========================================= Merger =========================================");
             merger merger = new merger();
