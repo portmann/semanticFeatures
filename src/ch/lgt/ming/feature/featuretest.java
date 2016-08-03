@@ -25,8 +25,8 @@ public class featuretest {
         System.out.println("--------------------------------------- Pipeline ------------------------------------------");
         Properties props = new Properties();
         props.setProperty("customAnnotatorClass.tense", "ch.lgt.ming.feature.TenseAnnotator");
+//        props.setProperty("tense.key", "tense");
         props.setProperty("annotators", "tokenize, ssplit, pos, lemma, ner, parse, tense");
-//        props.setProperty("annotators", "tokenize, ssplit, pos, lemma, ner, parse");
         StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
 
 /**
@@ -93,7 +93,7 @@ public class featuretest {
 
 //        System.out.println("============================= Token Related Commands ==================================");
         List<CoreLabel> tokens = sentence.get(CoreAnnotations.TokensAnnotation.class);
-        System.out.println("tokens: " + tokens + "||" + tokens.getClass());
+        System.out.println("tokens: " + tokens);
 //
         CoreLabel token = tokens.get(0);
 //        System.out.println("token: " + token + "||" + token.getClass());
@@ -106,7 +106,7 @@ public class featuretest {
 //        Integer tokenindex = token.get(CoreAnnotations.IndexAnnotation.class);
 //        System.out.println(tokenindex);
             String tense = token.get(TenseAnnotation.class);
-            System.out.println("tense: " + tense + "||" + tense.getClass());
+            System.out.println("tense: " + tense);
 
 //            System.out.println("=============================== Tree Related Commands =================================");
 //            Tree tree = sentence.get(TreeCoreAnnotations.TreeAnnotation.class);

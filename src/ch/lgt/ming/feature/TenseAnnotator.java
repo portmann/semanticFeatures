@@ -21,13 +21,11 @@ import edu.stanford.nlp.util.concurrent.ThreadsafeProcessor;
  */
 public class TenseAnnotator implements Annotator{
 
-    private  tense TENSE;
+    private tense TENSE;
     private final boolean VERBOSE;
     private final int nThreads;
     private final long maxTime;
     private final int maxSentenceLength;
-
-
 
     public TenseAnnotator(){this(true);}
 
@@ -48,16 +46,11 @@ public class TenseAnnotator implements Annotator{
     }
 
     public TenseAnnotator(String annotatorName, Properties props) {
-        String posLoc = props.getProperty(annotatorName + ".model");
-        if (posLoc == null) {
-            posLoc = DefaultPaths.DEFAULT_POS_MODEL;
-        }
         VERBOSE = PropertiesUtils.getBool(props, annotatorName + ".verbose", false);
         this.maxSentenceLength = PropertiesUtils.getInt(props, annotatorName + ".maxlen", Integer.MAX_VALUE);
         this.nThreads = PropertiesUtils.getInt(props, annotatorName + ".nthreads", PropertiesUtils.getInt(props, "nthreads", 1));
         this.maxTime = 10;
     }
-
 
     @Override
     public void annotate(Annotation annotation) {
