@@ -33,15 +33,14 @@ public class featuretest {
  * Different sentences to test company and merger
  */
 
-        String[] myString = {
-                "London Stock Exchange shareholders are to meet on Monday over whether to approve the merger " +
-                        "with Deutsche Börse amid uncertainty created by Britain’s decision to leave the EU.",
-                "German watchdog casts doubt on London Stock Exchange merger after Brexit",
-                "Lloyds TSB and HBOS will have a merger.",
-                "There is a merger between Lloyds TSB and HBOS.",
-                "There was a merger related with Lloyds TSB."
-        };  //sentences to test merger
-
+//        String[] myString = {
+//                "London Stock Exchange shareholders are to meet on Monday over whether to approve the merger " +
+//                        "with Deutsche Börse amid uncertainty created by Britain’s decision to leave the EU.",
+//                "German watchdog casts doubt on London Stock Exchange merger after Brexit",
+//                "Lloyds TSB and HBOS will have a merger.",
+//                "There is a merger between Lloyds TSB and HBOS.",
+//                "There was a merger related with Lloyds TSB."
+//        };  //sentences to test merger
 //        String[] myString = {
 //                "Sega Games announced today it has acquired Paris-based Amplitude Studios, saying the move will " +
 //                        "strengthen its roster of PC games and development in Europe.",
@@ -54,6 +53,24 @@ public class featuretest {
 //                "If he did not decide to raise rates, markets would relax."
 //
 //        };
+
+//        String[] myString = {
+//                "I am so surprised about the news.",
+//                "The 'Amazing' IPO Change That May Restart The Flow Of New Stocks.",
+//                "Opinion: CFOs want a stunning 14% annual return on investments — and that’s holding back the economy",
+//                "Gap shares slump as July sales disappoint, but analysts upbeat."
+//        };//Strings to test surprise
+
+        String[] myString = {
+                "The expression is really vague.",
+                "Christopher Bishop, Chief Reinvention Officer of Improvising Careers said " +
+                        "it’s important to keep an eye on the “little things” of any war gaming " +
+                        "exercise like making sure teams are comfortable with ambiguity, being " +
+                        "resourceful, resilient, creative and passionate.",
+                "“We’ve had a pretty anomalously hot and dry stretch,” says Randy Graham, " +
+                        "meteorologist-in-charge at the Weather Services’ Salt Lake City office."
+        };//Strings to test uncertainty
+
 
 
 
@@ -92,10 +109,8 @@ public class featuretest {
 //        System.out.println("sentenceText: " + sentenceText + "||" + sentenceText.getClass());
 
 //        System.out.println("============================= Token Related Commands ==================================");
-        List<CoreLabel> tokens = sentence.get(CoreAnnotations.TokensAnnotation.class);
-        System.out.println("tokens: " + tokens);
-//
-        CoreLabel token = tokens.get(0);
+//        List<CoreLabel> tokens = sentence.get(CoreAnnotations.TokensAnnotation.class);
+//        CoreLabel token = tokens.get(0);
 //        System.out.println("token: " + token + "||" + token.getClass());
 //        System.out.println("token.toShorterString(): " + token.toShorterString() + "||" + token.toShorterString().getClass());
 //
@@ -105,8 +120,8 @@ public class featuretest {
 //        System.out.println("pos: " + pos + "||" + pos.getClass());
 //        Integer tokenindex = token.get(CoreAnnotations.IndexAnnotation.class);
 //        System.out.println(tokenindex);
-            String tense = token.get(TenseAnnotation.class);
-            System.out.println("tense: " + tense);
+//            String tense = token.get(TenseAnnotation.class);
+//            System.out.println("tense: " + tense);
 
 //            System.out.println("=============================== Tree Related Commands =================================");
 //            Tree tree = sentence.get(TreeCoreAnnotations.TreeAnnotation.class);
@@ -216,23 +231,21 @@ public class featuretest {
 //            tense tense1 = new tense(sentence);
 //            System.out.println(tense1.getTense());
 
-            System.out.println("========================================= Merger =========================================");
-            merger merger = new merger();
-            System.out.println(merger.IsMerge(sentence));
+//            System.out.println("========================================= Merger =========================================");
+//            merger merger = new merger();
+//            System.out.println(merger.IsMerge(sentence));
 
 //            System.out.println("========================================= Acquisition ======================================");
 //            acquisition acquisition = new acquisition();
 //            System.out.println(acquisition.IsAcquisition(sentence));
 
-//            System.out.println("========================================= Acquisition ======================================");
-//            uncertainty uncertainty = new uncertainty();
-//            System.out.println(uncertainty.IsUncertainty(sentence));
-
-
 //            System.out.println("======================================== Surprise ========================================");
 //            surprise surprise = new surprise();
-//            System.out.println(surprise.IsSurprise(sentence));
+//            System.out.println(surprise.IsSurprise1(sentence));
 
+            System.out.println("======================================== Uncertainty ========================================");
+            uncertainty uncertainty = new uncertainty();
+            System.out.println(uncertainty.IsUncertainty1(sentence));
 
         }
     }

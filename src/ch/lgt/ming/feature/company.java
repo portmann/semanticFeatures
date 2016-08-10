@@ -18,7 +18,6 @@ public class company {
     public List<String> extract(CoreMap sentence) {
 
         String comname = "";
-
         for (CoreLabel token : sentence.get(CoreAnnotations.TokensAnnotation.class)) {
 
             String word = token.get(CoreAnnotations.TextAnnotation.class);

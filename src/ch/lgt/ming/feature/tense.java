@@ -16,30 +16,39 @@ public class tense {
     private Map<String, String> dep_word = new HashMap<>();
     private List<String> typedDep = new ArrayList<>();  //"typedDep" contains the typed dependencies which determine the tense of sentence.
 
-    public tense(){}
+    public tense(){
+        typedDep.addAll(Arrays.asList("aux","auxpass","root","cop"));
+        List<String> present = Arrays.asList("VB","VBP","VBZ","VBG","MD");
+        List<String> past = Arrays.asList("VBD","VBN");
+        List<String> pastModal = Arrays.asList("could","would");
+        List<String> futureModal = Arrays.asList("will","'ll","wo");
+        List<String> verb = Arrays.asList("aux","cop","auxpass");
+        tense.put("Present", present);
+        tense.put("Past", past);
+        tense.put("PastModal", pastModal);
+        tense.put("FutureModal", futureModal);
+        tense.put("Verb", verb);
+    }
 
     public tense(CoreMap sentence) {
 
         this.tree = sentence.get(TreeCoreAnnotations.TreeAnnotation.class);
-
         typedDep.addAll(Arrays.asList("aux","auxpass","root","cop"));
-
-        List<String> present = new ArrayList<>();
-        present.addAll(Arrays.asList("VB","VBP","VBZ","VBG","MD"));
-        List<String> past = new ArrayList<>();
-        past.addAll(Arrays.asList("VBD","VBN"));
-        List<String> pastModal = new ArrayList<>();
-        pastModal.addAll(Arrays.asList("could","would"));
-        List<String> futureModal = new ArrayList<>();
-        futureModal.addAll(Arrays.asList("will","'ll","wo"));
-        List<String> verb = new ArrayList<>();
-        verb.addAll(Arrays.asList("aux","cop","auxpass"));
+        List<String> present = Arrays.asList("VB","VBP","VBZ","VBG","MD");
+        List<String> past = Arrays.asList("VBD","VBN");
+        List<String> pastModal = Arrays.asList("could","would");
+        List<String> futureModal = Arrays.asList("will","'ll","wo");
+        List<String> verb = Arrays.asList("aux","cop","auxpass");
         tense.put("Present", present);
         tense.put("Past", past);
         tense.put("PastModal", pastModal);
         tense.put("FutureModal", futureModal);
         tense.put("Verb", verb);
 
+    }
+
+    public void setTree(CoreMap sentence){
+        this.tree = sentence.get(TreeCoreAnnotations.TreeAnnotation.class);
     }
 
     //Input: tree with nodes(NP,VP)
@@ -89,7 +98,7 @@ public class tense {
 
         Tree senttree = this.tree;
         Map<String, String> Verb = getVerb(senttree);
-//        System.out.println(Verb);
+        System.out.println(Verb);
         if (Verb.containsKey("aux")) {
             switch (Verb.get("auxPOS")) {
                 case "MD": {

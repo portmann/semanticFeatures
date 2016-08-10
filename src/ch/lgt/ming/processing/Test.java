@@ -31,7 +31,7 @@ public class Test {
 
 		// exercise variable
 		StringId companyId = new StringId();           // use NER (company is simply an example of an entity)
-		IdListId documentCompanys = new IdListId();
+		IdListId documentCompanies = new IdListId();
 		IdValue sentencePosCount = new IdValue();
 		IdValue sentenceNegCount = new IdValue();
 		IdBoolean sentenceNegation = new IdBoolean();
@@ -53,7 +53,7 @@ public class Test {
 		File[] listOfFiles = folder.listFiles();
 
 		// for (int i = 0; i < listOfFiles.length; i++) {
-		for (int i = 0; i < 2; i++) {
+		for (int i = 7; i < 8; i++) {
 			documentText.putValue(i, fileHandler.loadFileToString(path + "/" + listOfFiles[i].getName()));
 			System.out.println("Document: " + i + " done.");
 		}
@@ -125,7 +125,7 @@ public class Test {
 				System.out.println("Sentence: " + sentenceIndex + " done.");
 				sentenceIndex++;
 			}
-			documentCompanys.putValue(key,CompIdinADoc);
+			documentCompanies.putValue(key,CompIdinADoc);
 		}
 
 		// ******************************
@@ -138,7 +138,7 @@ public class Test {
 		// NER
 		// companyId.put(companyName, companyId);
 		System.out.println("3. companyId: Name of Organization = ID of Organization " + companyId.getMap());
-		System.out.println("4. documentCompanys: ID of Document = A list of ID of Organizations in this Document" + documentCompanys.getMap());
+		System.out.println("4. documentCompanys: ID of Document = A list of ID of Organizations in this Document" + documentCompanies.getMap());
 		//according to their order of appearance
 
 		// Sentence-negation

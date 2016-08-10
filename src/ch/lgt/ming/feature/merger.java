@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
  */
 public class merger {
 
-    public boolean IsMerge(CoreMap sentence) {
+    public static boolean IsMerge(CoreMap sentence) {
 
         Env env = TokenSequencePattern.getNewEnv();
         env.setDefaultStringPatternFlags(Pattern.CASE_INSENSITIVE);
@@ -24,17 +24,17 @@ public class merger {
         env.bind("tense", TenseAnnotation.class);
         TokenSequencePattern pattern = TokenSequencePattern.compile(env,
 
-//                "([{ner:ORGANIZATION}][]*([{word:/merger?d?/}]([]*[{ner:ORGANIZATION}])?))|" +
-//                        "([{ner: ORGANIZATION}][]*[{ner: ORGANIZATION}][]*[{word:/merger?d?/}])|" +
-//                        "([{word:/merger?d?/}][]*[{ner: ORGANIZATION}]([]*[{ner: ORGANIZATION}])?)"
+                "([{ner:ORGANIZATION}][]*([{word:/merger?d?/}]([]*[{ner:ORGANIZATION}])?))|" +
+                        "([{ner: ORGANIZATION}][]*[{ner: ORGANIZATION}][]*[{word:/merger?d?/}])|" +
+                        "([{word:/merger?d?/}][]*[{ner: ORGANIZATION}]([]*[{ner: ORGANIZATION}])?)"
 
 //                "([ner:ORGANIZATION]+[]*($MERGER([]*[ner:ORGANIZATION]+)?))|" +
 //                        "([ner: ORGANIZATION]+[]*[ner: ORGANIZATION]+[]*$MERGER)|" +
 //                        "($MERGER[]*[ner: ORGANIZATION]+([]*[ner: ORGANIZATION]+)?)"
-
-                "([ner:ORGANIZATION]+[tense:Past]*($MERGER([tense:Past]*[ner:ORGANIZATION]+)?))|" +
-                        "([ner: ORGANIZATION]+[tense:Past]*[ner: ORGANIZATION]+[tense:Past]*$MERGER)|" +
-                        "($MERGER[tense:Past]*[ner: ORGANIZATION]+([tense:Past]*[ner: ORGANIZATION]+)?)"
+//
+//                "([ner:ORGANIZATION]+[tense:Past]*($MERGER([tense:Past]*[ner:ORGANIZATION]+)?))|" +
+//                        "([ner: ORGANIZATION]+[tense:Past]*[ner: ORGANIZATION]+[tense:Past]*$MERGER)|" +
+//                        "($MERGER[tense:Past]*[ner: ORGANIZATION]+([tense:Past]*[ner: ORGANIZATION]+)?)"
 
         );
         List<CoreLabel> tokens = sentence.get(CoreAnnotations.TokensAnnotation.class);

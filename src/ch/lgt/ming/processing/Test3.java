@@ -16,25 +16,17 @@ import java.util.*;
 /**
  * Created by Ming Deng on 5/1/2016.
  */
+
 public class Test3 {
     public static void main(String[] args) throws Exception {
 
         // variable declaration
-        FileHandler fileHandler = new FileHandler();
-        PosWordCount posWordCount = new PosWordCount();
-        NegWordCount negWordCount = new NegWordCount();
-        NegationCount negationCount = new NegationCount();
-        CompaniesAll companiesAll = new CompaniesAll();
-        Tense tense = new Tense();
 
-        Map<Integer,IdValue> Doc_SentPosCount = new HashMap<>();
-        Map<Integer,IdValue> Doc_SentNegCount = new HashMap<>();
-        Map<Integer,IdValue> Doc_SentNegationCount = new HashMap<>();
-        Map<Integer,IdString> Doc_SentCompany = new HashMap<>();
-        Map<Integer,IdString> Doc_SentTense = new HashMap<>();
-
-        IdString documentText = new IdString();        // hashmap (key-value pair) of texts (i.e. text1, text2, etc.)
-        StringId textSentenceId = new StringId();      // hashmap of all sentences contained in a text (indexing of sentences within a text)
+        Extractor<IdListString> companyExtractor = new CompaniesAll();
+        Extractor<IdBoolean> mergerExtractor = new Merger();
+        Extractor<IdString> tenseExtractor = new Tense();
+        Extractor<IdBoolean> uncertaintyExtractor = new Uncertainty();
+        Extractor<IdBoolean> surpriseExtractor = new Surprice();
 
         // exercise variable
         StringId companyId = new StringId();           // use NER (company is simply an example of an entity)
@@ -43,40 +35,31 @@ public class Test3 {
         // initialize corenlp
         StanfordCore.init();
 
-        // load corpus
-        String path = "corpus";
-        File folder = new File(path);
-        File[] listOfFiles = folder.listFiles();
 
-        // for (int i = 0; i < listOfFiles.length; i++) {
-        for (int i = 0; i < 3; i++) {
-            documentText.putValue(i, fileHandler.loadFileToString(path + "/" + listOfFiles[i].getName()));
+//        String myString = "I was a student. I am a student. I will be a student.";
 
-            System.out.println("Document: " + i + " done.");
-        }
- 
-        double start = System.currentTimeMillis();
-        // set sentence index (uses Stanford sentence splitter "SentenceAnnotation.class")
-        // Loop over all documents
-        for (Integer key : documentText.getMap().keySet()) {
-            Annotation document = StanfordCore.pipeline.process(documentText.getValue(key));
-            //Annotation document = StanfordCore.pipeline.process("I didn't want my dog to eat my homework. I will got there tomorrow. Please give me some advice.");
-            Doc_SentPosCount.put(key, posWordCount.extract(document));
-            Doc_SentNegCount.put(key, negWordCount.extract(document));
-            Doc_SentNegationCount.put(key, negationCount.extract(document));
-            Doc_SentCompany.put(key, companiesAll.extract(document));
-            Doc_SentTense.put(key, tense.extract(document));
+//        String myString =
+//                "The expression is really vague. " +
+//                "Eight years later, Congress is confounded with how to confront the ambiguity associated with consumer lending. " +
+//                "“We’ve had a pretty anomalously hot and dry stretch, says Randy Graham, meteorologist-in-charge at the Weather " +
+//                "Services’ Salt Lake City office.";//Strings to test uncertainty
 
-            System.out.printf("--------------------------------------Document %d-------------------------------\n",key);
-            System.out.println("PosCount: " + Doc_SentPosCount.get(key).getMap());
-            System.out.println("NegCount: " + Doc_SentNegCount.get(key).getMap());
-            System.out.println("NegationCount: " + Doc_SentNegationCount.get(key).getMap());
-            System.out.println("Company: " + Doc_SentCompany.get(key).getMap());
-            System.out.println("Tense: " + Doc_SentTense.get(key).getMap());
+        String myString =
+                "I am so surprised about the news. The 'Amazing' IPO Change That May Restart The Flow Of New Stocks. " +
+                "Opinion: CFOs want a stunning 14% annual return on investments — and that’s holding back the economy " +
+                "Gap shares slump as July sales disappoint, but analysts upbeat."
+        ;//Strings to test surprise
 
-        }
-        System.out.println("Whoop whoop!!");
-        System.out.println(System.currentTimeMillis() - start);
+        Annotation document = StanfordCore.pipeline.process(myString);
+
+//        IdString myTense = tenseExtractor.extract(document);
+//        IdBoolean myUncertainty = uncertaintyExtractor.extract(document);
+        IdBoolean mySurPrise = surpriseExtractor.extract(document);
+
+
+//        System.out.println(myTense.getMap());
+//        System.out.println(myUncertainty.getMap());
+        System.out.println(mySurPrise.getMap());
 
     }
 }
