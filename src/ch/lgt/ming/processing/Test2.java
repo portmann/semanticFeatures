@@ -17,6 +17,7 @@ import ch.lgt.ming.extraction.sentnence.Merger;
 import ch.lgt.ming.helper.FileHandler;
 import edu.stanford.nlp.pipeline.Annotation;
 
+//Test code for companynames and merger
 public class Test2 {
 	
 	public static void main(String[] args) throws Exception {

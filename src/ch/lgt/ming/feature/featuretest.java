@@ -10,6 +10,10 @@ import edu.stanford.nlp.trees.Tree;
 import edu.stanford.nlp.trees.TreeCoreAnnotations;
 import edu.stanford.nlp.util.CoreMap;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -20,7 +24,7 @@ import java.util.Properties;
  */
 public class featuretest {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
         System.out.println("--------------------------------------- Pipeline ------------------------------------------");
         Properties props = new Properties();
@@ -61,17 +65,19 @@ public class featuretest {
 //                "Gap shares slump as July sales disappoint, but analysts upbeat."
 //        };//Strings to test surprise
 
-        String[] myString = {
-                "The expression is really vague.",
-                "Christopher Bishop, Chief Reinvention Officer of Improvising Careers said " +
-                        "it’s important to keep an eye on the “little things” of any war gaming " +
-                        "exercise like making sure teams are comfortable with ambiguity, being " +
-                        "resourceful, resilient, creative and passionate.",
-                "“We’ve had a pretty anomalously hot and dry stretch,” says Randy Graham, " +
-                        "meteorologist-in-charge at the Weather Services’ Salt Lake City office."
-        };//Strings to test uncertainty
+//        String[] myString = {
+//                "The expression is really vague.",
+//                "Christopher Bishop, Chief Reinvention Officer of Improvising Careers said " +
+//                        "it’s important to keep an eye on the “little things” of any war gaming " +
+//                        "exercise like making sure teams are comfortable with ambiguity, being " +
+//                        "resourceful, resilient, creative and passionate.",
+//                "“We’ve had a pretty anomalously hot and dry stretch,” says Randy Graham, " +
+//                        "meteorologist-in-charge at the Weather Services’ Salt Lake City office."
+//        };//Strings to test uncertainty
 
-
+        byte[] encoded = Files.readAllBytes(Paths.get("dictionaries/NERtest.txt"));
+        String[] myString = new String[1];
+        myString[0]= new String(encoded, StandardCharsets.UTF_8);
 
 
         for (int i = 0; i < myString.length; i++) {
@@ -81,28 +87,32 @@ public class featuretest {
 /**
  * Different sentences to test tense
  */
-//        System.out.println("-------------------------------aux-----------------------------------");
-//        Annotation document = new Annotation("I don't like animals.");
-//        Annotation document = new Annotation("I am fine.");
-//        Annotation document = new Annotation("I was happy.");
-//        Annotation document = new Annotation("I will be happy.");
-//        Annotation document = new Annotation("I have done that before.");
-//        Annotation document = new Annotation("How do I use Stanford Parser's Typed Dependencies in Python?");
-//        Annotation document = new Annotation("What flights did you have from Burbank to Tacoma Washington?");
-//        Annotation document = new Annotation("What flights do you have from Burbank to Tacoma Washington?");
-//        Annotation document = new Annotation("What flights will you have from Burbank to Tacoma Washington?");//
-//        System.out.println("-------------------------------auxpass-----------------------------------");
-//        Annotation document = new Annotation("I was found by him.");
-//        System.out.println("------------------ Copula -----------------------------------");
-//        Annotation document = new Annotation("Bill was an honest man.");
-//        System.out.println("------------------ Root -----------------------------------");
-//        Annotation document = new Annotation("I like animals.");
+//            System.out.println("-------------------------------aux-----------------------------------");
+//            Annotation document = new Annotation("I don't like animals.");
+//            Annotation document = new Annotation("I am fine.");
+//            Annotation document = new Annotation("I was happy.");
+//            Annotation document = new Annotation("I will be happy.");
+//            Annotation document = new Annotation("I have done that before.");
+//            Annotation document = new Annotation("How do I use Stanford Parser's Typed Dependencies in Python?");
+//            Annotation document = new Annotation("What flights did you have from Burbank to Tacoma Washington?");
+//            Annotation document = new Annotation("What flights do you have from Burbank to Tacoma Washington?");
+//            Annotation document = new Annotation("What flights will you have from Burbank to Tacoma Washington?");//
+//            System.out.println("-------------------------------auxpass-----------------------------------");
+//            Annotation document = new Annotation("I was found by him.");
+//            System.out.println("------------------ Copula -----------------------------------");
+//            Annotation document = new Annotation("Bill was an honest man.");
+//            System.out.println("------------------ Root -----------------------------------");
+//            Annotation document = new Annotation("I like animals.");
             pipeline.annotate(document);
             System.out.printf("-------------------------------------Sentence %d ---------------------------------\n",i);
             System.out.println("============================= Sentence Related Commands ==================================");
             List<CoreMap> sentences = document.get(CoreAnnotations.SentencesAnnotation.class);
             System.out.println("sentences: " + sentences + "||" + sentences.getClass());        //List<CoreMap>
             CoreMap sentence = sentences.get(0);
+            for (CoreLabel token: sentence.get(CoreAnnotations.TokensAnnotation.class)){
+                String ner = token.ner();
+                System.out.println(ner);
+            }
 //        System.out.println("sentence: " + sentence + "||" + sentence.getClass());          //CoreMap
 //        System.out.println("sentence.toShorterString(): " + sentence.toShorterString() + "||" + sentence.toShorterString().getClass());
 //        String sentenceText = sentence.get(CoreAnnotations.TextAnnotation.class);
@@ -114,14 +124,16 @@ public class featuretest {
 //        System.out.println("token: " + token + "||" + token.getClass());
 //        System.out.println("token.toShorterString(): " + token.toShorterString() + "||" + token.toShorterString().getClass());
 //
-//        String word = token.get(CoreAnnotations.TextAnnotation.class);
+//        String word = token.get(CoreAnnotations.TextAnnotation.class);    //Text
 //        System.out.println("word: " + word + "||" + word.getClass());
-//        String pos = token.get(CoreAnnotations.PartOfSpeechAnnotation.class);
+//        String pos = token.get(CoreAnnotations.PartOfSpeechAnnotation.class);         //POS
 //        System.out.println("pos: " + pos + "||" + pos.getClass());
-//        Integer tokenindex = token.get(CoreAnnotations.IndexAnnotation.class);
+//        Integer tokenindex = token.get(CoreAnnotations.IndexAnnotation.class);            //Index
 //        System.out.println(tokenindex);
-//            String tense = token.get(TenseAnnotation.class);
-//            System.out.println("tense: " + tense);
+//            String ner = token.get(CoreAnnotations.NamedEntityTagAnnotation.class);      //NER
+//            System.out.println(ner);
+//        String tense = token.get(TenseAnnotation.class);       //Tense
+//        System.out.println("tense: " + tense);
 
 //            System.out.println("=============================== Tree Related Commands =================================");
 //            Tree tree = sentence.get(TreeCoreAnnotations.TreeAnnotation.class);
@@ -243,9 +255,9 @@ public class featuretest {
 //            surprise surprise = new surprise();
 //            System.out.println(surprise.IsSurprise1(sentence));
 
-            System.out.println("======================================== Uncertainty ========================================");
-            uncertainty uncertainty = new uncertainty();
-            System.out.println(uncertainty.IsUncertainty1(sentence));
+//            System.out.println("======================================== Uncertainty ========================================");
+//            uncertainty uncertainty = new uncertainty();
+//            System.out.println(uncertainty.IsUncertainty1(sentence));
 
         }
     }

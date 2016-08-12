@@ -17,6 +17,7 @@ import java.util.*;
  * Created by Ming Deng on 5/1/2016.
  */
 
+//This is the test code for tense, uncertainty and suprise
 public class Test3 {
     public static void main(String[] args) throws Exception {
 
@@ -28,15 +29,11 @@ public class Test3 {
         Extractor<IdBoolean> uncertaintyExtractor = new Uncertainty();
         Extractor<IdBoolean> surpriseExtractor = new Surprice();
 
-        // exercise variable
-        StringId companyId = new StringId();           // use NER (company is simply an example of an entity)
-        IdListId documentCompanys = new IdListId();    // use NER
-
         // initialize corenlp
         StanfordCore.init();
 
 
-//        String myString = "I was a student. I am a student. I will be a student.";
+//        String myString = "I was a student. I am a student. I will be a student."; //Strings to test tense
 
 //        String myString =
 //                "The expression is really vague. " +
