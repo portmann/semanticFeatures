@@ -37,14 +37,14 @@ public class featuretest {
  * Different sentences to test company and merger
  */
 
-//        String[] myString = {
-//                "London Stock Exchange shareholders are to meet on Monday over whether to approve the merger " +
-//                        "with Deutsche Börse amid uncertainty created by Britain’s decision to leave the EU.",
-//                "German watchdog casts doubt on London Stock Exchange merger after Brexit",
-//                "Lloyds TSB and HBOS will have a merger.",
-//                "There is a merger between Lloyds TSB and HBOS.",
-//                "There was a merger related with Lloyds TSB."
-//        };  //sentences to test merger
+        String[] myString = {
+                "London Stock Exchange shareholders are to meet on Monday over whether to approve the merger " +
+                        "with Deutsche Börse amid uncertainty created by Britain’s decision to leave the EU.",
+                "German watchdog casts doubt on London Stock Exchange merger after Brexit",
+                "Lloyds TSB and HBOS will have a merger.",
+                "There is a merger between Lloyds TSB and HBOS.",
+                "There was a merger related with Lloyds TSB."
+        };  //sentences to test merger
 //        String[] myString = {
 //                "Sega Games announced today it has acquired Paris-based Amplitude Studios, saying the move will " +
 //                        "strengthen its roster of PC games and development in Europe.",
@@ -74,10 +74,6 @@ public class featuretest {
 //                "“We’ve had a pretty anomalously hot and dry stretch,” says Randy Graham, " +
 //                        "meteorologist-in-charge at the Weather Services’ Salt Lake City office."
 //        };//Strings to test uncertainty
-
-        byte[] encoded = Files.readAllBytes(Paths.get("dictionaries/NERtest.txt"));
-        String[] myString = new String[1];
-        myString[0]= new String(encoded, StandardCharsets.UTF_8);
 
 
         for (int i = 0; i < myString.length; i++) {
@@ -109,10 +105,10 @@ public class featuretest {
             List<CoreMap> sentences = document.get(CoreAnnotations.SentencesAnnotation.class);
             System.out.println("sentences: " + sentences + "||" + sentences.getClass());        //List<CoreMap>
             CoreMap sentence = sentences.get(0);
-            for (CoreLabel token: sentence.get(CoreAnnotations.TokensAnnotation.class)){
-                String ner = token.ner();
-                System.out.println(ner);
-            }
+//            for (CoreLabel token: sentence.get(CoreAnnotations.TokensAnnotation.class)){
+//                String ner = token.ner();
+//                System.out.println(ner);
+//            }
 //        System.out.println("sentence: " + sentence + "||" + sentence.getClass());          //CoreMap
 //        System.out.println("sentence.toShorterString(): " + sentence.toShorterString() + "||" + sentence.toShorterString().getClass());
 //        String sentenceText = sentence.get(CoreAnnotations.TextAnnotation.class);
@@ -243,9 +239,9 @@ public class featuretest {
 //            tense tense1 = new tense(sentence);
 //            System.out.println(tense1.getTense());
 
-//            System.out.println("========================================= Merger =========================================");
-//            merger merger = new merger();
-//            System.out.println(merger.IsMerge(sentence));
+            System.out.println("========================================= Merger =========================================");
+            merger merger = new merger();
+            System.out.println(merger.IsMerge(sentence));
 
 //            System.out.println("========================================= Acquisition ======================================");
 //            acquisition acquisition = new acquisition();

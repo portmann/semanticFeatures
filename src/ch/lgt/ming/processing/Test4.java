@@ -28,7 +28,7 @@ public class Test4 {
 
         byte[] encoded1 = Files.readAllBytes(Paths.get("dictionaries/NERtest.txt"));
         byte[] encoded2 = Files.readAllBytes(Paths.get("dictionaries/NERtest2.txt"));
-        byte[] encoded3 = Files.readAllBytes(Paths.get("dictionaries/Comany name list.txt"));
+        byte[] encoded3 = Files.readAllBytes(Paths.get("dictionaries/Company name list.txt"));
         String[] myString = new String[3];
         myString[0] = new String(encoded1, StandardCharsets.UTF_8);
         myString[1] = new String(encoded2, StandardCharsets.UTF_8);
@@ -57,6 +57,8 @@ public class Test4 {
             System.out.println(company.extract(sentence));
         }
 
+
+        System.out.println("=----------------------------------------NER for column D----------------------------------");
         for (CoreMap sentence: document3.get(CoreAnnotations.SentencesAnnotation.class)){
             for (CoreLabel token: sentence.get(CoreAnnotations.TokensAnnotation.class)){
                 System.out.println(token.ner());

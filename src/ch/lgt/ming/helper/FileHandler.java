@@ -25,7 +25,8 @@ public class FileHandler {
 
 		Charset encoding = StandardCharsets.UTF_8;
 		byte[] encoded = Files.readAllBytes(Paths.get(path));
-		return encoding.decode(ByteBuffer.wrap(encoded)).toString();
+//		return encoding.decode(ByteBuffer.wrap(encoded)).toString();
+		return new String(encoded, encoding);
 	}
 
 	public void saveStringAsFile(String url, String content) throws IOException {

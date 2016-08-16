@@ -17,7 +17,7 @@ import java.util.*;
  * Created by Ming Deng on 5/1/2016.
  */
 
-//This is the test code for tense, uncertainty and suprise
+//This is the test code for tense, uncertainty and surprise
 public class Test3 {
     public static void main(String[] args) throws Exception {
 

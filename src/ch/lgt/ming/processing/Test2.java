@@ -24,7 +24,7 @@ public class Test2 {
 		
 		// variable declaration
 		FileHandler fileHandler = new FileHandler();
-		IdString documentText = new IdString(); 
+		IdString docId_Text = new IdString();
 		Extractor<IdListString> companyExtractor = new CompaniesAll();
 		Extractor<IdBoolean> mergerExtractor = new Merger();
 
@@ -36,19 +36,19 @@ public class Test2 {
 		File folder = new File(path);
 		File[] listOfFiles = folder.listFiles();
 		
-		//load just the first documents
+		//load the documents
 		for (int i = 0; i < 5; i++) {
-			documentText.putValue(i, fileHandler.loadFileToString(path + "/" + listOfFiles[i].getName()));
+			docId_Text.putValue(i, fileHandler.loadFileToString(path + "/" + listOfFiles[i].getName()));
 		}
 
 		//process documents
-		for (Integer key : documentText.getMap().keySet()) {
+		for (Integer key : docId_Text.getMap().keySet()) {
 
 			double time = System.currentTimeMillis();
 
 			System.out.print("document " + key + " :");
 
-			Annotation annotation = StanfordCore.pipeline.process(documentText.getValue(key));
+			Annotation annotation = StanfordCore.pipeline.process(docId_Text.getValue(key));
 
 			// Key - Company Name map
 			IdListString sentenceCompany = companyExtractor.extract(annotation);
