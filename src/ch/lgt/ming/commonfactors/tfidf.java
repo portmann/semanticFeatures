@@ -2,19 +2,9 @@ package ch.lgt.ming.commonfactors;
 
 import ch.lgt.ming.datastore.*;
 import ch.lgt.ming.helper.FileHandler;
-import com.sun.org.apache.xpath.internal.SourceTree;
-import edu.stanford.nlp.ling.CoreLabel;
-import edu.stanford.nlp.process.CoreLabelTokenFactory;
-import edu.stanford.nlp.process.DocumentProcessor;
-import edu.stanford.nlp.process.PTBTokenizer;
 
-import javax.print.Doc;
-import javax.print.DocPrintJob;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.*;
 import java.util.stream.IntStream;
 
@@ -24,33 +14,35 @@ import java.util.stream.IntStream;
 
 public class tfidf {
 
-    private int numberOfDocument = 0;
-    private IdString docId_Text = new IdString();
-    private List<String> stopwords = new ArrayList<>();
-    private List<String> Dict = new ArrayList<>();
-    private IdSetString DocId_Tokens = new IdSetString();
-    private IdListDouble DocId_tfidfArray = new IdListDouble();
+    private int numberOfDocuments = 0;
+    private String CorpusPath = new String();
+    private IdString DocId_Text = new IdString();                                      //Document Index - Document Text String
+    private List<String> Dict = new ArrayList<>();                                     //60k Dictionary - List of String
+    private IdListString DocId_TokensList = new IdListString();                        //Document Index - List of tokens of this document
+    private IdSetString DocId_TokensSet = new IdSetString();                           //Document Index - Set of tokens of this document
+    private IdListDouble DocId_tfidfList = new IdListDouble();                         //Document Index - List of tfidf of each token
     private List<Integer> similarDoc = new ArrayList<>();
 
 
 
     public static void main(String[] args) throws IOException {
-        tfidf tfIdf = new tfidf(5);
+        tfidf tfIdf = new tfidf(3, "corpus2");
         List<String> Dict =  tfIdf.ReadDict();
         IdSetString DocID_Tokens =  tfIdf.DocProcess();
         IdListDouble TFIDF = tfIdf.getTfIdf();
-        double cosinsimilarity = tfIdf.cosineSimilarity(TFIDF.getValue(4),TFIDF.getValue(4));
+        System.out.println(TFIDF.getValue(1));
+        double cosinsimilarity = tfIdf.cosineSimilarity(TFIDF.getValue(1),TFIDF.getValue(2));
         System.out.println(cosinsimilarity);
+        tfIdf.getSimilarDoc(0.1);
+        tfIdf.getMaxIndex(TFIDF.getValue(2));
+
+        System.out.println(Dict.get(0));
     }
 
+    public tfidf(int numberOfDocuments, String CorpusPath){
+        this.numberOfDocuments = numberOfDocuments;
+        this.CorpusPath = CorpusPath;
 
-    public tfidf(int numberOfDocument){
-        this.numberOfDocument = numberOfDocument;
-
-    }
-
-    public tfidf(int numberOfDocument, String stopword_filename){
-        this.numberOfDocument = numberOfDocument;
     }
 
     public  List<String> ReadDict() throws IOException {
@@ -69,73 +61,71 @@ public class tfidf {
         FileHandler fileHandler = new FileHandler();
 
         // load corpus
-        String path = "corpus";
-        File folder = new File(path);
+        File folder = new File(CorpusPath);
         File[] listOfFiles = folder.listFiles();
 
         //load the documents
-        for (int i = 0; i < numberOfDocument; i++) {
-            docId_Text.putValue(i, fileHandler.loadFileToString(path + "/" + listOfFiles[i].getName()));
-//            System.out.println(docId_Text.getValue(i));
-            String[] strings = docId_Text.getValue(i).replaceAll("[[^a-zA-Z_]&&\\S]", "").split("\\W+");
+        for (int i = 0; i < numberOfDocuments; i++) {
+            DocId_Text.putValue(i, fileHandler.loadFileToString(CorpusPath + "/" + listOfFiles[i].getName()));
+//            System.out.println(DocId_Text.getValue(i));
+            String[] strings = DocId_Text.getValue(i).replaceAll("[[^a-zA-Z_]&&\\S]", "").split("\\W+");
             List<String> listoftokens = Arrays.asList(strings);
             Set<String> setoftokens = new HashSet<>(listoftokens);
     //            System.out.println(setoftokens);
-            DocId_Tokens.putValue(i,setoftokens);
+            DocId_TokensList.putValue(i,listoftokens);
+            DocId_TokensSet.putValue(i,setoftokens);
         }
 
-        return DocId_Tokens;
+        return DocId_TokensSet;
 
     }
 
-    public double tf(int key, String termToCheck){
-        double count = 0;
-        for (String s: DocId_Tokens.getValue(key) ){
+    public double tf(int key, String termToCheck){                      //term frequency: how many times does each term
+        double count = 0;                                               //appears in a document.
+        for (String s: DocId_TokensList.getValue(key) ){
             if (s.equalsIgnoreCase(termToCheck)){
                 count++;
             }
         }
-        return count/DocId_Tokens.getValue(key).size();
+        return count/DocId_TokensList.getValue(key).size();
     }
 
     public double idf(String termToCheck){
-        double count = 0;                                               //count is the number of documents that contains termToCheck
-        for (int key: DocId_Tokens.getMap().keySet()){                  //For every document
-            for (String s: DocId_Tokens.getValue(key)){                 //If the document contains termToCheck then count++
+        double count = 0;                                                //count is the number of documents that contains termToCheck
+        for (int key: DocId_TokensSet.getMap().keySet()){                //For every document
+            for (String s: DocId_TokensSet.getValue(key)){               //If the document contains termToCheck then count++
                 if (s.equalsIgnoreCase(termToCheck)) {
                     count++;
                     break;
                 }
             }
         }
-        return 1+Math.log(DocId_Tokens.getMap().keySet().size()/count);
+        return 1+Math.log(numberOfDocuments/count);
     }
 
     public IdListDouble getTfIdf(){
 
-        for (int key: DocId_Tokens.getMap().keySet()){         //Loop over document
-            List<Double> tdidfvectors = new ArrayList<>(Dict.size());
-//            System.out.println(Dict.size());
-            int count = 0;
-            for (String s: Dict){       //Loop over words in dictionary
-//                System.out.println(DocID_Tokens.getValue(key));
-                if(DocId_Tokens.getValue(key).contains(s.toLowerCase())){
+        for (int key: DocId_Text.getMap().keySet()){                     //Loop over all documents
+            List<Double> tdidfVectors = new ArrayList<>(Dict.size());    //For each document, construct a vector to store the tdidf
+            int count = 0;                                               //count is the index of word in the 60k dictionary
+            for (String s: Dict){                                        //Loop over all words in dictionary
+                if(DocId_TokensSet.getValue(key).contains(s.toLowerCase())){
                     double tf = tf(key,s);
-                    double idf = idf(s);
+                    double idf = idf(s);                                 //Only calculate tfidf when the word is in the document
                     double tfidf = tf*idf;
-                    tdidfvectors.add(count,tfidf);
+                    tdidfVectors.add(count,tfidf);
 //                    System.out.println(tfidf);
 //                    System.out.println(count);
                 }
-                else tdidfvectors.add(count,0.0);
+                else tdidfVectors.add(count,0.0);                        //Or set tfidf to be zero
                 count++;
             }
-//            Collections.sort(tdidfvectors);
-//            Collections.reverse(tdidfvectors);
-//            System.out.println(tdidfvectors);
-            DocId_tfidfArray.putValue(key,tdidfvectors);
+//            Collections.sort(tdidfVectors);
+//            Collections.reverse(tdidfVectors);
+//            System.out.println(tdidfVectors);
+            DocId_tfidfList.putValue(key, tdidfVectors);
         }
-        return DocId_tfidfArray;
+        return DocId_tfidfList;
     }
 
     public double cosineSimilarity(List<Double> tfidf1, List<Double> tfidf2){
@@ -165,13 +155,25 @@ public class tfidf {
 
     public void getSimilarDoc(double threshold){
 
-        double [][] cosineSimMatrix = new double[][];
-        for (int i = 0; i < numberOfDocument; i++)
-            for (int j = 0; j < numberOfDocument; j++){
 
+        IdListDouble TFIDF = getTfIdf();
+        double [][] cosineSimMatrix = new double[numberOfDocuments][numberOfDocuments];
+        for (int i = 0; i < numberOfDocuments; i++)
+            for (int j = 0; j < numberOfDocuments; j++){
+                cosineSimMatrix[i][j] = cosineSimilarity(TFIDF.getValue(i),TFIDF.getValue(j));
             }
+        System.out.println(Arrays.deepToString(cosineSimMatrix));
     }
+
+
     public void getKeyWords(){
+
+    }
+
+    public void getMaxIndex(List<Double> vector){
+        IntStream.range(0,vector.size())
+                .reduce((a,b)-> vector.get(a)<vector.get(b) ? b : a)
+                .ifPresent(ix -> System.out.println("Index " + ix + " Value " + vector.get(ix)));
 
     }
 
