@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import ch.lgt.ming.corenlp.StanfordCore;
 import ch.lgt.ming.datastore.IdBoolean;
 import ch.lgt.ming.datastore.IdListId;
@@ -79,7 +78,7 @@ public class Test {
 				// Put text contents into textSentenceID
 				textSentenceId.putValue(sentenceStanford.get(CoreAnnotations.TextAnnotation.class), sentenceIndex);
 
-				// Initialize countPos, countNeg, NegationCount(We need to count
+				// Initialize countPos, countNeg, NegationCount (We need to count
 				// these value for each sentence)
 				double countPos = 0;
 				double countNeg = 0;

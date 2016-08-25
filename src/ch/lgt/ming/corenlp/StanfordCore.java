@@ -11,8 +11,8 @@ public static StanfordCoreNLP pipeline;
 		Properties props = new Properties();
 		
 		//props.setProperty("annotators", "tokenize, ssplit");
-		props.setProperty("annotators", "tokenize, ssplit, pos, lemma, ner, parse");
-		//props.setProperty("annotators", "tokenize, ssplit, pos, lemma, parse, sentiment");
+		//props.setProperty("annotators", "tokenize, ssplit, pos, lemma, ner, parse");
+		props.setProperty("annotators", "tokenize, ssplit, pos, lemma, parse, sentiment");
 		
 		 pipeline = new StanfordCoreNLP(props);
 	}

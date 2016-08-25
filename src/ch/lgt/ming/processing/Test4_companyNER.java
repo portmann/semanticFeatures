@@ -1,28 +1,22 @@
 package ch.lgt.ming.processing;
 
 import ch.lgt.ming.feature.company;
-import com.sun.org.apache.xpath.internal.SourceTree;
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.util.CoreMap;
-
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Properties;
-import java.util.Scanner;
 
 /**
  * Created by Ming Deng on 8/8/2016.
  */
 //This is the test code for NER
-public class Test4 {
+public class Test4_companyNER {
     public static void main(String[] args) throws IOException {
 
 
