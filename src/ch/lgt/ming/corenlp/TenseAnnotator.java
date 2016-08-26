@@ -1,20 +1,16 @@
-package ch.lgt.ming.feature;
+package ch.lgt.ming.corenlp;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
+import ch.lgt.ming.feature.tense;
 import edu.stanford.nlp.ling.*;
 import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.Annotator;
-import edu.stanford.nlp.pipeline.DefaultPaths;
-import edu.stanford.nlp.tagger.maxent.MaxentTagger;
 import edu.stanford.nlp.util.CoreMap;
 import edu.stanford.nlp.util.PropertiesUtils;
-import edu.stanford.nlp.util.Timing;
-import edu.stanford.nlp.util.concurrent.MulticoreWrapper;
-import edu.stanford.nlp.util.concurrent.ThreadsafeProcessor;
 
 /**
  * Created by Ming Deng on 7/22/2016.

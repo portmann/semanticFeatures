@@ -24,18 +24,73 @@ import java.util.regex.Pattern;
  */
 public class surprise {
 
-    public static boolean IsSurprise1(CoreMap sentence){
-        Env env = TokenSequencePattern.getNewEnv();
+    private static Env env = TokenSequencePattern.getNewEnv();
+
+    public surprise(){
+
         env.setDefaultStringPatternFlags(Pattern.CASE_INSENSITIVE);
         env.bind("$UNSPECIFIED", "/amaz\\w*|astonish\\w*|dumbfound\\w*|startl\\w*|stunn\\w*|surpris\\w*|aback|thunderstruck|wonder\\w*/");
         env.bind("$DISAPPOINTMENT", "/comedown|disappoint\\w*|discontent\\w*|disenchant\\w*|disgruntl\\w*|disillusion\\w*|frustrat\\w*|jilt\\w*/");
         env.bind("$RELIEF", "/relie\\w*/");
         env.bind("$SURPRISE", "$UNSPECIFIED|$DISAPPOINTMENT|$RELIEF");
 
+    }
+
+
+
+
+    public int Surprise_Unspecified(CoreMap sentence){
+
+        int count = 0;
+        TokenSequencePattern pattern = TokenSequencePattern.compile(env,"$UNSPECIFIED");
+        List<CoreLabel> tokens = sentence.get(CoreAnnotations.TokensAnnotation.class);
+        TokenSequenceMatcher matcher = pattern.getMatcher(tokens);
+        while (matcher.find()){
+            count++;
+//            List<CoreMap> matchedTokens = matcher.groupNodes();
+//            System.out.println(matchedTokens.toString());
+        }
+        return count;
+
+    }
+
+    public int Surprise_Disappointment(CoreMap sentence){
+
+        int count = 0;
+        TokenSequencePattern pattern = TokenSequencePattern.compile(env,"$DISAPPOINTMENT");
+        List<CoreLabel> tokens = sentence.get(CoreAnnotations.TokensAnnotation.class);
+        TokenSequenceMatcher matcher = pattern.getMatcher(tokens);
+        while (matcher.find()){
+            count++;
+//            List<CoreMap> matchedTokens = matcher.groupNodes();
+//            System.out.println(matchedTokens.toString());
+        }
+        return count;
+
+    }
+
+    public int Surprise_Relief(CoreMap sentence){
+
+        int count = 0;
+        TokenSequencePattern pattern = TokenSequencePattern.compile(env,"$RELIEF");
+        List<CoreLabel> tokens = sentence.get(CoreAnnotations.TokensAnnotation.class);
+        TokenSequenceMatcher matcher = pattern.getMatcher(tokens);
+        while (matcher.find()){
+            count++;
+//            List<CoreMap> matchedTokens = matcher.groupNodes();
+//            System.out.println(matchedTokens.toString());
+        }
+        return count;
+
+    }
+
+    public int SurpriceCount(CoreMap sentence){
+
+
+        int count = 0;
         TokenSequencePattern pattern = TokenSequencePattern.compile(env,"$SURPRISE");
         List<CoreLabel> tokens = sentence.get(CoreAnnotations.TokensAnnotation.class);
         TokenSequenceMatcher matcher = pattern.getMatcher(tokens);
-        boolean found = false;
         while (matcher.find()) {
 //            System.out.format("I found the text" +
 //                            " \"%s\" starting at " +
@@ -43,28 +98,29 @@ public class surprise {
 //                    matcher.group(),
 //                    matcher.start(),
 //                    matcher.end());
-            List<CoreMap> matchedTokens = matcher.groupNodes();
-            System.out.println(matchedTokens.toString());
-            found = true;
+//            List<CoreMap> matchedTokens = matcher.groupNodes();
+//            System.out.println(matchedTokens.toString());
+            count++;
         }
-        if (!found) {
-            System.out.format("No match found.%n");
-        }
-        return found;
+//        if (!found) {
+//            System.out.format("No match found.%n");
+//        }
+        return count;
     }
 
-    public static boolean IsSurprise2(CoreMap sentence){
 
-        Boolean result = false;
+    public int Surprise_Comparative(CoreMap sentence){
+
+        int count = 0;
         List<CoreLabel> tokens = sentence.get(CoreAnnotations.TokensAnnotation.class);
         for (CoreLabel token: tokens){
-
             String pos = token.get(CoreAnnotations.PartOfSpeechAnnotation.class);
             if (pos.equals("JJR")){
-                result = true;
-                break;
+                count++;
             }
         }
-        return result;
+        return count;
     }
+
+
 }

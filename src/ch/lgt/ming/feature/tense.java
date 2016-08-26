@@ -98,7 +98,7 @@ public class tense {
 
         Tree senttree = this.tree;
         Map<String, String> Verb = getVerb(senttree);
-        System.out.println(Verb);
+//        System.out.println(Verb);
         if (Verb.containsKey("aux")) {
             switch (Verb.get("auxPOS")) {
                 case "MD": {

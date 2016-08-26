@@ -18,7 +18,7 @@ public class NegWordCount implements Extractor<IdValue> {
 
     public NegWordCount() throws Exception {
         // load positive words
-        this.negativeWords.setMap(fileHandler.loadFileToMap("dictionaries/HARVNeg.txt", true));
+        this.negativeWords.setMap(fileHandler.loadFileToMap("dictionaries/L&MNeg.txt", true));
     }
 
     @Override
@@ -43,4 +43,18 @@ public class NegWordCount implements Extractor<IdValue> {
         }
         return sentenceNeg;
     }
+
+    @Override
+    //Input: Annotation of the text
+    //Output: Number of Negative Words in the whole document
+    public int extractCounts(Annotation document){
+
+        int counts = 0;
+        for (CoreLabel token: document.get(CoreAnnotations.TokensAnnotation.class)){
+            String word = token.get(CoreAnnotations.TextAnnotation.class);
+             if (negativeWords.getMap().containsKey(word)) counts++;
+            }
+        return counts;
+    }
+
 }

@@ -1,4 +1,4 @@
-package ch.lgt.ming.feature;
+package ch.lgt.ming.corenlp;
 
 import edu.stanford.nlp.ling.CoreAnnotation;
 

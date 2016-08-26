@@ -1,5 +1,6 @@
 package ch.lgt.ming.feature;
 
+import ch.lgt.ming.corenlp.TenseAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.ling.tokensregex.Env;
@@ -18,10 +19,10 @@ import java.util.regex.Pattern;
  */
 public class uncertainty {
 
-    public static Boolean IsUncertainty1(CoreMap sentence){
-
-        Env env = TokenSequencePattern.getNewEnv();
+    private static Env env = TokenSequencePattern.getNewEnv();
+    public uncertainty(){
         env.setDefaultStringPatternFlags(Pattern.CASE_INSENSITIVE);
+        env.bind("tense", TenseAnnotation.class);
         env.bind("$UNSPECIFIED", "/vague\\w*|unforecast\\w*|unforeseen|unpredicted|" +
                 "unquantifi\\w*|unreconciled|abeyance\\w*|almost|alteration\\w*|ambigu\\w*|anomal\\w*|" +
                 "anticipat\\w*|apparent\\w*|appear\\w*|approximat\\w*|arbitrar\\w*|assum\\w*|" +
@@ -43,13 +44,104 @@ public class uncertainty {
                 "varie\\w*|vary\\w*|volatil\\w*/");
         env.bind("$FEAR", "/afraid\\w*|aghast\\w*|alarm\\w*|dread\\w*|fear\\w*|fright\\w*|horr\\w*|panic\\w*|scare\\w*|terror\\w*/");
         env.bind("$HOPE", "/buoyan\\w*|confident\\w*|faith\\w*|hop\\w*|potim\\w*/");
-        env.bind("$ANXIETY", "/anguish\\w*|anxi\\w*|apprehens\\w*|diffiden\\w*|jitter\\w*|nervous\\w*|trepida\\w*|wari\\w*|wary|worried\\w*|worry\\w*/");
+        env.bind("$ANXIETY", "/anguish\\w*|anxi\\w*|apprehens\\w*|diffiden\\w*|jitter\\w*|nervous\\w*|trepida\\w*|" +
+                "wari\\w*|wary|worr\\w*/");
         env.bind("$UNCEARTAINTY","$UNSPECIFIED|$FEAR|$HOPE|$ANXIETY");
+    }
 
+    public int Uncertainty_Unspecified(CoreMap sentence){
+        int count = 0;
+        TokenSequencePattern pattern = TokenSequencePattern.compile(env,"$UNSPECIFIED");
+        List<CoreLabel> tokens = sentence.get(CoreAnnotations.TokensAnnotation.class);
+        TokenSequenceMatcher matcher = pattern.getMatcher(tokens);
+        while (matcher.find()) {
+//            System.out.format("I found the text" +
+//                            " \"%s\" starting at " +
+//                            "index %d and ending at index %d.%n",
+//                    matcher.group(),
+//                    matcher.start(),
+//                    matcher.end());
+//            List<CoreMap> matchedTokens = matcher.groupNodes();
+//            System.out.println(matchedTokens.toString());
+            count++;
+        }
+//        if (!found) {
+//            System.out.format("No match found.%n");
+//        }
+        return count;
+    }
+
+    public int Uncertainty_Fear(CoreMap sentence){
+        int count = 0;
+        TokenSequencePattern pattern = TokenSequencePattern.compile(env,"$FEAR");
+        List<CoreLabel> tokens = sentence.get(CoreAnnotations.TokensAnnotation.class);
+        TokenSequenceMatcher matcher = pattern.getMatcher(tokens);
+        while (matcher.find()) {
+//            System.out.format("I found the text" +
+//                            " \"%s\" starting at " +
+//                            "index %d and ending at index %d.%n",
+//                    matcher.group(),
+//                    matcher.start(),
+//                    matcher.end());
+//            List<CoreMap> matchedTokens = matcher.groupNodes();
+//            System.out.println(matchedTokens.toString());
+            count++;
+        }
+//        if (!found) {
+//            System.out.format("No match found.%n");
+//        }
+        return count;
+    }
+
+    public int Uncertainty_Hope(CoreMap sentence){
+        int count = 0;
+        TokenSequencePattern pattern = TokenSequencePattern.compile(env,"$HOPE");
+        List<CoreLabel> tokens = sentence.get(CoreAnnotations.TokensAnnotation.class);
+        TokenSequenceMatcher matcher = pattern.getMatcher(tokens);
+        while (matcher.find()) {
+//            System.out.format("I found the text" +
+//                            " \"%s\" starting at " +
+//                            "index %d and ending at index %d.%n",
+//                    matcher.group(),
+//                    matcher.start(),
+//                    matcher.end());
+//            List<CoreMap> matchedTokens = matcher.groupNodes();
+//            System.out.println(matchedTokens.toString());
+            count++;
+        }
+//        if (!found) {
+//            System.out.format("No match found.%n");
+//        }
+        return count;
+    }
+
+    public int Uncertainty_Anxiety(CoreMap sentence){
+        int count = 0;
+        TokenSequencePattern pattern = TokenSequencePattern.compile(env,"$ANXIETY");
+        List<CoreLabel> tokens = sentence.get(CoreAnnotations.TokensAnnotation.class);
+        TokenSequenceMatcher matcher = pattern.getMatcher(tokens);
+        while (matcher.find()) {
+//            System.out.format("I found the text" +
+//                            " \"%s\" starting at " +
+//                            "index %d and ending at index %d.%n",
+//                    matcher.group(),
+//                    matcher.start(),
+//                    matcher.end());
+//            List<CoreMap> matchedTokens = matcher.groupNodes();
+//            System.out.println(matchedTokens.toString());
+            count++;
+        }
+//        if (!found) {
+//            System.out.format("No match found.%n");
+//        }
+        return count;
+    }
+
+    public int UncertaintyCount(CoreMap sentence){
+        int count = 0;
         TokenSequencePattern pattern = TokenSequencePattern.compile(env,"$UNCEARTAINTY");
         List<CoreLabel> tokens = sentence.get(CoreAnnotations.TokensAnnotation.class);
         TokenSequenceMatcher matcher = pattern.getMatcher(tokens);
-        boolean found = false;
         while (matcher.find()) {
 //            System.out.format("I found the text" +
 //                            " \"%s\" starting at " +
@@ -59,23 +151,24 @@ public class uncertainty {
 //                    matcher.end());
             List<CoreMap> matchedTokens = matcher.groupNodes();
             System.out.println(matchedTokens.toString());
-            found = true;
+            count++;
         }
 //        if (!found) {
 //            System.out.format("No match found.%n");
 //        }
-        return found;
+        return count;
     }
 
-    public static Boolean IsUncertainty2(CoreMap sentence){
 
-        TokenSequencePattern pattern = TokenSequencePattern.compile(
-                "[{word:/[Ii]f/}][]*[{word:/then/}]?"
+    public int Uncertainty_conditionality1(CoreMap sentence){
+
+        TokenSequencePattern pattern = TokenSequencePattern.compile(env,
+                "([{word:/[Ii]f/}]&[tense:Past])[]*[{word:/then/}]?"
 
         );
         List<CoreLabel> tokens = sentence.get(CoreAnnotations.TokensAnnotation.class);
         TokenSequenceMatcher matcher = pattern.getMatcher(tokens);
-        boolean found = false;
+        int count = 0;
         while (matcher.find()) {
 //            System.out.format("I found the text" +
 //                            " \"%s\" starting at " +
@@ -83,14 +176,41 @@ public class uncertainty {
 //                    matcher.group(),
 //                    matcher.start(),
 //                    matcher.end());
-            List<CoreMap> matchedTokens = matcher.groupNodes();
-            System.out.println(matchedTokens.toString());
-            found = true;
+//            List<CoreMap> matchedTokens = matcher.groupNodes();
+//            System.out.println(matchedTokens.toString());
+            count++;
         }
 //        if (!found) {
 //            System.out.format("No match found.%n");
 //        }
-        return found;
+        return count;
+
+    }
+
+    public int Uncertainty_conditionality2(CoreMap sentence){
+
+        TokenSequencePattern pattern = TokenSequencePattern.compile(env,
+                "([{word:/[Ii]f/}]&[tense:Future])[]*[{word:/then/}]?"
+
+        );
+        List<CoreLabel> tokens = sentence.get(CoreAnnotations.TokensAnnotation.class);
+        TokenSequenceMatcher matcher = pattern.getMatcher(tokens);
+        int count = 0;
+        while (matcher.find()) {
+//            System.out.format("I found the text" +
+//                            " \"%s\" starting at " +
+//                            "index %d and ending at index %d.%n",
+//                    matcher.group(),
+//                    matcher.start(),
+//                    matcher.end());
+//            List<CoreMap> matchedTokens = matcher.groupNodes();
+//            System.out.println(matchedTokens.toString());
+            count++;
+        }
+//        if (!found) {
+//            System.out.format("No match found.%n");
+//        }
+        return count;
 
     }
 }

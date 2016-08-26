@@ -48,4 +48,8 @@ public class NegationCount implements Extractor<IdValue> {
         return sentID_negationCount;
     }
 
+    @Override
+    public int extractCounts(Annotation document) {
+        return 0;
+    }
 }

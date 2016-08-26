@@ -1,5 +1,6 @@
 package ch.lgt.ming.feature;
 
+import ch.lgt.ming.corenlp.TenseAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.ling.tokensregex.Env;
@@ -7,7 +8,6 @@ import edu.stanford.nlp.ling.tokensregex.TokenSequenceMatcher;
 import edu.stanford.nlp.ling.tokensregex.TokenSequencePattern;
 import edu.stanford.nlp.util.CoreMap;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -24,17 +24,17 @@ public class merger {
         env.bind("tense", TenseAnnotation.class);
         TokenSequencePattern pattern = TokenSequencePattern.compile(env,
 
-                "([{ner:ORGANIZATION}][]*([{word:/merger?d?/}]([]*[{ner:ORGANIZATION}])?))|" +
-                        "([{ner: ORGANIZATION}][]*[{ner: ORGANIZATION}][]*[{word:/merger?d?/}])|" +
-                        "([{word:/merger?d?/}][]*[{ner: ORGANIZATION}]([]*[{ner: ORGANIZATION}])?)"
+//                "([{ner:ORGANIZATION}][]*([{word:/merger?d?/}]([]*[{ner:ORGANIZATION}])?))|" +
+//                        "([{ner: ORGANIZATION}][]*[{ner: ORGANIZATION}][]*[{word:/merger?d?/}])|" +
+//                        "([{word:/merger?d?/}][]*[{ner: ORGANIZATION}]([]*[{ner: ORGANIZATION}])?)"
 
 //                "([ner:ORGANIZATION]+[]*($MERGER([]*[ner:ORGANIZATION]+)?))|" +
 //                        "([ner: ORGANIZATION]+[]*[ner: ORGANIZATION]+[]*$MERGER)|" +
 //                        "($MERGER[]*[ner: ORGANIZATION]+([]*[ner: ORGANIZATION]+)?)"
 //
-//                "([ner:ORGANIZATION]+[tense:Past]*($MERGER([tense:Past]*[ner:ORGANIZATION]+)?))|" +
-//                        "([ner: ORGANIZATION]+[tense:Past]*[ner: ORGANIZATION]+[tense:Past]*$MERGER)|" +
-//                        "($MERGER[tense:Past]*[ner: ORGANIZATION]+([tense:Past]*[ner: ORGANIZATION]+)?)"
+                "([ner:ORGANIZATION]+[tense:Past]*($MERGER([tense:Past]*[ner:ORGANIZATION]+)?))|" +
+                        "([ner: ORGANIZATION]+[tense:Past]*[ner: ORGANIZATION]+[tense:Past]*$MERGER)|" +
+                        "($MERGER[tense:Past]*[ner: ORGANIZATION]+([tense:Past]*[ner: ORGANIZATION]+)?)"
 
         );
         List<CoreLabel> tokens = sentence.get(CoreAnnotations.TokensAnnotation.class);
