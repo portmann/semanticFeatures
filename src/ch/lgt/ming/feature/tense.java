@@ -68,7 +68,7 @@ public class tense {
 //            System.out.println("-------------------------------------Relation-----------------------------------------");
             GrammaticalRelation relation = td1.reln();
             if (typedDep.contains(relation.getShortName())) {
-//                System.out.printf(td1.dep() + "----------------------------Found %s----------------------------\n",
+//                System.out.printf(td1.dep() + "---------------------------------Found %s--------------------------------\n",
 //                        relation.getShortName());
                 dep_word.put(relation.getShortName(), td1.dep().value());           //(typedDep,word)
                 dep_word.put(relation.getShortName() + "POS", td1.dep().tag());     //(typedDepPOS,POS)
