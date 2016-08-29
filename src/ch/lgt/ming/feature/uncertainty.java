@@ -210,7 +210,7 @@ public class uncertainty {
 //        if (!found) {
 //            System.out.format("No match found.%n");
 //        }
-        
+
         return count;
 
     }

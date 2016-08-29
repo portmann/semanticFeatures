@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 /**
  * Created by Ming Deng on 8/25/2016.
  */
-public class CsvFileWriter {
+public class CsvFileWriter_Features {
 
     //Delimiter used in CSV file
     private static final String COMMA_DELIMITER = ",";
@@ -31,6 +31,9 @@ public class CsvFileWriter {
     private static FileHandler fileHandler = new FileHandler();
     private static IdString docId_Text = new IdString();
 
+    public static void main(String[] args) {
+        CsvFileWriter_Features.writeCsvFileWriter("featureFiles/features50.csv", 50);
+    }
 
     public static void writeCsvFileWriter(String fileName, int numberofdocs){
 
@@ -114,7 +117,7 @@ public class CsvFileWriter {
             System.out.println("CSV file was created successfully!");
 
         } catch (Exception e) {
-            System.out.println("Error in CsvFileWriter!");
+            System.out.println("Error in CsvFileWriter_Features!");
             e.printStackTrace();
         } finally {
             try {
