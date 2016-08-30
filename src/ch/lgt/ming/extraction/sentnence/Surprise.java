@@ -1,7 +1,7 @@
 package ch.lgt.ming.extraction.sentnence;
 
 import ch.lgt.ming.datastore.IdInt;
-import ch.lgt.ming.feature.surprise;
+import ch.lgt.ming.feature.SurpriseFeature;
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.util.CoreMap;
@@ -11,7 +11,7 @@ import edu.stanford.nlp.util.CoreMap;
  */
 public class Surprise implements Extractor<IdInt>{
 
-    private static surprise surprise = new surprise();
+    private static SurpriseFeature surprise = new SurpriseFeature();
 
 
     @Override

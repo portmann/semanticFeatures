@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
-import ch.lgt.ming.feature.tense;
+import ch.lgt.ming.feature.TenseFeature;
 import edu.stanford.nlp.ling.*;
 import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.Annotator;
@@ -17,7 +17,7 @@ import edu.stanford.nlp.util.PropertiesUtils;
  */
 public class TenseAnnotator implements Annotator{
 
-    private tense TENSE;
+    private TenseFeature TENSE;
     private final boolean VERBOSE;
     private final int nThreads;
     private final long maxTime;
@@ -26,14 +26,14 @@ public class TenseAnnotator implements Annotator{
     public TenseAnnotator(){this(true);}
 
     public TenseAnnotator(boolean verbose){
-        this(new tense(),verbose,1,0);
+        this(new TenseFeature(),verbose,1,0);
     }
 
-    public TenseAnnotator(tense tense, boolean verbose, int nThreads, long maxTime){
+    public TenseAnnotator(TenseFeature tense, boolean verbose, int nThreads, long maxTime){
         this(tense,verbose,nThreads,maxTime,Integer.MAX_VALUE);
     }
 
-    public TenseAnnotator(tense tense, boolean verbose, int nThreads, long maxTime, int maxSentenceLength){
+    public TenseAnnotator(TenseFeature tense, boolean verbose, int nThreads, long maxTime, int maxSentenceLength){
         TENSE = tense;
         VERBOSE = verbose;
         this.nThreads = nThreads;
@@ -62,7 +62,7 @@ public class TenseAnnotator implements Annotator{
     }
 
     private CoreMap doOneSentence(CoreMap sentence) {
-        String SentTence = new tense(sentence).getTense();
+        String SentTence = new TenseFeature(sentence).getTense();
                 List<CoreLabel> tokens = sentence.get(CoreAnnotations.TokensAnnotation.class);
         for (CoreLabel token : tokens) {
             token.set(TenseAnnotation.class, SentTence);

@@ -22,11 +22,11 @@ import java.util.regex.Pattern;
 /**
  * Created by Ming Deng on 6/25/2016.
  */
-public class surprise {
+public class SurpriseFeature {
 
     private static Env env = TokenSequencePattern.getNewEnv();
 
-    public surprise(){
+    public SurpriseFeature(){
 
         env.setDefaultStringPatternFlags(Pattern.CASE_INSENSITIVE);
         env.bind("$UNSPECIFIED", "/amaz\\w*|astonish\\w*|dumbfound\\w*|startl\\w*|stunn\\w*|surpris\\w*|aback|thunderstruck|wonder\\w*/");

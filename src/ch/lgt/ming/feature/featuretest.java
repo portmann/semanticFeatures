@@ -156,7 +156,7 @@ public class featuretest {
 //            System.out.println(surprise.Surprise_Unspecified(sentence));
 
             System.out.println("======================================== Uncertainty ========================================");
-            uncertainty uncertainty = new uncertainty();
+            UncertaintyFeature uncertainty = new UncertaintyFeature();
             System.out.println(uncertainty.Uncertainty_conditionality1(sentence));
             System.out.println(uncertainty.Uncertainty_conditionality2(sentence));
 

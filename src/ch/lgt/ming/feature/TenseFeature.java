@@ -8,7 +8,7 @@ import java.util.*;
 /**
  * Created by Ming Deng on 5/9/2016.
  */
-public class tense {
+public class TenseFeature {
 
     private Map<String, List<String>> tense = new HashMap<>(); // (tense name - POS pair), use the POS to determine the tense of the word
     private Tree tree;
@@ -16,7 +16,7 @@ public class tense {
     private Map<String, String> dep_word = new HashMap<>();
     private List<String> typedDep = new ArrayList<>();  //"typedDep" contains the typed dependencies which determine the tense of sentence.
 
-    public tense(){
+    public TenseFeature(){
         typedDep.addAll(Arrays.asList("aux","auxpass","root","cop"));
         List<String> present = Arrays.asList("VB","VBP","VBZ","VBG","MD");
         List<String> past = Arrays.asList("VBD","VBN");
@@ -30,7 +30,7 @@ public class tense {
         tense.put("Verb", verb);
     }
 
-    public tense(CoreMap sentence) {
+    public TenseFeature(CoreMap sentence) {
 
         this.tree = sentence.get(TreeCoreAnnotations.TreeAnnotation.class);
         typedDep.addAll(Arrays.asList("aux","auxpass","root","cop"));

@@ -17,10 +17,10 @@ import java.util.regex.Pattern;
 /**
  * Created by Ming Deng on 6/25/2016.
  */
-public class uncertainty {
+public class UncertaintyFeature {
 
     private static Env env = TokenSequencePattern.getNewEnv();
-    public uncertainty(){
+    public UncertaintyFeature(){
         env.setDefaultStringPatternFlags(Pattern.CASE_INSENSITIVE);
         env.bind("tense", TenseAnnotation.class);
         env.bind("$UNSPECIFIED", "/vague\\w*|unforecast\\w*|unforeseen|unpredicted|" +
