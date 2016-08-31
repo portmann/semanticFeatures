@@ -1,7 +1,7 @@
 package ch.lgt.ming.extraction.sentnence;
 
 import ch.lgt.ming.datastore.IdString;
-import ch.lgt.ming.feature.tense;
+import ch.lgt.ming.feature.TenseFeature;
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.util.CoreMap;
@@ -10,7 +10,7 @@ import edu.stanford.nlp.util.CoreMap;
  * Created by Ming Deng on 5/1/2016.
  */
 public class Tense implements Extractor<IdString>{
-    private tense tense = new tense();
+    private TenseFeature tense = new TenseFeature();
 
     @Override
     public IdString extract(Annotation document){

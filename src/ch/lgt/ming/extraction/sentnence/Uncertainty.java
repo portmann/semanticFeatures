@@ -1,7 +1,7 @@
 package ch.lgt.ming.extraction.sentnence;
 
 import ch.lgt.ming.datastore.IdBoolean;
-import ch.lgt.ming.feature.uncertainty;
+import ch.lgt.ming.feature.UncertaintyFeature;
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.util.CoreMap;
@@ -11,7 +11,7 @@ import edu.stanford.nlp.util.CoreMap;
  */
 public class Uncertainty {
 
-    private static uncertainty uncertainty = new uncertainty();
+    private static UncertaintyFeature uncertainty = new UncertaintyFeature();
 
     public static int extractUncertainty_Unspecified(Annotation document){
 
