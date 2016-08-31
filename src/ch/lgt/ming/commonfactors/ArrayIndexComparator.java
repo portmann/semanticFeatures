@@ -33,7 +33,7 @@ public class ArrayIndexComparator implements Comparator<Integer> {
     @Override
     public int compare(Integer index1, Integer index2){
 
-        return array.get(index1).compareTo(array.get(index2));
+        return -(array.get(index1).compareTo(array.get(index2)));
     }
 
     public static void main(String[] args) {

@@ -16,7 +16,7 @@
 // */
 //public class TestXLSX {
 //    public static void main(String[] args) throws IOException {
-//        File wordlist = new File("dictionaries/NER_ming.xlsx");
+//        File wordlist = new File("dictionaries/idf.xlsx");
 //        FileInputStream fis = new FileInputStream(wordlist);
 //        XSSFWorkbook myWorkBook = new XSSFWorkbook(fis);
 //        XSSFSheet mySheet = myWorkBook.getSheetAt(0);
