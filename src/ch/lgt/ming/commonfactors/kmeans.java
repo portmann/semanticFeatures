@@ -3,7 +3,6 @@ package ch.lgt.ming.commonfactors;
 import ch.lgt.ming.datastore.IdListDouble;
 
 import java.util.*;
-import java.util.stream.DoubleStream;
 
 /**
  * Created by Ming Deng on 8/31/2016.
@@ -55,10 +54,8 @@ public class Kmeans {
         List<Integer> cluster = kmeans.Getcluster(docs, Centroids);
         System.out.println(cluster);
         Centroids = kmeans.GetCentroids(docs,cluster);
-        for (int i = 0; i < NumberOfFeatures; i++){
-            System.out.printf("%d th Centroid",i);
-            System.out.println(Centroids.getValue(i));
-        }
+
+        kmeans.KmeansIteration(docs,Centroids,10);
 
     }
 
@@ -74,25 +71,25 @@ public class Kmeans {
     public IdListDouble randInitialization(int min, int max){
 
         IdListDouble Centroids = new IdListDouble();
-//        Random r = new Random();
-//        for(int i = 0; i < NumberOfCluster; i++){
-//            List<Double> ini = new ArrayList<>(NumberOfFeatures);
-//            for (int j = 0; j < NumberOfFeatures; j++){
-//                ini.add(j, min + (max - min) * r.nextDouble());
-//            }
+        Random r = new Random();
+        for(int i = 0; i < NumberOfCluster; i++){
+            List<Double> ini = new ArrayList<>(NumberOfFeatures);
+            for (int j = 0; j < NumberOfFeatures; j++){
+                ini.add(j, min + (max - min) * r.nextDouble());
+            }
 //            System.out.println(ini);
-//            Centroids.getMap().put(i, ini);
-//        }
-         List<Double> cen1 = new ArrayList<>();
-         cen1.add(0,1.0);
-         cen1.add(0,1.0);
-
-         List<Double> cen2 = new ArrayList<>();
-         cen2.add(0,-1.0);
-         cen2.add(0,-1.0);
-
-         Centroids.getMap().put(0,cen1);
-         Centroids.getMap().put(1,cen2);
+            Centroids.getMap().put(i, ini);
+        }
+//         List<Double> cen1 = new ArrayList<>();
+//         cen1.add(0,-4.0);
+//         cen1.add(0,1.0);
+//
+//         List<Double> cen2 = new ArrayList<>();
+//         cen2.add(0,1.0);
+//         cen2.add(0,-1.0);
+//
+//         Centroids.getMap().put(0,cen1);
+//         Centroids.getMap().put(1,cen2);
 
         return Centroids;
 
@@ -101,23 +98,23 @@ public class Kmeans {
     public List<Integer> Getcluster(IdListDouble Obs, IdListDouble Centroids){
         List<Integer> DocId_Cluster = new ArrayList<>();
         for(int i = 0; i < NumberOfDocs; i++){
-            System.out.printf("---------------------%d--------------------\n",i);
+//            System.out.printf("---------------------%d--------------------\n",i);
             List<Double> disvector = new ArrayList<>();   //To store the distances between a Document with all the other Centroids
             for(int j = 0; j < NumberOfCluster; j++){
-                System.out.println(Centroids.getValue(j));
-                System.out.println(Obs.getValue(i));
-                Double distance = 1 - tfidf.cosineSimilarity(Obs.getValue(i),Centroids.getValue(j));
+//                System.out.println(Centroids.getValue(j));
+//                System.out.println(Obs.getValue(i));
+                Double distance = 1 - TFIDF.cosineSimilarity(Obs.getValue(i),Centroids.getValue(j));
                 disvector.add(j,distance);
-                System.out.println("distance: " + distance);
+//                System.out.println("distance: " + distance);
             }
             ArrayIndexComparator comparator = new ArrayIndexComparator(disvector);
             Integer[] indices = comparator.createIndexArray();
             Arrays.sort(indices, comparator);
             int c = indices[indices.length-1];
-            System.out.println("c: " + c);
+//            System.out.println("c: " + c);
             DocId_Cluster.add(i, c);
         }
-        System.out.println("Cluster Finished");
+//        System.out.println("Cluster Finished");
         return DocId_Cluster;
     }
 
@@ -126,34 +123,45 @@ public class Kmeans {
 
         IdListDouble Centroids = new IdListDouble();                    //CentroidID_Centroids coordinate
         for (int k = 0; k < NumberOfCluster; k++){
-            System.out.printf("------------------Cluster %d -------------------\n",k);
+//            System.out.printf("------------------Cluster %d -------------------\n",k);
             Double[] Centroid0 = new Double[NumberOfFeatures];
             Arrays.fill(Centroid0, 0.0);
             List<Double> Centroid = Arrays.asList(Centroid0);
             for (int m = 0; m < NumberOfFeatures; m++){
-                System.out.printf("------------------Feature %d -------------------\n",m);
+//                System.out.printf("------------------Feature %d -------------------\n",m);
                 int count = 0;
                 Double sum = 0.0;
                 for (int l = 0; l < NumberOfDocs; l++){
-                    System.out.printf("------------------Doc %d -------------------\n",l);
+//                    System.out.printf("------------------Doc %d -------------------\n",l);
                     if (Cluster.get(l).equals(k)){   //To decide if doc l is in cluster k
                         count ++;
                         sum += Obs.getValue(l).get(m);
-                        System.out.println("sum" + sum);
-                        System.out.println("count" + count);
+//                        System.out.println("sum" + sum);
+//                        System.out.println("count" + count);
                     }
                 }
                 Double avg = sum/count;
                 Centroid.set(m, avg);
-                System.out.println(avg);
+//                System.out.println(avg);
             }
-            System.out.println(Centroid);
+//            System.out.println(Centroid);
             Centroids.putValue(k,Centroid);
         }
         return  Centroids;
     }
 
-//    public void
+    public void KmeansIteration(IdListDouble Obs, IdListDouble Centroids, int NumberOfIterations){
 
-
+        List<Integer> Cluster = new ArrayList<>();
+        for (int i = 0; i < NumberOfIterations; i++){
+            Cluster = Getcluster(Obs, Centroids);
+            Centroids = GetCentroids(Obs,Cluster);
+            for (int j = 0; j < NumberOfFeatures; j++){
+//                System.out.printf("Centroid %d ",j);
+//                System.out.println(Centroids.getValue(j));
+            }
+//
+        }
+        System.out.println(Cluster);
+    }
 }

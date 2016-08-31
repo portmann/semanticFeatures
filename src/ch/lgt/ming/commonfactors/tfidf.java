@@ -5,17 +5,14 @@ import ch.lgt.ming.helper.FileHandler;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.security.PrivateKey;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.DoubleStream;
 
 /**
  * Created by Ming Deng on 8/15/2016.
  */
 
-public class tfidf {
+public class TFIDF {
 
     private int numberOfDocuments = 0;
     private String CorpusPath = new String();
@@ -25,7 +22,7 @@ public class tfidf {
     private List<Double> idfList = new ArrayList<>();                                  //List of idf of each word based on the whole copus
     private IdListString DocId_TokensList = new IdListString();                        //Document Index - List of tokens of this document
     private IdSetString DocId_TokensSet = new IdSetString();                           //Document Index - Set of tokens of this document
-    private IdListDouble DocId_tfidfList = new IdListDouble();                         //Document Index - List of tfidf of each word in the dictionary
+    private IdListDouble DocId_tfidfList = new IdListDouble();                         //Document Index - List of TFIDF of each word in the dictionary
     double [][] cosineSimMatrix;
     private List<Integer> similarDoc = new ArrayList<>();
 
@@ -69,7 +66,7 @@ public class tfidf {
 
     public static void main(String[] args) throws IOException {
 
-        tfidf tfIdf = new tfidf(3, "corpus2/test1");
+        TFIDF tfIdf = new TFIDF(30, "corpus");
         tfIdf.ReadDict();
         tfIdf.ReadStopword();
         tfIdf.ReadIdf();
@@ -82,19 +79,24 @@ public class tfidf {
 //        System.out.println(DocId_TfidfList.getValue(1));
 //        double cosinsimilarity = tfIdf.cosineSimilarity(DocId_TfidfList.getValue(1),DocId_TfidfList.getValue(2));
 //        System.out.println(cosinsimilarity);
-        List<Pair<Integer,Integer>> similarPair = tfIdf.getSimilarDoc(0.7);
-        System.out.printf("The cosine similarity of the following documents are lager than %f\n", 0.7);
-        for (int i = 0; i < similarPair.size(); i++){
-            System.out.printf(similarPair.get(i) + ": %f\n",tfIdf.getCosineSimMatrix()[similarPair.get(i).getLeft()][similarPair.get(i).getRight()]);
+//        List<Pair<Integer,Integer>> similarPair = tfIdf.getSimilarDoc(0.7);
+//        System.out.printf("The cosine similarity of the following documents are lager than %f\n", 0.7);
+//        for (int i = 0; i < similarPair.size(); i++){
+//            System.out.printf(similarPair.get(i) + ": %f\n",tfIdf.getCosineSimMatrix()[similarPair.get(i).getLeft()][similarPair.get(i).getRight()]);
+//
+//        }
 
-        }
+        Kmeans kmeans = new Kmeans(tfIdf.getDict().size(),3, tfIdf.getNumberOfDocuments());
+        IdListDouble Centroids = kmeans.randInitialization(0,1);
+//        System.out.println(DocId_TfidfList.getValue(1));
+        kmeans.KmeansIteration(DocId_TfidfList,Centroids,10);
 
 //        tfIdf.getKeyWords(DocId_TfidfList.getValue(0), 10);
     }
 /**
-*   Constructor: calculate the tfidf of a specific Corpus
+*   Constructor: calculate the TFIDF of a specific Corpus
 */
-    public tfidf(int numberOfDocuments, String CorpusPath){
+    public TFIDF(int numberOfDocuments, String CorpusPath){
         this.numberOfDocuments = numberOfDocuments;
         this.CorpusPath = CorpusPath;
     }
@@ -189,7 +191,7 @@ public class tfidf {
     }                                                                    //then the idf should be 1. idf is decreasing with count.
 
 
-    //Get the tfidf of all documents
+    //Get the TFIDF of all documents
     public IdListDouble getTfIdf(){
 
         for (int key: DocId_Text.getMap().keySet()){                     //Loop over all documents. For each document, construct a vector to store the tdidf.
@@ -198,17 +200,17 @@ public class tfidf {
                 if((DocId_TokensSet.getValue(key).contains(Dict.get(i).toLowerCase()))
                         &&(!StopwordList.contains(Dict.get(i).toLowerCase()))){
                     double tf = tf(key, Dict.get(i));
-//                    double idf = idf(s);                               //Only calculate tfidf when the word is in the document
+//                    double idf = idf(s);                               //Only calculate TFIDF when the word is in the document
                     double idf = idfList.get(i);
                     double tfidf = tf*idf;
 //                    System.out.printf("Document %d, The tf of '%s' is '%f'\n", key, s, tf);
 //                    System.out.printf("Document %d, The idf of '%s' is '%f'\n", key, s, idf);
-//                    System.out.printf("Document %d, The tfidf of '%s' is '%f'\n", key, s, tfidf);
+//                    System.out.printf("Document %d, The TFIDF of '%s' is '%f'\n", key, s, TFIDF);
                     tdidfVectors.add(i,tfidf);
-//                    System.out.println(tfidf);
+//                    System.out.println(TFIDF);
 //                    System.out.println(count);
                 }
-                else tdidfVectors.add(i, 0.0);                        //Or set tfidf to be zero
+                else tdidfVectors.add(i, 0.0);                        //Or set TFIDF to be zero
             }
             DocId_tfidfList.putValue(key, tdidfVectors);
         }
@@ -276,7 +278,7 @@ public class tfidf {
 //    }
 
 /**
-    Get the first n keywords according to the value of tfidf
+    Get the first n keywords according to the value of TFIDF
 */
 
     public List<String> getKeyWords(List<Double> tfidf, int n){
