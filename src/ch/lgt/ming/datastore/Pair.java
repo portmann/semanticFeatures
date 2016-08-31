@@ -16,6 +16,12 @@ public class Pair<L,R> {
     public L getLeft() { return left; }
     public R getRight() { return right; }
 
+
+    @Override
+    public String toString(){
+        return "(" + left.toString() + "," + right.toString() + ")";
+    }
+
     @Override
     public int hashCode() { return left.hashCode() ^ right.hashCode(); }
 

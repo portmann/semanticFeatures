@@ -12,7 +12,7 @@ public static StanfordCoreNLP pipeline;
 
 
 		props.setProperty("customAnnotatorClass.tense", "ch.lgt.ming.corenlp.TenseAnnotator");
-//		props.setProperty("annotators", "tokenize, ssplit, pos");
+//		props.setProperty("annotators", "tokenize, ssplit");
 //		props.setProperty("annotators", "tokenize, ssplit, pos, lemma, ner, parse");
 		props.setProperty("annotators", "tokenize, ssplit, pos, lemma, ner, parse, tense");
 		

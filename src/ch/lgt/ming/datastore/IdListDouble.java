@@ -33,4 +33,5 @@ public class IdListDouble implements Datastore<Integer,List<Double>> {
     public void setMap(Map<Integer, List<Double>> map) {
         this.mapStore = map;
     }
+
 }

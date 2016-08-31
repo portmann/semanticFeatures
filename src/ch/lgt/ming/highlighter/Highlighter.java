@@ -6,6 +6,7 @@ import ch.lgt.ming.feature.UncertaintyFeature;
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.util.CoreMap;
 
+
 public class Highlighter {
 
 	// Highlighter highlights like
