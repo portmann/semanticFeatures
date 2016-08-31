@@ -31,7 +31,7 @@ public class Main {
 					higlightedText = htmlStrings.getBeforeTitle() + title + htmlStrings.afterTitle + higlightedText
 							+ htmlStrings.getEnd();
 
-					filehandler.saveStringAsFile("highlighted/Uncertainty_conditionality2/" + i + ".html", higlightedText);
+					filehandler.saveStringAsFile("highlighted/Uncertainty_conditionality2_301_400/" + i + ".html", higlightedText);
 
 				}
 			} catch (IOException e) {
