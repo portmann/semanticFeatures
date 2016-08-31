@@ -32,7 +32,7 @@ public class Main {
 					higlightedText = htmlStrings.getBeforeTitle() + title + htmlStrings.afterTitle + higlightedText
 							+ htmlStrings.getEnd();
 
-					filehandler.saveStringAsFile("highlighted/Uncertainty_conditionality2/" + i + ".html", higlightedText);
+					filehandler.saveStringAsFile("highlighted/Uncertainty_conditionality_401_499/" + i + ".html", higlightedText);
 				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
