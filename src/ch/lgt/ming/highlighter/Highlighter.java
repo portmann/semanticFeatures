@@ -27,7 +27,7 @@ public class Highlighter {
 
 		for (CoreMap sentenceStanford : document.getDocument().get(CoreAnnotations.SentencesAnnotation.class)) {
 
-			if (uncertatinty.Uncertainty_conditionality1(sentenceStanford) > 0) {
+			if (uncertatinty.Uncertainty_Anxiety(sentenceStanford) > 0) {
 
 				highlightedString = highlightedString + before_highlighted;
 				highlightedString = highlightedString + sentenceStanford.get(CoreAnnotations.TextAnnotation.class);
