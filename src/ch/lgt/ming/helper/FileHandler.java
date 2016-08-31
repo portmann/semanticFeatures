@@ -1,9 +1,6 @@
 package ch.lgt.ming.helper;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -28,6 +25,7 @@ public class FileHandler {
 //		return encoding.decode(ByteBuffer.wrap(encoded)).toString();
 		return new String(encoded, encoding);
 	}
+
 
 	public void saveStringAsFile(String url, String content) throws IOException {
 
