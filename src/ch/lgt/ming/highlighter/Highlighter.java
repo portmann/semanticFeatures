@@ -13,6 +13,7 @@ public class Highlighter {
 	// For standard text: *before_standard* *String* *after_standard*
 
 	public String before_highlighted = "<span style='background-color: #A9E2F3'>";
+	public String before_highlighted2 = "<span style='background-color: #77ff33'>";
 	public String after_highlighted = "</span>";
 	public String before_standard = "";
 	public String after_standard = "";
@@ -34,7 +35,18 @@ public class Highlighter {
 				highlightedString = highlightedString + after_highlighted;
 				highlighted = true;
 
-			} else {
+			} 
+			
+			else if ((uncertatinty.Uncertainty_conditionality2(sentenceStanford) > 0)) {
+				
+				highlightedString = highlightedString + before_highlighted2;
+				highlightedString = highlightedString + sentenceStanford.get(CoreAnnotations.TextAnnotation.class);
+				highlightedString = highlightedString + after_highlighted;
+				highlighted = true;
+				
+			}
+			
+			else {
 
 				highlightedString = highlightedString + before_standard;
 				highlightedString = highlightedString + sentenceStanford.get(CoreAnnotations.TextAnnotation.class);

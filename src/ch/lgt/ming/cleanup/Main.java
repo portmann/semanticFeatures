@@ -13,12 +13,12 @@ public class Main {
 
 		StanfordCore.init();
 
-		Corpus corpus = new Corpus("corpus");
+		Corpus corpus = new Corpus("corpus3");
 		Highlighter highlighter = new Highlighter();
 		FileHandler filehandler = new FileHandler();
 		HTMLStrings htmlStrings = new HTMLStrings();
 
-		String title = "Uncertainty_conditionality1";
+		String title = "Uncertainty_conditionality";
 
 		for (int i = 0; i < corpus.getDocCount(); i++) {
 
@@ -32,7 +32,7 @@ public class Main {
 					higlightedText = htmlStrings.getBeforeTitle() + title + htmlStrings.afterTitle + higlightedText
 							+ htmlStrings.getEnd();
 
-					filehandler.saveStringAsFile("highlighted/Uncertainty_conditionality1/" + i + ".html", higlightedText);
+					filehandler.saveStringAsFile("highlighted/Uncertainty_conditionality2/" + i + ".html", higlightedText);
 				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
