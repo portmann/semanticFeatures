@@ -17,7 +17,7 @@ public class Uncertainty {
 
         int counts = 0;
         for (CoreMap sentence:document.get(CoreAnnotations.SentencesAnnotation.class)){
-            counts += uncertainty.Uncertainty_Unspecified(sentence);
+            counts += uncertainty.Uncertainty_Unspecified_Noun(sentence);
         }
         return counts;
     }
@@ -26,7 +26,7 @@ public class Uncertainty {
 
         int counts = 0;
         for (CoreMap sentence:document.get(CoreAnnotations.SentencesAnnotation.class)){
-            counts += uncertainty.Uncertainty_Fear(sentence);
+            counts += uncertainty.Uncertainty_Fear_Noun(sentence);
         }
         return counts;
     }
@@ -35,7 +35,7 @@ public class Uncertainty {
 
         int counts = 0;
         for (CoreMap sentence:document.get(CoreAnnotations.SentencesAnnotation.class)){
-            counts += uncertainty.Uncertainty_Hope(sentence);
+            counts += uncertainty.Uncertainty_Hope_Noun(sentence);
         }
         return counts;
     }
@@ -44,7 +44,7 @@ public class Uncertainty {
 
         int counts = 0;
         for (CoreMap sentence:document.get(CoreAnnotations.SentencesAnnotation.class)){
-            counts += uncertainty.Uncertainty_Anxiety(sentence);
+            counts += uncertainty.Uncertainty_Anxiety_Noun(sentence);
         }
         return counts;
     }

@@ -72,12 +72,49 @@ public class featuretest {
 //                        "meteorologist-in-charge at the Weather Services’ Salt Lake City office."
 //        };//Strings to test uncertainty
 
+//        String[] myString = {
+//
+//                "If I am president, I will make you vice president.",
+//                "If I was president, I would make you vice president."
+//
+//        }; //Strings to test uncertainty_conditional
+
+//        String[] myString = {
+//
+//                "I stared at her in amazement.",
+//                "The result amazed me.",
+//                "That is amazing.",
+//
+//                "I stared at her in disappointment.",
+//                "The result disappointed me.",
+//                "That is disappointing.",
+//
+//                "I stared at her in relief.",
+//                "The result relieved me.",
+//                "That is relieving."
+//
+//        }; //Strings to test surprise
+
         String[] myString = {
 
-                "If I am president, I will make you vice president.",
-                "If I was president, I would make you vice president."
+                "I stared at her with confusion.",
+                "The result confused me.",
+                "That is confusing.",
 
-        }; //Strings to test uncertainty_conditional
+                "I stared at her in anxiety.",
+                "The result worried me.",
+                "That is worrying.",
+
+                "I stared at her with fear.",
+                "The result frightened me.",
+                "That is scary.",
+
+                "I stared at her with confidence.",
+                "I hope this will work.",
+                "That is optimal."
+
+        }; //Strings to test uncertainty
+
 
 //        String[] myString = {
 //                //aux
@@ -152,13 +189,41 @@ public class featuretest {
 //            System.out.println(acquisition.IsAcquisition(sentence));
 
 //            System.out.println("======================================== Surprise ========================================");
-//            surprise surprise = new surprise();
-//            System.out.println(surprise.Surprise_Unspecified(sentence));
+//            SurpriseFeature surprise = new SurpriseFeature();
+
+//            System.out.println("Unspecified_Noun: " + surprise.Surprise_Unspecified_Noun(sentence));
+//            System.out.println("Unspecified_Verb: " + surprise.Surprise_Unspecified_Verb(sentence));
+//            System.out.println("Unspecified_Adj: " + surprise.Surprise_Unspecified_Adj(sentence));
+//
+//            System.out.println("Disappointment_Noun: " + surprise.Surprise_Disappointment_Noun(sentence));
+//            System.out.println("Disappointment_Verb: " + surprise.Surprise_Disappointment_Verb(sentence));
+//            System.out.println("Disappointment_Adj: " + surprise.Surprise_Disappointment_Adj(sentence));
+//
+//            System.out.println("Relief_Noun: " + surprise.Surprise_Relief_Noun(sentence));
+//            System.out.println("Relief_Verb: " + surprise.Surprise_Relief_Verb(sentence));
+//            System.out.println("Relief_Adj: " + surprise.Surprise_Relief_Adj(sentence));
+
+
 
             System.out.println("======================================== Uncertainty ========================================");
             UncertaintyFeature uncertainty = new UncertaintyFeature();
-            System.out.println(uncertainty.Uncertainty_conditionality1(sentence));
-            System.out.println(uncertainty.Uncertainty_conditionality2(sentence));
+
+            System.out.println(uncertainty.Uncertainty_Unspecified_Noun(sentence));
+            System.out.println(uncertainty.Uncertainty_Unspecified_Verb(sentence));
+            System.out.println(uncertainty.Uncertainty_Unspecified_Adj(sentence));
+
+            System.out.println(uncertainty.Uncertainty_Fear_Noun(sentence));
+            System.out.println(uncertainty.Uncertainty_Fear_Verb(sentence));
+            System.out.println(uncertainty.Uncertainty_Fear_Adj(sentence));
+
+            System.out.println(uncertainty.Uncertainty_Hope_Noun(sentence));
+            System.out.println(uncertainty.Uncertainty_Hope_Verb(sentence));
+            System.out.println(uncertainty.Uncertainty_Hope_Adj(sentence));
+
+            System.out.println(uncertainty.Uncertainty_Anxiety_Noun(sentence));
+            System.out.println(uncertainty.Uncertainty_Anxiety_Verb(sentence));
+            System.out.println(uncertainty.Uncertainty_Anxiety_Adj(sentence));
+
 
         }
     }

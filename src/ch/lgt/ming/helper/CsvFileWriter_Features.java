@@ -70,9 +70,9 @@ public class CsvFileWriter_Features {
 
                 double start = System.currentTimeMillis();
                 Annotation annotation = StanfordCore.pipeline.process(docId_Text.getValue(key));
-                int Surprise_Unspecified = Surprise.extractSurprise_Unspecified(annotation);
-                int Surprise_Disappointment = Surprise.extractSurprise_Disappointment(annotation);
-                int Surprise_Relief = Surprise.extractSurprise_Relief(annotation);
+                int Surprise_Unspecified = Surprise.extractSurprise_Unspecified_Noun(annotation);
+                int Surprise_Disappointment = Surprise.extractSurprise_Disappointment_Noun(annotation);
+                int Surprise_Relief = Surprise.extractSurprise_Relief_Noun(annotation);
                 int Surprise_Comparative = Surprise.extractSurprise_Comparative(annotation);
                 int Uncertainty_Unspecified = Uncertainty.extractUncertainty_Unspecified(annotation);
                 int Uncertainty_Fear = Uncertainty.extractUncertainty_Fear(annotation);

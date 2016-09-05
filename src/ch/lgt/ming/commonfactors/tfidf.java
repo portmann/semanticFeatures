@@ -66,7 +66,7 @@ public class TFIDF {
 
     public static void main(String[] args) throws IOException {
 
-        TFIDF tfIdf = new TFIDF(30, "corpus");
+        TFIDF tfIdf = new TFIDF(3, "corpus2/test2");
         tfIdf.ReadDict();
         tfIdf.ReadStopword();
         tfIdf.ReadIdf();
@@ -76,15 +76,15 @@ public class TFIDF {
 //        }
 
         IdListDouble DocId_TfidfList = tfIdf.getTfIdf();
-//        System.out.println(DocId_TfidfList.getValue(1));
-//        double cosinsimilarity = tfIdf.cosineSimilarity(DocId_TfidfList.getValue(1),DocId_TfidfList.getValue(2));
-//        System.out.println(cosinsimilarity);
-//        List<Pair<Integer,Integer>> similarPair = tfIdf.getSimilarDoc(0.7);
-//        System.out.printf("The cosine similarity of the following documents are lager than %f\n", 0.7);
-//        for (int i = 0; i < similarPair.size(); i++){
-//            System.out.printf(similarPair.get(i) + ": %f\n",tfIdf.getCosineSimMatrix()[similarPair.get(i).getLeft()][similarPair.get(i).getRight()]);
-//
-//        }
+        System.out.println(DocId_TfidfList.getValue(1));
+        double cosinsimilarity = tfIdf.cosineSimilarity(DocId_TfidfList.getValue(1),DocId_TfidfList.getValue(2));
+        System.out.println(cosinsimilarity);
+        List<Pair<Integer,Integer>> similarPair = tfIdf.getSimilarDoc(0.7);
+        System.out.printf("The cosine similarity of the following documents are lager than %f\n", 0.7);
+        for (int i = 0; i < similarPair.size(); i++){
+            System.out.printf(similarPair.get(i) + ": %f\n",tfIdf.getCosineSimMatrix()[similarPair.get(i).getLeft()][similarPair.get(i).getRight()]);
+
+        }
 
         Kmeans kmeans = new Kmeans(tfIdf.getDict().size(),3, tfIdf.getNumberOfDocuments());
         IdListDouble Centroids = kmeans.randInitialization(0,1);

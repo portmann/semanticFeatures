@@ -54,29 +54,29 @@ public class Surprise implements Extractor<IdInt>{
 
     }
 
-    public static int extractSurprise_Unspecified(Annotation document){
+    public static int extractSurprise_Unspecified_Noun(Annotation document){
 
         int counts = 0;
         for (CoreMap sentence:document.get(CoreAnnotations.SentencesAnnotation.class)){
-            counts += surprise.Surprise_Unspecified(sentence);
+            counts += surprise.Surprise_Unspecified_Noun(sentence);
         }
         return counts;
     }
 
-    public static int extractSurprise_Disappointment(Annotation document){
+    public static int extractSurprise_Disappointment_Noun(Annotation document){
 
         int counts = 0;
         for (CoreMap sentence:document.get(CoreAnnotations.SentencesAnnotation.class)){
-            counts += surprise.Surprise_Disappointment(sentence);
+            counts += surprise.Surprise_Disappointment_Noun(sentence);
         }
         return counts;
     }
 
-    public static int extractSurprise_Relief(Annotation document){
+    public static int extractSurprise_Relief_Noun(Annotation document){
 
         int counts = 0;
         for (CoreMap sentence:document.get(CoreAnnotations.SentencesAnnotation.class)){
-            counts += surprise.Surprise_Relief(sentence);
+            counts += surprise.Surprise_Relief_Noun(sentence);
         }
         return counts;
     }

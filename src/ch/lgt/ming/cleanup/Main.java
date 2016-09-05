@@ -31,12 +31,8 @@ public class Main {
 					higlightedText = htmlStrings.getBeforeTitle() + title + htmlStrings.afterTitle + higlightedText
 							+ htmlStrings.getEnd();
 
-<<<<<<< HEAD
 					filehandler.saveStringAsFile("highlighted/Uncertainty_conditionality_401_499/" + i + ".html", higlightedText);
-=======
-					filehandler.saveStringAsFile("highlighted/Uncertainty_conditionality2_301_400/" + i + ".html", higlightedText);
 
->>>>>>> origin/master
 				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
