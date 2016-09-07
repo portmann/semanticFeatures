@@ -29,8 +29,4 @@ public class Tense implements Extractor<IdString>{
 
     }
 
-    @Override
-    public int extractCounts(Annotation document) {
-        return 0;
-    }
 }

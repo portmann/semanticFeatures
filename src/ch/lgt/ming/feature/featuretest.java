@@ -25,7 +25,7 @@ import java.util.Properties;
  */
 public class featuretest {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
 
         System.out.println("--------------------------------------- Pipeline ------------------------------------------");
         Properties props = new Properties();
@@ -54,12 +54,12 @@ public class featuretest {
 //        };  //sentences to test acquisition
 
 
-//        String[] myString = {
-//                "I am so surprised about the amazing news. ",
-//                "The 'Amazing' IPO Change That May Restart The Flow Of New Stocks.",
-//                "Opinion: CFOs want a stunning 14% annual return on investments — and that’s holding back the economy",
-//                "Gap shares slump as July sales disappoint, but analysts upbeat."
-//        };//Strings to test surprise
+        String[] myString = {
+                "I am so surprised about the amazing news. ",
+                "The 'Amazing' IPO Change That May Restart The Flow Of New Stocks.",
+                "Opinion: CFOs want a stunning 14% annual return on investments — and that’s holding back the economy",
+                "Gap shares slump as July sales disappoint, but analysts upbeat."
+        };//Strings to test surprise
 
 //        String[] myString = {
 //                "The expression is really vague.",
@@ -75,7 +75,9 @@ public class featuretest {
 //        String[] myString = {
 //
 //                "If I am president, I will make you vice president.",
-//                "If I was president, I would make you vice president."
+//                "If I am president, then I will make you vice president.",
+//                "If I was president, I would make you vice president.",
+//                "If I was president, then I would make you vice president."
 //
 //        }; //Strings to test uncertainty_conditional
 
@@ -95,25 +97,62 @@ public class featuretest {
 //
 //        }; //Strings to test surprise
 
-        String[] myString = {
+//                String[] myString = {
+//
+//                "I stared at her with little surprise.",
+//                "The result barely amazed me.",
+//                "That is not amazing.",
+//
+//                "I stared at her in disappointment.",
+//                "The result scarcely disappointed me.",
+//                "That is so disappointing.",
+//
+//                "I stared at her in relief.",
+//                "The result relieved me.",
+//                "That is relieving."
+//
+//        }; //Strings to test surprise_negation
 
-                "I stared at her with confusion.",
-                "The result confused me.",
-                "That is confusing.",
 
-                "I stared at her in anxiety.",
-                "The result worried me.",
-                "That is worrying.",
+//        String[] myString = {
+//
+//                "I stared at her with confusion.",
+//                "The result confused me.",
+//                "That is confusing.",
+//
+//                "I stared at her in anxiety.",
+//                "The result worried me.",
+//                "That is worrying.",
+//
+//                "I stared at her with fear.",
+//                "The result frightened me.",
+//                "That is scary.",
+//
+//                "I stared at her with confidence.",
+//                "I hope this will work.",
+//                "That is optimal."
+//
+//        }; //Strings to test uncertainty
 
-                "I stared at her with fear.",
-                "The result frightened me.",
-                "That is scary.",
-
-                "I stared at her with confidence.",
-                "I hope this will work.",
-                "That is optimal."
-
-        }; //Strings to test uncertainty
+//        String[] myString = {
+//
+//                "I stared at her with confusion.",
+//                "The result confused me.",
+//                "That is confusing.",
+//
+//                "I stared at her in anxiety.",
+//                "The result worried me.",
+//                "That is worrying.",
+//
+//                "I stared at her with fear.",
+//                "The result frightened me.",
+//                "That is scary.",
+//
+//                "I stared at her with confidence.",
+//                "I hope this will work.",
+//                "That is optimal."
+//
+//        }; //Strings to test uncertainty_negation
 
 
 //        String[] myString = {
@@ -188,41 +227,19 @@ public class featuretest {
 //            acquisition acquisition = new acquisition();
 //            System.out.println(acquisition.IsAcquisition(sentence));
 
-//            System.out.println("======================================== Surprise ========================================");
-//            SurpriseFeature surprise = new SurpriseFeature();
-
-//            System.out.println("Unspecified_Noun: " + surprise.Surprise_Unspecified_Noun(sentence));
-//            System.out.println("Unspecified_Verb: " + surprise.Surprise_Unspecified_Verb(sentence));
-//            System.out.println("Unspecified_Adj: " + surprise.Surprise_Unspecified_Adj(sentence));
-//
-//            System.out.println("Disappointment_Noun: " + surprise.Surprise_Disappointment_Noun(sentence));
-//            System.out.println("Disappointment_Verb: " + surprise.Surprise_Disappointment_Verb(sentence));
-//            System.out.println("Disappointment_Adj: " + surprise.Surprise_Disappointment_Adj(sentence));
-//
-//            System.out.println("Relief_Noun: " + surprise.Surprise_Relief_Noun(sentence));
-//            System.out.println("Relief_Verb: " + surprise.Surprise_Relief_Verb(sentence));
-//            System.out.println("Relief_Adj: " + surprise.Surprise_Relief_Adj(sentence));
+            System.out.println("======================================== Surprise ========================================");
+            SurpriseFeature surprise = new SurpriseFeature();
+            surprise.Surprise(sentence, "$UNSPECIFIED");
 
 
 
-            System.out.println("======================================== Uncertainty ========================================");
-            UncertaintyFeature uncertainty = new UncertaintyFeature();
 
-            System.out.println(uncertainty.Uncertainty_Unspecified_Noun(sentence));
-            System.out.println(uncertainty.Uncertainty_Unspecified_Verb(sentence));
-            System.out.println(uncertainty.Uncertainty_Unspecified_Adj(sentence));
+//            System.out.println("======================================== Uncertainty ========================================");
+//            UncertaintyFeature uncertainty = new UncertaintyFeature();
+//            uncertainty.UncertaintyConditionality(sentence, "$CONDITIONALITY1");
+//            uncertainty.UncertaintyConditionality(sentence, "$CONDITIONALITY2");
 
-            System.out.println(uncertainty.Uncertainty_Fear_Noun(sentence));
-            System.out.println(uncertainty.Uncertainty_Fear_Verb(sentence));
-            System.out.println(uncertainty.Uncertainty_Fear_Adj(sentence));
 
-            System.out.println(uncertainty.Uncertainty_Hope_Noun(sentence));
-            System.out.println(uncertainty.Uncertainty_Hope_Verb(sentence));
-            System.out.println(uncertainty.Uncertainty_Hope_Adj(sentence));
-
-            System.out.println(uncertainty.Uncertainty_Anxiety_Noun(sentence));
-            System.out.println(uncertainty.Uncertainty_Anxiety_Verb(sentence));
-            System.out.println(uncertainty.Uncertainty_Anxiety_Adj(sentence));
 
 
         }

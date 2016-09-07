@@ -22,17 +22,39 @@ public class CsvFileWriter_Features {
     private static final String NEW_LINE_SEPARATOR = "\n";
 
     //CSV file header
-    private static final String FILE_HEADER = "docID,Uncertainty_unspecified,Uncertainty_fear," +
-            "Uncertainty_hope,Uncertainty_anxiety,Uncertainty_conditionality1," +
-            "Uncertainty_conditionality2,Surprise_unspecified,Surprise_disappointment," +
-            "Surprise_relief,Surprise_comparative,Pos,Neg";
+    private static final String FILE_HEADER = "docID," +
+            "Uncertainty_unspecified_noun,Uncertainty_unspecified_noun_neg," +
+            "Uncertainty_unspecified_verb,Uncertainty_unspecified_verb_neg," +
+            "Uncertainty_unspecified_othertype,Uncertainty_unspecified_othertype_neg," +
+            "Uncertainty_fear_noun,Uncertainty_fear_noun_neg," +
+            "Uncertainty_fear_verb,Uncertainty_fear_verb_neg," +
+            "Uncertainty_fear_othertype,Uncertainty_fear_othertype_neg," +
+            "Uncertainty_hope_noun,Uncertainty_hope_noun_neg," +
+            "Uncertainty_hope_verb,Uncertainty_hope_verb_neg," +
+            "Uncertainty_hope_othertype,Uncertainty_hope_othertype_neg," +
+            "Uncertainty_anxiety_noun,Uncertainty_anxiety_noun_neg," +
+            "Uncertainty_anxiety_verb,Uncertainty_anxiety_verb_neg," +
+            "Uncertainty_anxiety_othertype,Uncertainty_anxiety_othertype_neg," +
+            "Uncertainty_conditionality1,Uncertainty_conditionality1_pos,Uncertainty_conditionality1_neg," +
+            "Uncertainty_conditionality2,Uncertainty_conditionality2_pos,Uncertainty_conditionality2_neg," +
+            "Surprise_unspecified_noun,Surprise_unspecified_noun_neg," +
+            "Surprise_unspecified_verb,Surprise_unspecified_verb_neg," +
+            "Surprise_unspecified_othertype,Surprise_unspecified_othertype_neg," +
+            "Surprise_disappointment_noun,Surprise_disappointment_noun_neg," +
+            "Surprise_disappointment_verb,Surprise_disappointment_verb_neg," +
+            "Surprise_disappointment_othertype,Surprise_disappointment_othertype_neg," +
+            "Surprise_relief_noun,Surprise_relief_noun_neg," +
+            "Surprise_relief_verb,Surprise_relief_verb_neg," +
+            "Surprise_relief_othertype,Surprise_relief_othertype_neg," +
+            "Surprise_comparative," +
+            "Valence_Pos,Valence_Neg";
 
     // Variable declaration
     private static FileHandler fileHandler = new FileHandler();
     private static IdString docId_Text = new IdString();
 
     public static void main(String[] args) {
-        CsvFileWriter_Features.writeCsvFileWriter("featureFiles/features50.csv", 50);
+        CsvFileWriter_Features.writeCsvFileWriter("featureFiles/features50.csv", 1);
     }
 
     public static void writeCsvFileWriter(String fileName, int numberofdocs){
@@ -45,12 +67,9 @@ public class CsvFileWriter_Features {
         File folder = new File(path);
         File[] listOfFiles = folder.listFiles();
 
-
         FileWriter fileWriter = null;
         try {
 
-            Extractor<IdValue> negWordExtractor = new NegWordCount();
-            Extractor<IdValue> posWordExtractor = new PosWordCount();
             fileWriter = new FileWriter(fileName);
 
             //Write the CSV file header
@@ -68,54 +87,49 @@ public class CsvFileWriter_Features {
             //Process documents
             for (Integer key : docId_Text.getMap().keySet()) {
 
-                double start = System.currentTimeMillis();
-                Annotation annotation = StanfordCore.pipeline.process(docId_Text.getValue(key));
-                int Surprise_Unspecified = Surprise.extractSurprise_Unspecified_Noun(annotation);
-                int Surprise_Disappointment = Surprise.extractSurprise_Disappointment_Noun(annotation);
-                int Surprise_Relief = Surprise.extractSurprise_Relief_Noun(annotation);
-                int Surprise_Comparative = Surprise.extractSurprise_Comparative(annotation);
-                int Uncertainty_Unspecified = Uncertainty.extractUncertainty_Unspecified(annotation);
-                int Uncertainty_Fear = Uncertainty.extractUncertainty_Fear(annotation);
-                int Uncertainty_Hope = Uncertainty.extractUncertainty_Hope(annotation);
-                int Uncertainty_Anxiety = Uncertainty.extractUncertainty_Anxiety(annotation);
-                int Uncertainty_Conditional1 = Uncertainty.extractUncertainty_Conditionality1(annotation);
-                int Uncertainty_Conditional2 = Uncertainty.extractUncertainty_Conditionality2(annotation);
-                int posWordcounts = posWordExtractor.extractCounts(annotation);
-                int negWordcounts = negWordExtractor.extractCounts(annotation);
                 fileWriter.append(String.valueOf(key));
                 fileWriter.append(COMMA_DELIMITER);
-                fileWriter.append(String.valueOf(Uncertainty_Unspecified));
+
+                double start = System.currentTimeMillis();
+                Annotation annotation = StanfordCore.pipeline.process(docId_Text.getValue(key));
+
+                List<String> Uncertainty_Reg = Arrays.asList("$UNSPECIFIED", "$FEAR", "$HOPE", "$ANXIETY");
+                List<String> Uncertainty_Reg2 = Arrays.asList("$CONDITIONALITY1", "$CONDITIONALITY2");
+                List<String> Surprise_Reg = Arrays.asList("$UNSPECIFIED", "$DISAPPOINTMENT", "$RELIEF");
+
+                for (int i = 0; i < Uncertainty_Reg.size(); i++){
+                    List<Integer> result = Uncertainty.extract(annotation, Uncertainty_Reg.get(i));
+                    for (int j = 0; j < 6; j++){
+                        fileWriter.append((String.valueOf(result.get(j))));
+                        fileWriter.append(COMMA_DELIMITER);
+                    }
+                }
+                for (int i = 0; i < Uncertainty_Reg2.size(); i++){
+                    List<Integer> result = Uncertainty.extractConditionality(annotation, Uncertainty_Reg2.get(i));
+                    for (int j = 0; j < 3; j++){
+                        fileWriter.append((String.valueOf(result.get(j))));
+                        fileWriter.append(COMMA_DELIMITER);
+                    }
+                }
+                for (int i = 0; i < Surprise_Reg.size(); i++){
+                    List<Integer> result = Surprise.extract(annotation, Surprise_Reg.get(i));
+                    for (int j = 0; j < 6; j++) {
+                        fileWriter.append(String.valueOf(result.get(j)));
+                        fileWriter.append(COMMA_DELIMITER);
+                    }
+                }
+                fileWriter.append(String.valueOf(Surprise.extractComparative(annotation)));
                 fileWriter.append(COMMA_DELIMITER);
-                fileWriter.append(String.valueOf(Uncertainty_Fear));
+                fileWriter.append(String.valueOf(PosWordCount.extract(annotation)));
                 fileWriter.append(COMMA_DELIMITER);
-                fileWriter.append(String.valueOf(Uncertainty_Hope));
-                fileWriter.append(COMMA_DELIMITER);
-                fileWriter.append(String.valueOf(Uncertainty_Anxiety));
-                fileWriter.append(COMMA_DELIMITER);
-                fileWriter.append(String.valueOf(Uncertainty_Conditional1));
-                fileWriter.append(COMMA_DELIMITER);
-                fileWriter.append(String.valueOf(Uncertainty_Conditional2));
-                fileWriter.append(COMMA_DELIMITER);
-                fileWriter.append(String.valueOf(Surprise_Unspecified));
-                fileWriter.append(COMMA_DELIMITER);
-                fileWriter.append(String.valueOf(Surprise_Disappointment));
-                fileWriter.append(COMMA_DELIMITER);
-                fileWriter.append(String.valueOf(Surprise_Relief));
-                fileWriter.append(COMMA_DELIMITER);
-                fileWriter.append(String.valueOf(Surprise_Comparative));
-                fileWriter.append(COMMA_DELIMITER);
-                fileWriter.append(String.valueOf(posWordcounts));
-                fileWriter.append(COMMA_DELIMITER);
-                fileWriter.append(String.valueOf(negWordcounts));
+                fileWriter.append(String.valueOf(NegWordCount.extract(annotation)));
                 fileWriter.append(NEW_LINE_SEPARATOR);
                 double end = System.currentTimeMillis();
                 System.out.println(end-start);
                 System.out.println("Document " + key + " is done.");
 
             }
-
             System.out.println("CSV file was created successfully!");
-
         } catch (Exception e) {
             System.out.println("Error in CsvFileWriter_Features!");
             e.printStackTrace();

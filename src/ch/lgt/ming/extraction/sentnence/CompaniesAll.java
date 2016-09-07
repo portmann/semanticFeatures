@@ -61,8 +61,4 @@ public class CompaniesAll implements Extractor<IdListString> {
 		return NOSCompany;
 	}
 
-	@Override
-	public int extractCounts(Annotation document) {
-		return 0;
-	}
 }

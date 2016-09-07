@@ -26,8 +26,4 @@ public class Merger implements Extractor<IdBoolean> {
         return  SentID_Merger;
     }
 
-    @Override
-    public int extractCounts(Annotation document) {
-        return 0;
-    }
 }
