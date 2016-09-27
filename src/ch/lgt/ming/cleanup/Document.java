@@ -14,6 +14,10 @@ import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.scoref.SimpleLinearClassifier;
 import edu.stanford.nlp.util.CoreMap;
 
+/**
+ * Document Class stores the information of each document including document text, sentence, token, Stanford Annotation,
+ * Date of each doc, index of each doc.
+* */
 public class Document implements Serializable {
 
 	String documentText = "";
@@ -23,6 +27,9 @@ public class Document implements Serializable {
 	Date date;
 	Integer index;
 
+/**
+ * Creates Document with annotations
+* */
 	public Document(String documentText, Integer index, Date date){
 		
 		this.documentText = documentText;
@@ -44,7 +51,10 @@ public class Document implements Serializable {
 
 	}
 
-	public Document(String documentText, Integer index, Date date, boolean b){
+/**
+ * Creates Document without annotations
+ * */
+	public Document(String documentText, Integer index, Date date, boolean annotation){
 		this.documentText = documentText;
 
 		String[] strings = documentText.replaceAll("[[^a-zA-Z_]&&\\S]", "").split("\\W+");
@@ -57,15 +67,6 @@ public class Document implements Serializable {
 	}
 
 	public static void main(String[] args) throws IOException, ParseException {
-
-
-
-//		Date date =
-//		Document document = new Document(new FileHandler().loadFileToString("corpus5/Facebook/123.html"), );
-//		System.out.println(document.getTokenText());
-//		for (int i = 0; i < document.getTokenText().size(); i++){
-//			System.out.println(document.getTokenText().get(i));
-//		}
 
 	}
 
