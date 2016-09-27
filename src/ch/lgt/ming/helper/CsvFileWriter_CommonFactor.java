@@ -28,7 +28,7 @@ public class CsvFileWriter_CommonFactor {
     }
 
     public static void main(String[] args) throws IOException {
-        CsvFileWriter_CommonFactor.writeCsvFileWriter("featureFiles/commonFactors499.csv", 499, 10);
+        CsvFileWriter_CommonFactor.writeCsvFileWriter("featureFiles/commonFactors499.csv", 499, 50);
     }
 
 
@@ -70,6 +70,7 @@ public class CsvFileWriter_CommonFactor {
 
                 double start = System.currentTimeMillis();
                 List<String> keywords = tfIdf.getKeyWords(DocId_TfidfList.getValue(i), numberofKeyWords);
+
                 fileWriter.append(String.valueOf(i));
                 for (int j = 0; j < numberofKeyWords; j++){
                     fileWriter.append(COMMA_DELIMITER);

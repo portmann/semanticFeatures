@@ -20,7 +20,7 @@ public class PosWordCount{
     //Output: Number of Positive Words in each Sentence
     public static int extract(Annotation document) throws Exception {
 
-        positiveWords.setMap(fileHandler.loadFileToMap("dictionaries/L&MPos.txt", true));
+        positiveWords.setMap(fileHandler.loadFileToMap("data/dictionaries/L&MPos.txt", true));
 
         int counts = 0;
         for (CoreLabel token: document.get(CoreAnnotations.TokensAnnotation.class)){

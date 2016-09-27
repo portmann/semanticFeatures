@@ -1,18 +1,18 @@
 package ch.lgt.ming.feature;
 
+import ch.lgt.ming.corenlp.TenseAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.ling.IndexedWord;
 import edu.stanford.nlp.ling.tokensregex.Env;
 import edu.stanford.nlp.ling.tokensregex.TokenSequenceMatcher;
 import edu.stanford.nlp.ling.tokensregex.TokenSequencePattern;
+import edu.stanford.nlp.pipeline.Annotation;
+import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.trees.*;
 import edu.stanford.nlp.util.CoreMap;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Pattern;
 
 /**
@@ -28,10 +28,37 @@ public class SurpriseFeature {
 
         env.setDefaultStringPatternFlags(Pattern.CASE_INSENSITIVE);
 
-        env.bind("$UNSPECIFIED", "/amaze\\w*|astonish\\w*|dumbfound\\w*|startl\\w*|stunn\\w*|surpris\\w*|aback|thunderstruck|wonder\\w*/");
+        env.bind("$UNSPECIFIED", "/amaze\\w*|amazing|astonish\\w*|dumbfound\\w*|startl\\w*|stunn\\w*|surpris\\w*|aback|thunderstruck|wonder\\w*/");
         env.bind("$DISAPPOINTMENT", "/comedown|disappoint\\w*|discontent\\w*|disenchant\\w*|disgruntl\\w*|disillusion\\w*|frustrat\\w*|jilt\\w*/");
         env.bind("$RELIEF", "/relie\\w*/");
+        env.bind("$SURPRISE","$UNSPECIFIED|$DISAPPOINTMENT|$RELIEF");
 
+    }
+
+    public static void main(String[] args) {
+        System.out.println("--------------------------------------- Pipeline ------------------------------------------");
+        Properties props = new Properties();
+        props.setProperty("customAnnotatorClass.tense", "ch.lgt.ming.corenlp.TenseAnnotator");
+        props.setProperty("annotators", "tokenize, ssplit, pos, lemma, ner, parse, tense");
+        StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
+        String[] myString = {
+                "I am so surprised about the amazing news. ",
+                "The 'Amazing' IPO Change That May Restart The Flow Of New Stocks.",
+                "Opinion: CFOs want a stunning 14% annual return on investments — and that’s holding back the economy",
+                "Gap shares slump as July sales disappoint, but analysts upbeat."
+        };
+        for (int i = 0; i < myString.length; i++) {
+            System.out.printf("-------------------------------------Sentence %d ---------------------------------\n",i);
+            Annotation document = new Annotation(myString[i]);
+            pipeline.annotate(document);
+            List<CoreMap> sentences = document.get(CoreAnnotations.SentencesAnnotation.class);
+            System.out.println("sentences: " + sentences);
+            CoreMap sentence = sentences.get(0);
+            SurpriseFeature surprise = new SurpriseFeature();
+//            surprise.Surprise(sentence, "$UNSPECIFIED");
+            surprise.Surprise(sentence, "$SURPRISE");
+
+        }
     }
 
     public List<Integer> Surprise(CoreMap sentence, String Reg) {

@@ -1,48 +1,51 @@
-//package ch.lgt.ming.cleanup;
-//
-//import java.io.IOException;
-//import ch.lgt.ming.corenlp.StanfordCore;
-//import ch.lgt.ming.helper.FileHandler;
-//import ch.lgt.ming.highlighter.Highlighter;
-//
-//public class Main {
-//
-//	public static void main(String[] args) {
-//
+package ch.lgt.ming.cleanup;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+
+import ch.lgt.ming.corenlp.StanfordCore;
+import ch.lgt.ming.helper.FileHandler;
+import ch.lgt.ming.highlighter.HighlighterForCompany;
+
+public class Main {
+
+	public static void main(String[] args) throws IOException {
+
 //		StanfordCore.init();
-//
-//		Corpus corpus = new Corpus("corpus3");
-//		Highlighter highlighter = new Highlighter();
-//		FileHandler filehandler = new FileHandler();
-//		HTMLStrings htmlStrings = new HTMLStrings();
-//
-//		String title = "Uncertainty_conditionality";
-//
-//
-//		for (int i = 0; i < corpus.getDocCount(); i++) {
-//
-//			try {
-//				String higlightedText = highlighter.highlight(corpus.getDocuments().get(i));
-//
-//				if (!higlightedText.equals(""))
-//
-//				{
-//
-//					higlightedText = htmlStrings.getBeforeTitle() + title + htmlStrings.afterTitle + higlightedText
-//							+ htmlStrings.getEnd();
-//
-//					filehandler.saveStringAsFile("highlighted/Uncertainty_conditionality_401_499/" + i + ".html", higlightedText);
-//
-//				}
-//			} catch (IOException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//
-//		}
-//
-//		System.out.println("Done: Higlighter.");
-//
-//	}
-//
-//}
+
+		Corpus corpus = new Corpus("corpus4/Facebook");
+		HighlighterForCompany highlighter = new HighlighterForCompany();
+		FileHandler filehandler = new FileHandler();
+		HTMLStrings htmlStrings = new HTMLStrings();
+
+		String title = "Facebook";
+
+        for (int i = 0; i < corpus.getDocCount(); i++) {
+
+			try {
+				String higlightedText = highlighter.highlight(corpus.getDocuments().get(i),"Facebook");
+
+
+				if (!higlightedText.equals(""))
+
+				{
+					higlightedText = htmlStrings.getBeforeTitle() + title +
+                                    htmlStrings.getAfterTitle() + higlightedText +
+                                    htmlStrings.getEnd();
+
+					filehandler.saveStringAsFile("highlighted2/Facebook/" + i + ".html", higlightedText);
+
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+
+		System.out.println("Done: Higlighter.");
+
+	}
+
+}

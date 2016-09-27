@@ -1,20 +1,29 @@
 package ch.lgt.ming.cleanup;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import ch.lgt.ming.corenlp.StanfordCore;
+import ch.lgt.ming.helper.FileHandler;
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.pipeline.Annotation;
+import edu.stanford.nlp.scoref.SimpleLinearClassifier;
 import edu.stanford.nlp.util.CoreMap;
 
-public class Document {
-	
-	List<String> sentenceText = new ArrayList<String>();
+public class Document implements Serializable {
+
 	String documentText = "";
+	List<String> sentenceText = new ArrayList<>();
+	List<String> tokenText = new ArrayList<>();
 	Annotation document;
-	
-	public Document(String documentText){
+	Date date;
+	Integer index;
+
+	public Document(String documentText, Integer index, Date date){
 		
 		this.documentText = documentText;
 		
@@ -24,14 +33,40 @@ public class Document {
 			// Put text contents into textSentenceID
 			sentenceText.add(sentenceStanford.get(CoreAnnotations.TextAnnotation.class));
 		}
+
+		String[] strings = documentText.replaceAll("[[^a-zA-Z_]&&\\S]", "").split("\\W+");
+		this.tokenText = Arrays.asList(strings).stream()
+//				.map(String::toLowerCase)
+				.collect(Collectors.toList());
+
+		this.index = index;
+		this.date = date;
+
 	}
 
-	public List<String> getSentence() {
-		return sentenceText;
+	public Document(String documentText, Integer index, Date date, boolean b){
+		this.documentText = documentText;
+
+		String[] strings = documentText.replaceAll("[[^a-zA-Z_]&&\\S]", "").split("\\W+");
+		this.tokenText = Arrays.asList(strings).stream()
+//				.map(String::toLowerCase)
+				.collect(Collectors.toList());
+
+		this.index = index;
+		this.date = date;
 	}
 
-	public void setSentence(List<String> sentence) {
-		this.sentenceText = sentence;
+	public static void main(String[] args) throws IOException, ParseException {
+
+
+
+//		Date date =
+//		Document document = new Document(new FileHandler().loadFileToString("corpus5/Facebook/123.html"), );
+//		System.out.println(document.getTokenText());
+//		for (int i = 0; i < document.getTokenText().size(); i++){
+//			System.out.println(document.getTokenText().get(i));
+//		}
+
 	}
 
 	public String getDocumentText() {
@@ -49,6 +84,36 @@ public class Document {
 	public void setDocument(Annotation document) {
 		this.document = document;
 	}
-	
-	
+
+	public List<String> getSentenceText() {
+		return sentenceText;
+	}
+
+	public void setSentenceText(List<String> sentence) {
+		this.sentenceText = sentence;
+	}
+
+	public List<String> getTokenText() {
+		return tokenText;
+	}
+
+	public void setTokenText(List<String> tokenText) {
+		this.tokenText = tokenText;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public Integer getIndex() {
+		return index;
+	}
+
+	public void setIndex(Integer index) {
+		this.index = index;
+	}
 }

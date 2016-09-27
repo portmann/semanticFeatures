@@ -55,6 +55,7 @@ public class UncertaintyFeature {
         env.bind("$ANXIETY", "/anguish\\w*|anxi\\w*|apprehens\\w*|diffiden\\w*|jitter\\w*|nervous\\w*|trepida\\w*|wari\\w*|wary|worr\\w*/");
         env.bind("$CONDITIONALITY1", "([{word:/[Ii]f/}]&[tense:Past])[]*[{word:/(then)|,/}]?");
         env.bind("$CONDITIONALITY2", "([{word:/[Ii]f/}]&[tense:Future])[]*[{word:/(then)|,/}]?");
+        env.bind("$UNCERTAINTY", "$UNSPECIFIED|$FEAR|$HOPE|$ANXIETY");
     }
 
     public List<Integer> Uncertainty(CoreMap sentence, String Reg) {
@@ -66,7 +67,6 @@ public class UncertaintyFeature {
         int verb_neg = 0;
         int othertype_pos = 0;
         int othertype_neg = 0;
-
 
         TokenSequencePattern pattern = TokenSequencePattern.compile(env, Reg);
         List<CoreLabel> tokens = sentence.get(CoreAnnotations.TokensAnnotation.class);

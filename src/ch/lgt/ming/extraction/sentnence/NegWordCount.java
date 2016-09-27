@@ -21,7 +21,7 @@ public class NegWordCount{
     //Output: Number of Negative Words in each Sentence
     public static int extract(Annotation document) throws Exception {
 
-        negativeWords.setMap(fileHandler.loadFileToMap("dictionaries/L&MNeg.txt", true));
+        negativeWords.setMap(fileHandler.loadFileToMap("data/dictionaries/L&MNeg.txt", true));
 
         int counts = 0;
         for (CoreLabel token: document.get(CoreAnnotations.TokensAnnotation.class)){
