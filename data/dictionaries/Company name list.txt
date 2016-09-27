@@ -1,0 +1,1117 @@
+amazon
+abbott
+aes
+international business machine
+adobe
+airgas
+air products & chemicals 
+du pont
+boston property
+allstate
+honeywell
+alcoa
+amgen
+hess
+American express
+American electrical power
+aflac
+american international group
+analog device
+anadarko petroleum
+alexion
+valero
+Apache
+comcast
+apple
+apply material
+archer midland
+pinnacle west capital
+ameren
+apartment investment management company
+agl resource
+autodesk
+automatic data process
+autozone
+avery dennison
+baker hughes
+ball corp
+berkshire hathaway
+cr bard
+baxter
+bed bath beyond
+becton dickinson
+ametek
+verizon
+best buy
+sl green realty
+yum!
+firstenergy
+h&r block
+boeing
+robert half international
+borgwarner
+boston scientific
+robinson worldwide
+bristol myers squibb
+affiliated manager
+oneok
+avalonbay
+United rental
+sempra
+fedex
+verisign
+amphenol
+brown-forman
+quanta
+csx
+cablevision
+cabot
+campbell
+constellation brand
+cardinal health
+caterpillar
+celgene
+citrix
+chesapeake
+centurylink
+cerner
+jp morgan chase
+church dwight
+cigna
+cincinnati financial 
+cintas
+frontier communication
+cisco
+clorox
+coca cola
+colgate-palmolive
+marriott
+comerica
+nrg energy
+ca
+conagra food
+consolidate edison
+cms energy
+cameron international
+corning
+sealed air
+cummins
+l3 communication
+horton
+danaher
+moody's
+cognizant technology
+target
+diamond offshore drilling
+deere
+morgan stanley
+republic services
+walt disney
+dollar tree
+dover
+dow chemical
+omnicom
+dte
+flowserve
+darden restaurant
+ebay
+emc
+bank of america
+citigroup
+eastman
+e*trade
+ecolab
+perkinelmer 
+electronic art
+salesforce.com
+emerson
+essex property trust
+entergy
+eog
+equifax
+?
+eqt
+estee lauder
+expeditor
+exxon mobil
+fmc
+nextera
+assurant
+fastenal
+federal realty investment trust
+fifth third bancorp
+m&t
+fiserv
+flir
+macy's
+franklin resource
+freeport-mcmoran
+gab
+general dynamic
+general mill
+genuine part
+gilead
+goodyear
+mckesson
+nvidia
+general electric
+ww grainger
+halliburton
+goldman sachs
+harley-davidson
+harman
+harris
+hasbro
+henry schein
+hcp
+helmerich payne
+hershey
+f5 network
+reynolds
+juniper network
+hologic
+unum
+home depot
+hormel
+centerpoint
+humana
+jb hunt transport service
+huntington
+red hat
+biogen
+illinois tool work
+intuit
+intel
+international flavor fragrance
+international paper
+interpublic group
+jacobs
+johnson
+hartford financial service group
+johnson control
+kla tencor
+devon energy
+kellogg
+keycorp
+kimco
+kimberly-clark
+blackrock
+kohl's
+kroger
+lam research
+akamai
+legg mason
+leggett&platt
+lennar
+leucadia national
+eli lilly
+lincoln national
+linear technology
+United parcel service
+agilent
+lockheed
+loews
+carnival
+range resources
+lowe
+dominion resource
+macerich
+scana
+mccormick
+mcdonalds
+s&p global
+edwards lifesciences
+host hotel resort
+marsh mclennan
+masco
+martin marietta materials
+mattel
+metlife
+activision blizzard
+cvs
+laboratory corporation america
+microsoft
+micron technology
+microschip technology
+3m
+mohawk industry
+kansas city southern
+murphy oil
+illumina
+xcel
+ford
+oilwell varco
+netapp
+newfield exploration
+newell brand
+dun bradstreet
+newmont mining
+nike
+noble energy
+nordstrom
+norfolk southern
+nisource
+coach
+northern trust
+northrop grumman
+wells fargo
+nucor
+monsanto
+capital one financial
+occidental petroleum
+oracle
+owens-illinois
+paccar
+exelon
+parker-hannifin
+patterson
+paychex
+ppl
+pepsico
+pfizer
+conocophillips
+pg&e
+pitney bowes
+pioneer natural resource
+altria
+pnc financial service group
+aetna
+fluor
+ppg
+praxair
+costco
+rowe price group
+quest diagnostic
+procter gamble
+progressive ohio
+public service enterprise 
+pultegroup
+qualcomm
+realty income
+udr
+regeneron
+autonation
+bancorp
+ross store
+roper technology
+rockwell automation
+royal Carribean cruise
+raytheon
+ryder system
+alliance data system
+fmc
+sandisk
+rockwell collins
+st.jude medical
+travelers cos
+fidelity national info serv
+merck
+priceline
+schlumberger
+charles schwab
+zimmer biomet
+amerisourcebergen
+principal financial group
+sherwin-williams
+centene
+simon property
+snap-on
+prudential financial
+advance auto parts
+southwestern energy
+edison
+southern co
+bb&t
+southwest airline
+at&t
+chevron
+staples inc
+state street
+starbucks
+public storage
+stryker
+netflix
+stericycle
+suntrust bank
+symantec
+sysco
+intuitive surgical
+teco energy
+tesoro
+texas instrument
+textron
+thermo fisher
+tiffany
+torchmark
+total system services
+davita
+tractor supply
+tyson food
+marathon oil
+union pacific
+United technology
+unitedhealth
+universal health services-b
+varian medical
+ventas
+vf
+vertex pharmaceutical
+vulcan material
+urban outfitter
+vornado realty trust
+wal mart
+waste management
+waters
+smucker
+western digital
+weyerhaeuser
+whirlpool
+skyworks
+wynn
+whole foods market
+nasdaq
+cme
+williams cos
+carmax
+xerox
+xilinx
+yahoo
+cimarex
+tjx
+zions
+regions financial
+extra space storage
+molson coors brewing
+cf industries holdings
+ameriprise
+gamestop 
+under amour
+viacom
+cbs
+chipotle Mexican grill
+mastercard
+starwood
+wyndham
+hanesbrands
+western union
+first solar
+spectra energy
+people's united financial
+delta airline
+discover financial service
+concho
+mellon
+teradata
+invesco
+philip morris
+visa 
+pepper snapple
+American water work
+scripps network interactive
+chubb
+signet jeweler
+discovery communications-a
+discovery communications-c
+marathon petroleum
+transocean
+mosaic co
+kinder morgan
+xylem
+black decker
+lyondellbasell
+pvh
+garmin
+coca-cola european
+prologis
+accenture
+hca
+verisk
+United continental
+ralph lauren
+mead johnson nutrition
+general growth properties
+seagate
+dollar general
+motorola
+aon
+level 3 communications
+xl group
+te connectivity
+ingersoll-rand
+time warner cable
+time warner
+reilly automotive
+general motor
+cbre
+tripadvisor
+michael kors
+expedia
+delphi automotive
+phillips 66
+American tower
+express script
+facebook
+duke energy
+adt
+mondelez
+tenet healthcare
+eaton
+abbvie
+zoetis
+l brands
+news corp
+news corp
+mallinckrodt
+twenty first century fox
+twenty first century fox
+American airline group
+broadcom
+willis towers watson
+allegion
+intercontinental exchange
+perrigo
+endo
+navient
+pentair
+synchrony financial
+tyco
+citizen financial group
+qorvo
+anthem
+crown castle
+medtronic
+walgreens boot alliance
+mylan
+iron mountain
+equinix
+eversource energy
+nielsen
+allergan
+dentsply
+csra
+westrock
+kraft heinz
+alphabet google
+welltower
+hewlett packard enterpris
+paypal
+hp inc
+alphabet google
+wec
+columbia pipeline
+monster beverage
+baxalta
+tegna
+qlogic
+western atlas inc
+ak steel holding
+prologis
+quintiles 
+lehman
+ascend
+santa fe pac
+case corp
+affiliated computer services
+cinergy
+peabody energy
+joy global
+apollo education
+guidant
+lorillard
+trane
+sunedison
+caremark rx
+cit group
+medco health solutions
+travelers prop casualt
+avaya
+mirant corp-old
+sears holdings
+hudson city bancorp
+pactiv llc
+john hancock financial srvcs
+directv
+genworth financial inc-cl a
+nyse euronext
+palm
+windstream holdings
+hospira 
+at&t wireless service
+visteon corp
+janus capital grooup
+freescale semiconductor
+alpha natural resources
+denbury resources
+union pacific resources 
+mercury interactive 
+leidos holdings
+iac/interactivecorp
+veritas software 
+petsmart
+keurig green mountain
+el paso llc
+fossil group
+first data corp
+general semiconductor
+mcafee
+peoplesoft
+hfs inc
+compuware corp
+wellpoint health networks
+ddr corp
+sanmina corp
+jabil circuit 
+xto energy
+immunex corp
+worldcom inc
+viavi solutions
+airtouch communications
+gateway inc
+embarq corp
+reakogy group llc
+caesars entertainment corp
+t-mobile us
+covidien ltd
+synovus financial corp
+bbva compass bancshares
+iheartcommunications
+concord efs
+sovereign bancorp
+commerce bancorp llc
+comverse technology
+
+laidlaw inc
+nl industries
+royal dutch shell -spon adr-a
+seagram co ltd
+varity corp
+enterasys networks 
+plum creek timber
+allergan plc
+morton international llc
+giddings & lewis
+solectron corp
+ptc inc
+burlington northern sante fee llc
+safeway inc
+hca inc
+bj services co
+c & S sovran corp
+genetech inc
+mbna corp
+rjr nabisco holdings corp
+health management associates llc
+pet inc
+coventry health care
+united states steel corp
+pmc-sierra ltd
+cephalon
+medimmune llc
+jones group 
+devry education group 
+ambac financial group
+bay networks 
+mgic investment corp
+allied waste industries
+manor care
+vitesse semiconductor corp a
+nextel communications inc-a
+applied micro circuits corp
+fisher scientific internatio
+carefusion corp
+marriott international -cl a
+broadcom ltd
+Young & Rubicam inc
+federated investors inc-cl b
+ims health inc
+conocophillips holding co
+king pharmaceuticals 
+convergys corp
+global crossing ltd
+sprint corp
+conexant systems 
+delphi corp
+life technologies corp
+qep resources 
+pepsi bottling group 
+consol energy 
+big lots
+reebok international ltd
+washington mutual inc
+battle mountain gold
+
+sun microsystems ltd
+fis data systems 
+morgan stanley
+novell inc
+motorola mobility holdings 
+genzyme corp
+steel excel
+kb home
+moore corp ltd
+laidlaw inc
+fruit of the loom 
+fred meyer inc
+silicon graphics
+premark international llc
+nacco industries-cl a
+allegheny technologies
+conrail inc
+healthsouth corp
+barrick gold corp
+barr pharmaceuticals
+mbia inc
+mccaw cellular comm -cl a
+placer dome inc
+oryx energy
+charter one fin inc
+maxim integrated products
+office depot
+dell
+ew scripps 
+wpx energy 
+burlington resources
+novellus systems
+bmc software inc
+altera corp
+american electric power
+freddie mac
+mediaone group
+pharmacia & upjohn
+lexmark international
+itt
+provident companies inc
+univision communications -a
+alcatel-lucent usa
+sapient corporation
+dean foods 
+tupperware brands corp
+associates first capital
+titanium metals corp
+broadvision
+siebel systems
+kraft foods group
+ncr corporation
+monster worldwide
+ciena corp
+amercian capital
+power-one
+wr grace & co
+calpine corp
+abercrombie & fitch 
+sabre holdings corp
+nielsen media research
+qwest communications intl
+general instrument corp of delawre
+equity office properties trust
+new century energies
+cit group
+armstrong holdings
+keyspan corp / brooklyn union gas co
+winn-dixie stores
+usg corp
+union camp corp
+cbs corp
+bankboston corporation
+eastman kodak co
+newmarket corp
+honeywell international
+columbia energy group
+pharmacia corp
+dresser industries inc pac / dii industries llc
+
+bank of america corp
+citigroup 
+jpmorgan chase & co
+first interstate bncrp
+broadway stores
+bestfoods
+
+hj heinz corp
+mercantile stores co inc
+
+allegheny energy inc
+
+unicom corp
+consolidated natural gas co
+gpu inc
+panenergy corp
+peoples energy llc
+psi resources inc
+txu gas co
+transco energy co
+union electric co
+integrys energy group 
+armco inc
+bethlehem steel corp
+stride rite corp
+viad corp
+aeroquip-vickers inc
+crane co
+timken co
+teledyne inc
+toys r us inc
+transamerica corp
+beam suntory inc
+asarco llc
+phelps dodge international corp
+unocal corp
+atlantic richfield co
+constellation enterprises llc
+wr grace & co
+enserch finance nv
+questar corp
+nicor inc
+pepco holdings llc
+may department stores
+tenneco inc
+mckesson corp
+chrysler holding llc
+progress energy inc
+cbs corp
+florida progress corp
+georgia-pacific llc
+dynegy inc
+
+salomon inc
+quantum chemical corp
+polaroid holding co
+sears roebuck & co
+sprint communications inc
+zenith electronics corp
+tektronix inc
+litton industries inc
+nalco co llc/illinois
+niagara mohawk holdings inc
+pacific enterprises
+lockheed corp
+square inc
+westvaco corp
+
+rr donnelley & sons co
+louisiana land & exploration co
+times mirror co-cl a
+united airlines inc
+gillette co
+rohm and haas co
+wells fargo & co
+supervalu inc
+genesco inc 
+hercules inc
+r.h. donnelley corp
+
+kerr-mcgee corp
+black & decker corp
+motors liquidation co
+us bancorp
+bally entertainment corp
+enron corp
+terex corp
+sunoco lp
+frontier communications corp
+at&t inc
+amp ltd
+unisys corp
+amax inc
+ashland inc
+briggs & stratton
+maytag corp
+First chicago nbd corp
+warner-lambert co
+yrc worldwide inc
+bassett furniture inds
+great western financial
+
+time warner inc
+us bancorp
+Bausch & lomb inc
+arbitron inc
+
+officemax inc
+king world productions inc
+ncr corporation
+handleman co
+national service inds inc
+wetterau inc
+paramount communications inc
+
+bns holding inc-cl a
+reynolds metals co
+dow jones & co inc
+security pacific corp
+
+first horizon national corp
+
+pennzenergy company
+
+
+meadwestvaco corp
+quaker oats co
+uslife corp
+rubbermaid inc
+continental resources inc / continental ag
+brink's co
+maxus energy corp
+sonat inc
+wyeth llc
+union carbide corp
+itt inc
+avatex corp-cl a
+texaco inc
+goodrich corp
+hillshire brands co
+milacron inc
+
+mobil corp
+
+
+american cyanamid inc
+chase manhattan corp / jpmorgan chase
+pepsiamericas inc
+kmart corp
+beneficial holdings inc
+jostens inc
+great northern nekoosa corp
+outboard marine corp
+lin broadcasting
+manitowoc company inc
+manor care inc
+willamette industries inc
+luby's inc
+united states surgical corp
+charming shoppes inc
+cray research
+electronic data systems corp
+shared medical services
+tonka corp
+
+potlatch corp
+usf& G / legg mason rlty prtnr
+tyco international plc
+massey enterprises inc
+
+smith international inc
+anheuser-busch cos inc
+clark equipment co
+bemis company
+pan am corp
+fleetwood enterprises
+Alexander & Alexander svcs
+caliber system inc
+
+
+borden inc
+
+aetna inc
+
+ryerson inc
+general signal corp
+
+us airways group inc
+raychem corp
+shawmut national corp
+
+First chicago nbd corp
+national semiconductor corp
+national education corp
+new york times co-a
+syntex corp / panama
+cliffs natural resources inc
+circuit city stores inc
+foster wheeler ag
+prime motor inns
+
+cooper industries plc
+delta air lines inc
+scientific-atlanta llc
+dana inc
+harcourt brace jovanovich in
+teradyne inc
+j.c. penny co inc
+longs drug stores corp
+
+emd millipore corp
+eastern enterprises
+champion international corp
+safeco corp
+travelers corp
+countrywide financial corp
+
+burlington northern sante fee 
+harland (john h.) co
+browning-ferris inc
+
+
+gerber products co
+hilton hotels holdings corp
+alltel corp
+rs legacy corp
+jefferson-pilot corp
+digital equipment
+
+echlin inc
+applied biosystems inc
+
+centex llc
+national city corp
+alza corp
+deluxe corp
+service corp international
+chubb ltd
+knight-ridder financial/japan inc
+summit bancorp
+
+transitional hospitals corp/community psychiatric cntrs
+pacificorp
+homestake mining
+ralston purina group
+springs industries inc-cl a
+ust llc
+wm wrigley jr co
+federal paper board co
+
+stone container
+alberto-culver co
+american greetings corp-cl a
+cooper tire & rubber
+forest laboratories inc
+great lakes chemical corp
+mallinckrodt plc
+meredith corp
+schering-plough corp usa
+upjohn co
+caleres inc
+lone star industries inc
+norton company
+interlake companies inc
+brunswick corp
+fedders inc
+
+navistar international corp
+genesis worldwide inc
+pall corp
+e-systems corp
+loral corp
+thomas & betts corp
+skyline corp
+grumman corp
+martin marietta corp
+mcdonnell douglas corp
+
+capital cities/abc inc
+fleming cos inc
+giant food inc -cl a
+pep boys-manny moe & jack
+covanta energy llc
+american stores co llc/utah
+harcourt general inc
+morrison knudsen corp-old
+merrill lynch & co inc
+graham holdings co-class b
+dollar general corp
+bruno's inc/old
+waste management inc
+
+mci communications
+acme-cleveland corp
+albertsons cos inc
+wachovia corp
+ikon office solutions
+providian financial corp
+first fidelity bancorp inc
+fleetboston financial corp
+kinder morgan kansas inc
+paine webber group inc
+
+shoney's llc
+golden west financial corp
+
+beverly enterprises-(old)
+corroon & Black corp
+dillards inc-cl a
+family dollar stores
+molex inc
+
+
+hf ahmanson & co
+
+fort james corp
+first mississippi corp
+cattlesale co
+barnett banks inc
+data general corp
+cross & trecker corp
+westmoreland coal co
+mellon financial corp
+
+advanced micro devices
+sigma-aldrich
+unilever nv
+bear stearns cos llc
+conseco ink
+archstone-smith trust
+safety-kleen inc
+
+north fork bancorporation
+
+ryan's restaurant group llc
+nortel networks corp
+mcdermott intl inc
+blockbuster enmt corp
+
+hartmarx international inc
+conseco financial corp
+lsi software sa
+worthington industries
+chiron corp ltd
+slm corp
+lotus development corp
+tribune co/old
+avis budget group inc
+ameritech international corp
+bellsouth llc
+nynex corp
+pacific telesis group
+
+echo bay mines ltd
+compaq computer corp
+santa fe pacific corp
+temple-inland inc
+3com corp
+oshkosh b'gosh inc
+rational software corp
+cyprus amax minerals co
+amdahl software
+bank one corp
+wachovia corp
+marshall & ilsley corp
+sovran financial corp
+regions financial corp
+comcast cable holdings llc-a
+wendy's internatinal in-w
+tandem computers inc
+old kent financial corp
+tosco corp
+rio tinto alcan inc
+amsouth bancorporation
+boatmen's bancshares inc
+mirage resorts inc
+safety-kleen inc
+adc telecom
+wang labs inc-cl b
+biomet
+jwp inc
+corestates financial corp
+southtrust corp
+symbol technologies inc
+ensco plc-cl a
+
+tellabs inc
+intergraph corp
+precision castparts corp
+engelhard corp
+kate spade & co
+hbo & co
+seagate technology
+biogen inc
+international game technolog
