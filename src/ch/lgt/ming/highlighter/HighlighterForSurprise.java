@@ -70,7 +70,7 @@ public class HighlighterForSurprise {
 
                     System.out.println(corpus.getDocuments().get(j).getIndex());
 
-                    filehandler.saveStringAsFile("data/highlighted2/Amazon/Surprise/" + corpus.getDocuments().get(j).getIndex(), higlightedText);
+                    filehandler.saveStringAsFile("data/highlighted2/Amazon/Surprise/" + corpus.getDocuments().get(j).getIndex() + ".html", higlightedText);
 
                 }
             }
