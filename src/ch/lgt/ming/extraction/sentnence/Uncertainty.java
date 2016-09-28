@@ -1,7 +1,6 @@
 package ch.lgt.ming.extraction.sentnence;
 
-import ch.lgt.ming.datastore.IdBoolean;
-import ch.lgt.ming.datastore.IdListId;
+import ch.lgt.ming.datastore.IdListInt;
 import ch.lgt.ming.feature.UncertaintyFeature;
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.pipeline.Annotation;
@@ -67,7 +66,7 @@ public class Uncertainty {
         UncertaintyFeature uncertainty = new UncertaintyFeature();
 
         List<Integer> counts = Arrays.asList(0,0,0,0,0,0);
-        IdListId SentId_counts = new IdListId();
+        IdListInt SentId_counts = new IdListInt();
         List<Boolean> SentId_isCom = new ArrayList<>();
 
         for (int i = 0; i < sentences.size(); i++) {

@@ -2,8 +2,7 @@ package ch.lgt.ming.extraction.sentnence;
 
 import ch.lgt.ming.cleanup.Corpus;
 import ch.lgt.ming.cleanup.Document;
-import ch.lgt.ming.corenlp.StanfordCore;
-import ch.lgt.ming.datastore.IdListId;
+import ch.lgt.ming.datastore.IdListInt;
 import ch.lgt.ming.feature.SurpriseFeature;
 import ch.lgt.ming.helper.FileHandler;
 import edu.stanford.nlp.ling.CoreAnnotations;
@@ -110,7 +109,7 @@ public class Surprise {
         SurpriseFeature surprise = new SurpriseFeature();
 
         List<Integer> counts = Arrays.asList(0,0,0,0,0,0);
-        IdListId SentId_counts = new IdListId();
+        IdListInt SentId_counts = new IdListInt();
         List<Boolean> SentId_isCom = new ArrayList<>();
 
         for (int i = 0; i < sentences.size(); i++) {

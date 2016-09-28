@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Set;
 import ch.lgt.ming.corenlp.StanfordCore;
 import ch.lgt.ming.datastore.IdBoolean;
-import ch.lgt.ming.datastore.IdListId;
+import ch.lgt.ming.datastore.IdListInt;
 import ch.lgt.ming.datastore.IdString;
 import ch.lgt.ming.datastore.IdValue;
 import ch.lgt.ming.datastore.StringId;
@@ -30,7 +30,7 @@ public class Test {
 
 		// exercise variable
 		StringId companyId = new StringId();           // use NER (company is simply an example of an entity)
-		IdListId documentCompanies = new IdListId();
+		IdListInt documentCompanies = new IdListInt();
 		IdValue sentencePosCount = new IdValue();
 		IdValue sentenceNegCount = new IdValue();
 		IdBoolean sentenceNegation = new IdBoolean();

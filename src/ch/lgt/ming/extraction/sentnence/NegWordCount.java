@@ -16,9 +16,14 @@ public class NegWordCount{
     private static FileHandler fileHandler = new FileHandler();
     private static StringId negativeWords = new StringId();
 
+   /**
+    * This function extracts the number of negative words of the document according to L&MNeg.txt
+    *
+    * @param document the annotation of the document
+    *
+    * @return number of negative words
+   * */
 
-    //Input: Annotation of the text
-    //Output: Number of Negative Words in each Sentence
     public static int extract(Annotation document) throws Exception {
 
         negativeWords.setMap(fileHandler.loadFileToMap("data/dictionaries/L&MNeg.txt", true));
