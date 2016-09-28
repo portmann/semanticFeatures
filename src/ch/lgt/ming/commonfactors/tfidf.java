@@ -29,51 +29,54 @@ public class TFIDF {
 
     public static void main(String[] args) throws IOException {
 
-        TFIDF tfIdf = new TFIDF(100, "data/corpus5/Amazon");
+        TFIDF tfIdf = new TFIDF(100, "data/corpus5/Google");
 
-        tfIdf.DocProcess();
-        tfIdf.getTfIdf();
-
+        /**
+         * This is to test function getKeyWords, kwyWordsOverlap,
+        * */
         System.out.println(tfIdf.getKeyWords(tfIdf.getTfIdf().getValue(0),10));
         System.out.println(tfIdf.getKeyWords(tfIdf.getTfIdf().getValue(1),10));
-        List<String> commonKeywords1 = tfIdf.getCommonKeyWords(tfIdf.getTfIdf().getValue(0),
-                tfIdf.getTfIdf().getValue(1), 10);
-        System.out.println("commonKeywords1: " + commonKeywords1);
+        List<String> commonKeywords = tfIdf.getCommonKeyWords(tfIdf.getTfIdf().getValue(0), tfIdf.getTfIdf().getValue(1), 10);
+        System.out.println("commonKeywords: " + commonKeywords);
 
         double ratio = tfIdf.keyWordsOverlap(tfIdf.getTfIdf().getValue(0),tfIdf.getTfIdf().getValue(1),50);
         System.out.println("keywords overlap ratio: " + ratio);
 
-        int n = tfIdf.getClosestPredecessor(tfIdf.getTfIdf().getValue(10), tfIdf.getDocId_DocName().get(10),
-                tfIdf.getDocId_DocDate().get(10), 50, 5);
-        List<String> commonKeywords = tfIdf.getCommonKeyWords(tfIdf.getTfIdf().getValue(10),
-                tfIdf.getTfIdf().getValue(tfIdf.getDocId_DocName().indexOf(n)), 50);
-        System.out.println(commonKeywords);
+        double cosineSim = tfIdf.getCosineSimilarity(tfIdf.getTfIdf().getValue(0),tfIdf.getTfIdf().getValue(1));
+        System.out.println("Cosine similarity: " + cosineSim);
 
-//        tfIdf.getCommonFactors(50);
-//        for (int i = 0; i < 10; i++){
-//        }
-
-
-
-//        for (int i = 0; i < 3; i++){
-//            System.out.println(tfIdf.getDocId_TokensList().getValue(i));
-//        }
+        /**
+         * This is to test if there's huge difference between using cosine similarity or key words intersection to decide
+         * the closest predecessor.
+        * */
+        for (int i = 0; i < tfIdf.getNumberOfDocuments(); i++){
+            System.out.printf("-----------------------Doc %d-----------------------------------\n",i);
+            int n = tfIdf.getClosestPredecessor(tfIdf.getTfIdf().getValue(i), tfIdf.getDocId_DocName().get(i),
+                    tfIdf.getDocId_DocDate().get(i), 50, 5, true);
+            int m = tfIdf.getClosestPredecessor(tfIdf.getTfIdf().getValue(i), tfIdf.getDocId_DocName().get(i),
+                    tfIdf.getDocId_DocDate().get(i), 50, 5, false);
+            List<String> commonKeywords1 = tfIdf.getCommonKeyWords(tfIdf.getTfIdf().getValue(i),
+                    tfIdf.getTfIdf().getValue(tfIdf.getDocId_DocName().indexOf(n)), 50);
+            System.out.println(commonKeywords1);
+            List<String> commonKeywords2 = tfIdf.getCommonKeyWords(tfIdf.getTfIdf().getValue(i),
+                    tfIdf.getTfIdf().getValue(tfIdf.getDocId_DocName().indexOf(m)), 50);
+            System.out.println(commonKeywords2);
+        }
 
 //        IdListDouble DocId_TfidfList = tfIdf.getTfIdf();
 //        System.out.println(DocId_TfidfList.getValue(1));
-//        double cosinsimilarity = tfIdf.cosineSimilarity(DocId_TfidfList.getValue(0),DocId_TfidfList.getValue(1));
+//        double cosinsimilarity = tfIdf.getCosineSimilarity(DocId_TfidfList.getValue(0),DocId_TfidfList.getValue(1));
 //        System.out.println(cosinsimilarity);
 //        List<Pair<Integer,Integer>> similarPair = tfIdf.getCosineMatrix(0.7);
 //        System.out.printf("The cosine similarity of the following documents are lager than %f\n", 0.7);
 //        for (int i = 0; i < similarPair.size(); i++){
 //            System.out.printf(similarPair.get(i) + ": %f\n",tfIdf.getCosineSimMatrix()[similarPair.get(i).getLeft()][similarPair.get(i).getRight()]);
 //        }
-//
 //        Kmeans kmeans = new Kmeans(tfIdf.getDict().size(),3, tfIdf.getNumberOfDocuments());
 //        IdListDouble Centroids = kmeans.randInitialization(0,1);
-////        System.out.println(DocId_TfidfList.getValue(1));
+//        System.out.println(DocId_TfidfList.getValue(1));
 //        kmeans.KmeansIteration(DocId_TfidfList,Centroids,10);
-
+//
 //        tfIdf.getKeyWords(DocId_TfidfList.getValue(0), 10);
     }
     /**
@@ -89,6 +92,8 @@ public class TFIDF {
         ReadDict();
         ReadStopword();
         ReadIdf();
+        DocProcess();
+        getTfIdf();
     }
 
     /**
@@ -262,7 +267,7 @@ public class TFIDF {
      *
      * @return the cosine similarity between the two documents
     */
-    public static double cosineSimilarity(List<Double> point1, List<Double> point2){
+    public static double getCosineSimilarity(List<Double> point1, List<Double> point2){
 
         double dotProduct = 0.0;
         double norm1 = 0.0;
@@ -299,7 +304,7 @@ public class TFIDF {
         IdListDouble TFIDF = getTfIdf();
         for (int i = 0; i < numberOfDocuments; i++)
             for (int j = i + 1; j < numberOfDocuments; j++){
-                cosineSimMatrix[i][j] = cosineSimilarity(TFIDF.getValue(i),TFIDF.getValue(j));
+                cosineSimMatrix[i][j] = getCosineSimilarity(TFIDF.getValue(i),TFIDF.getValue(j));
                 if (cosineSimMatrix[i][j] > threshold){
                     SimilarDocIndex.add(new Pair<>(i,j));
                 }
@@ -380,18 +385,26 @@ public class TFIDF {
      * @return index of the closest predecessor
      */
 
-    public int getClosestPredecessor(List<Double> tfidf, int id, Date date, int n, int timeHorizon){
+    public int getClosestPredecessor(List<Double> tfidf, int id, Date date, int n, int timeHorizon, boolean isCosine){
 
         double ratio = 0;
-        Integer index = 0;
+        Integer index = id;
         for (int i = 0; i < timeHorizon + 1; i++){
             Date date1 = DateUtil.addDays(date, -i);
             for (int j = 0; j < numberOfDocuments && DocId_DocName.get(j) != id; j++){
                 if (DocId_DocDate.get(j).equals(date1)){
-                    double ratio2 = keyWordsOverlap(tfidf, DocId_tfidfList.getValue(j),n);
-                    if (ratio2 > ratio){
-                        ratio = ratio2;
-                        index = DocId_DocName.get(j);
+                    if (isCosine){
+                        double ratio2 = getCosineSimilarity(tfidf, DocId_tfidfList.getValue(j));
+                        if (ratio2 > ratio){
+                            ratio = ratio2;
+                            index = DocId_DocName.get(j);
+                        }
+                    }else {
+                        double ratio2 = keyWordsOverlap(tfidf, DocId_tfidfList.getValue(j),n);
+                        if (ratio2 > ratio){
+                            ratio = ratio2;
+                            index = DocId_DocName.get(j);
+                        }
                     }
                 }
             }
