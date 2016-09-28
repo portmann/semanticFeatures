@@ -7,6 +7,7 @@ import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.util.CoreMap;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -18,39 +19,23 @@ public class Uncertainty {
     public static List<Integer> extract(Annotation document, String Reg){
 
         UncertaintyFeature uncertainty = new UncertaintyFeature();
-        List<Integer> counts = new ArrayList<>();
-        int noun_pos = 0;
-        int noun_neg = 0;
-        int verb_pos = 0;
-        int verb_neg = 0;
-        int othertype_pos = 0;
-        int othertype_neg = 0;
-
+        List<Integer> counts = Arrays.asList(0,0,0,0,0,0);
         List<CoreMap> sentences = document.get(CoreAnnotations.SentencesAnnotation.class);
         for (int i = 0; i < sentences.size(); i++) {
             List<Integer> counts2 = uncertainty.Uncertainty(sentences.get(i), Reg);
-            noun_pos += counts2.get(0);
-            noun_neg += counts2.get(1);
-            verb_pos += counts2.get(2);
-            verb_neg += counts2.get(3);
-            othertype_pos += counts2.get(4);
-            othertype_neg += counts2.get(5);
+            for (int j = 0; j < 6; j++){
+                counts.set(j, counts.get(j) + counts2.get(j));
+            }
 
             System.out.println(
-                    "Sentence" + i + ": " +
-                    noun_pos + "," +
-                    noun_neg + "," +
-                    verb_pos + "," +
-                    verb_neg + "," +
-                    othertype_pos + "," +
-                    othertype_neg);
+                "Sentence" + i + ": " +
+                    "noun_pos" + "," + counts.get(0) + "," +
+                    "noun_neg" + "," + counts.get(1) + "," +
+                    "verb_pos" + "," + counts.get(2) + "," +
+                    "verb_neg" + "," + counts.get(3) + "," +
+                    "othertype_pos" + "," + counts.get(4) + "," +
+                    "othertype_neg" + "," + counts.get(5));
         }
-        counts.add(0, noun_pos);
-        counts.add(1, noun_neg);
-        counts.add(2, verb_pos);
-        counts.add(3, verb_neg);
-        counts.add(4, othertype_pos);
-        counts.add(5, othertype_neg);
         return counts;
     }
 

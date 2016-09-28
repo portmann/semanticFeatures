@@ -14,6 +14,8 @@ import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.scoref.SimpleLinearClassifier;
 import edu.stanford.nlp.util.CoreMap;
 
+import javax.print.Doc;
+
 /**
  * Document Class stores the information of each document including document text, sentence, token, Stanford Annotation,
  * Date of each doc, index of each doc.
@@ -68,7 +70,70 @@ public class Document implements Serializable {
 
 	public static void main(String[] args) throws IOException, ParseException {
 
+/**
+ * Writing Documents.ser
+ * */
+		Map<Integer, Date> DocTime = new HashMap<>();
+		FileInputStream fileInputStream;
+		try {
+			fileInputStream = new FileInputStream("data/corpus4/DataTime.ser");
+			ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+			DocTime = (Map<Integer, Date>) objectInputStream.readObject();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		FileHandler fileHandler = new FileHandler();
+		File folder = new File("data/corpus6");
+		File[] listOfFiles = folder.listFiles();
+
+		StanfordCore.init();
+		for (int i = 100; i < 200; i++) {
+			Integer index = Integer.valueOf(listOfFiles[i].getName().substring(0, listOfFiles[i].getName().lastIndexOf('.')));
+			Document document = new Document(fileHandler.loadFileToString(listOfFiles[i].getPath()), index, DocTime.get(index));
+			System.out.printf("%d is done\n", i);
+			ObjectOutputStream objectOutputStream;
+			try {
+				objectOutputStream = new ObjectOutputStream(new FileOutputStream("data/corpus7/" +
+						listOfFiles[i].getName().substring(0, listOfFiles[i].getName().lastIndexOf('.')) + ".ser"));
+				objectOutputStream.writeObject(document);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
+
+/**
+ * Reading Documents.ser
+* */
+//		FileHandler fileHandler = new FileHandler();
+//		File folder = new File("data/corpus7");
+//		File[] listOfFiles = folder.listFiles();
+//		Corpus corpus = new Corpus();
+//
+//		FileInputStream fileInputStream = null;
+//
+//		for (int i = 0; i < listOfFiles.length; i++){
+//
+//			try {
+//				fileInputStream = new FileInputStream("data/corpus7/" + listOfFiles[i].getName());
+//				ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+//				Document document = (Document) objectInputStream.readObject();
+//				corpus.addDocument(document);
+//			} catch (FileNotFoundException e) {
+//				e.printStackTrace();
+//			} catch (ClassNotFoundException e) {
+//				e.printStackTrace();
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+//			System.out.printf("%d is done\n",i);
+//		}
+//	}
 
 	public String getDocumentText() {
 		return documentText;

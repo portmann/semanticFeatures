@@ -7,18 +7,23 @@ import ch.lgt.ming.corenlp.StanfordCore;
 import ch.lgt.ming.helper.FileHandler;
 import edu.stanford.nlp.util.CoreMap;
 
+import javax.print.Doc;
+
 public class Corpus implements Serializable{
 
 	List<Document> documents;
 
+	public Corpus(){
+		documents = new ArrayList<>();
+	}
+
 	public Corpus(String path) throws IOException {
 
 		FileHandler fileHandler = new FileHandler();
-
-		documents = new ArrayList<>();
-
 		File folder = new File(path);
 		File[] listOfFiles = folder.listFiles();
+
+		documents = new ArrayList<>();
 
 		Map<Integer,Date> DocTime = new HashMap<>();
 		FileInputStream fileInputStream = null;
@@ -96,6 +101,10 @@ public class Corpus implements Serializable{
 
 	public void setDocuments(List<Document> documents) {
 		this.documents = documents;
+	}
+
+	public void addDocument(Document document){
+		this.documents.add(document);
 	}
 
 }
