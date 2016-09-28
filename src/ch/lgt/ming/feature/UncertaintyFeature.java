@@ -10,13 +10,12 @@ import edu.stanford.nlp.ling.IndexedWord;
 import edu.stanford.nlp.ling.tokensregex.Env;
 import edu.stanford.nlp.ling.tokensregex.TokenSequenceMatcher;
 import edu.stanford.nlp.ling.tokensregex.TokenSequencePattern;
+import edu.stanford.nlp.pipeline.Annotation;
+import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.trees.*;
 import edu.stanford.nlp.util.CoreMap;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Pattern;
 
 /**
@@ -26,7 +25,9 @@ public class UncertaintyFeature {
 
     private static Env env = TokenSequencePattern.getNewEnv();
     private List<String> NegWordForNoun = Arrays.asList("little", "few");
-    private List<String> NegWordForVerb = Arrays.asList("hardly", "barely", "rarely", "seldom", "scarcely");
+    private List<String> NegWordForVerb = Arrays.asList("not","hardly", "barely", "rarely", "seldom", "scarcely");
+    private List<String> NegWordForOthers = Arrays.asList("not", "hardly", "barely", "rarely", "seldom", "scarcely");
+
 
     public UncertaintyFeature() {
         env.setDefaultStringPatternFlags(Pattern.CASE_INSENSITIVE);
@@ -58,7 +59,31 @@ public class UncertaintyFeature {
         env.bind("$UNCERTAINTY", "$UNSPECIFIED|$FEAR|$HOPE|$ANXIETY");
     }
 
-    public List<Integer> Uncertainty(CoreMap sentence, String Reg) {
+    public static void main(String[] args) {
+        System.out.println("--------------------------------------- Pipeline ------------------------------------------");
+        Properties props = new Properties();
+        props.setProperty("customAnnotatorClass.tense", "ch.lgt.ming.corenlp.TenseAnnotator");
+        props.setProperty("annotators", "tokenize, ssplit, pos, lemma, ner, parse, tense");
+        StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
+        String[] myString = {
+                "I am not so afraid about the news. ",
+                "Not horrified, he accepted my request."
+        };
+        for (int i = 0; i < myString.length; i++) {
+            System.out.printf("-------------------------------------Sentence %d ---------------------------------\n",i);
+            Annotation document = new Annotation(myString[i]);
+            pipeline.annotate(document);
+            List<CoreMap> sentences = document.get(CoreAnnotations.SentencesAnnotation.class);
+            System.out.println("sentences: " + sentences);
+            CoreMap sentence = sentences.get(0);
+            UncertaintyFeature uncertaintyFeature = new UncertaintyFeature();
+//            surprise.Surprise(sentence, "$UNSPECIFIED");
+            uncertaintyFeature.Uncertainty(sentence, "$UNCERTAINTY");
+
+        }
+    }
+
+    public List<Integer> Uncertainty(CoreMap sentence, String reg) {
 
         List<Integer> counts = new ArrayList<>();
         int noun_pos = 0;
@@ -68,7 +93,7 @@ public class UncertaintyFeature {
         int othertype_pos = 0;
         int othertype_neg = 0;
 
-        TokenSequencePattern pattern = TokenSequencePattern.compile(env, Reg);
+        TokenSequencePattern pattern = TokenSequencePattern.compile(env, reg);
         List<CoreLabel> tokens = sentence.get(CoreAnnotations.TokensAnnotation.class);
         TokenSequenceMatcher matcher = pattern.getMatcher(tokens);
         while (matcher.find()) {
@@ -97,7 +122,7 @@ public class UncertaintyFeature {
                                 IndexedWord governor = td.gov();
                                 if (governor.value().equals(matcher.group())) {
                                     noun_neg++;
-                                    System.out.println("Uncertainty " + Reg + " noun_neg++:" + noun_neg);
+                                    System.out.println("Uncertainty " + reg + " noun_neg++:" + noun_neg);
                                 }
                             } else if (relation.getShortName().equals("amod")) {
                                 System.out.println("find amod!!!");
@@ -105,13 +130,13 @@ public class UncertaintyFeature {
                                 IndexedWord dependent = td.dep();
                                 if (governor.value().equals(matcher.group()) && NegWordForNoun.contains(dependent.value().toLowerCase())) {
                                     noun_neg++;
-                                    System.out.println("Uncertainty " + Reg + " noun_neg++:" + noun_neg);
+                                    System.out.println("Uncertainty " + reg + " noun_neg++:" + noun_neg);
                                 }
                             }
                         }
                         if (noun_neg == 0) {
                             noun_pos++;
-                            System.out.println("Uncertainty " + Reg + " noun_pos++:" + noun_pos);
+                            System.out.println("Uncertainty " + reg + " noun_pos++:" + noun_pos);
                         }
                         break;
                     }
@@ -123,26 +148,27 @@ public class UncertaintyFeature {
                     case "VBZ": {
                         for (TypedDependency td : tds) {
                             GrammaticalRelation relation = td.reln();
+                            System.out.println(relation);
                             if (relation.getShortName().equals("neg")) {
                                 System.out.println("find neg!!!");
                                 IndexedWord governor = td.gov();
                                 if (governor.value().equals(matcher.group())) {
                                     verb_neg++;
-                                    System.out.println("Uncertainty " + Reg + " verb_neg++:" + verb_neg);
+                                    System.out.println("Uncertainty " + reg + " verb_neg++:" + verb_neg);
                                 }
-                            } else if (relation.getShortName().equals("advmod")) {
-                                System.out.println("find advmod!!!");
+                            } else if (relation.getShortName().equals("advmod")||relation.getShortName().equals("dep")) {
+                                System.out.println("find advmod/dep!!!");
                                 IndexedWord governor = td.gov();
                                 IndexedWord dependent = td.dep();
                                 if (governor.value().equals(matcher.group()) && NegWordForVerb.contains(dependent.value().toLowerCase())) {
                                     verb_neg++;
-                                    System.out.println("Uncertainty " + Reg + " verb_neg++:" + verb_neg);
+                                    System.out.println("Uncertainty " + reg + " verb_neg++:" + verb_neg);
                                 }
                             }
                         }
                         if (verb_neg == 0) {
                             verb_pos++;
-                            System.out.println("Uncertainty " + Reg + " verb_pos++:" + verb_pos);
+                            System.out.println("Uncertainty " + reg + " verb_pos++:" + verb_pos);
                         }
                         break;
                     }
@@ -155,13 +181,21 @@ public class UncertaintyFeature {
                                 IndexedWord governor = td.gov();
                                 if (governor.value().equals(matcher.group())) {
                                     othertype_neg++;
-                                    System.out.println("Uncertainty " + Reg + " othertype_neg++:" + othertype_neg);
+                                    System.out.println("Uncertainty " + reg + " othertype_neg++:" + othertype_neg);
+                                }
+                            }else if (relation.getShortName().equals("advmod")||relation.getShortName().equals("dep")) {
+                                System.out.println("find advmod/dep!!!");
+                                IndexedWord governor = td.gov();
+                                IndexedWord dependent = td.dep();
+                                if (governor.value().equals(matcher.group()) && NegWordForOthers.contains(dependent.value().toLowerCase())) {
+                                    othertype_neg++;
+                                    System.out.println("Surprise " + reg + " othertype_neg++:" + othertype_neg);
                                 }
                             }
                         }
                         if (othertype_neg == 0) {
                             othertype_pos++;
-                            System.out.println("Uncertainty " + Reg + " othertype_pos++:" + othertype_pos);
+                            System.out.println("Uncertainty " + reg + " othertype_pos++:" + othertype_pos);
                         }
                         break;
                     }
