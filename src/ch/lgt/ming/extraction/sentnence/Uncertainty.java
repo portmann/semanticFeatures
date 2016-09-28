@@ -53,7 +53,9 @@ public class Uncertainty {
      * This function extract the counts of specific sentiments from a document.
      *
      * @param document the annotation of the text
-     * @param reg regular expression of surprise sentiment
+     * @param reg regular expression of uncertainty sentiment
+     * @param company company name to be detected
+     * @param threshold sentence distance threshold
      *
      * @return a list of integer of length 6, represent the counts of "noun_pos","noun_neg",
      *          "verb_pos","verb_neg","othertype_pos","othertype_neg" of the document.
