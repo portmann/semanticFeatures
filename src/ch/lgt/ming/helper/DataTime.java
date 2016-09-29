@@ -14,6 +14,10 @@ import java.util.Map;
 public class DataTime {
     public static void main(String[] args) {
 
+        /**
+         * This part of code converts the date information stored in fullMetaForMing.csv to DataTime.ser
+        * */
+
 //		File file = new File("data/corpus4/fullMetaForMing.csv");
 //		Scanner input = new Scanner(file);
 //		DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -38,6 +42,10 @@ public class DataTime {
 //		} catch (IOException e) {
 //			e.printStackTrace();
 //		}
+
+        /**
+         * This part of code reads the date information from DataTime.ser to Map<Integer, Date> map
+         * */
 
         Map<Integer,Date> map = new HashMap<>();
         FileInputStream fileInputStream = null;
