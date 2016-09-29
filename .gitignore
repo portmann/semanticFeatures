@@ -1,4 +1,6 @@
 bin/
 lib/
 .idea/
-data/
+data/corpus6/
+data/corpus7/
+data/corpus8/
