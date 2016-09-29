@@ -4,6 +4,10 @@ import java.io.*;
 import java.util.*;
 
 import ch.lgt.ming.corenlp.StanfordCore;
+import ch.lgt.ming.datastore.IdListDouble;
+import ch.lgt.ming.datastore.IdListString;
+import ch.lgt.ming.datastore.IdSetString;
+import ch.lgt.ming.datastore.IdString;
 import ch.lgt.ming.helper.FileHandler;
 import edu.stanford.nlp.util.CoreMap;
 
@@ -11,13 +15,24 @@ import javax.print.Doc;
 
 public class Corpus implements Serializable{
 
-	List<Document> documents;
+	private List<Document> documents;
+	private IdListDouble DocId_tfidfList = new IdListDouble();                         //Document Index - List of TFIDF of each word in the dictionary
+	private List<Integer> DocId_DocName = new ArrayList<>();                           //Document Index - Document name(which is also an index)
+	private List<Date> DocId_DocDate = new ArrayList<>();                              //Document Index - Document Date
 
 	public Corpus(){
 		documents = new ArrayList<>();
 	}
 
-	public Corpus(String path) throws IOException {
+
+	/**
+	 * Constructor: create a corpus with a collection of documents
+	 *
+	 * @param path the path of the corpus
+	 * @param annotation to decide if includes annotations in the documents
+	 * */
+
+	public Corpus(String path, boolean annotation) throws IOException {
 
 		FileHandler fileHandler = new FileHandler();
 		File folder = new File(path);
@@ -25,8 +40,11 @@ public class Corpus implements Serializable{
 
 		documents = new ArrayList<>();
 
+		/**
+		 * This part reads the Date from DataTime.ser
+		* */
 		Map<Integer,Date> DocTime = new HashMap<>();
-		FileInputStream fileInputStream = null;
+		FileInputStream fileInputStream;
 		try {
 			fileInputStream = new FileInputStream("data/corpus4/DataTime.ser");
 			ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
@@ -38,56 +56,34 @@ public class Corpus implements Serializable{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		System.out.println(DocTime);
 
-		for (int i = 0; i < 100; i++) {
+		/**
+		 * This part stores documents into corpus
+		 * */
+
+		for (int i = 0; i < listOfFiles.length; i++) {
 
 			try {
-
 				Integer index = Integer.valueOf(listOfFiles[i].getName().substring(0, listOfFiles[i].getName().lastIndexOf('.')));
-				documents.add(new Document(fileHandler.loadFileToString(listOfFiles[i].getPath()),index, DocTime.get(index)));
+				documents.add(new Document(fileHandler.loadFileToString(listOfFiles[i].getPath()),index, DocTime.get(index), annotation));
 
 			} catch (IOException e) {
-
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-
 			}
 
-			System.out.println("Document: " + listOfFiles[i].getName() + " done.");
+			System.out.println("Document " + i + ": " + listOfFiles[i].getName() + " done.");
 		}
 
 	}
 
 	public static void main(String[] args) throws IOException {
-		StanfordCore.init();
-		Corpus corpus = new Corpus("data/corpus5/Amazon");
-		ObjectOutputStream objectOutputStream;
-		try {
-			objectOutputStream = new ObjectOutputStream(new FileOutputStream("data/corpus5/Amazon100.ser"));
-			objectOutputStream.writeObject(corpus);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-//		Corpus corpus = null;
-//		FileInputStream fileInputStream = null;
-//		try {
-//			fileInputStream = new FileInputStream("data/corpus4/Amazon100.ser");
-//			ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-//			corpus = (Corpus) objectInputStream.readObject();
-//		} catch (FileNotFoundException e) {
-//			e.printStackTrace();
-//		} catch (ClassNotFoundException e) {
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//
-//		System.out.println(corpus.getDocumentId());
-//		System.out.println(corpus.getDocuments().get(3).getTokenText());
+		/**
+		 * This part of code
+		* */
 
 	}
+
 	
 	public int getDocCount(){
 		
@@ -97,6 +93,10 @@ public class Corpus implements Serializable{
 
 	public List<Document> getDocuments() {
 		return documents;
+	}
+
+	public Document getDocument(int i){
+		return documents.get(i);
 	}
 
 	public void setDocuments(List<Document> documents) {

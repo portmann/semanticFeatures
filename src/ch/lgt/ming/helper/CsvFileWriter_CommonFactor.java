@@ -39,13 +39,12 @@ public class CsvFileWriter_CommonFactor {
         }
 
 //        TFIDF tfIdf = new TFIDF(numberofDocs, "corpus2/test1");
-        tfidf tfIdf = new tfidf(numberofDocs, "corpus");
-        tfIdf.ReadDict();
-        tfIdf.ReadStopword();
-        tfIdf.ReadIdf();
-        tfIdf.DocProcess();
+//        tfidf tfIdf = new tfidf(corpus);
+//        tfIdf.ReadDict();
+//        tfIdf.ReadStopword();
+//        tfIdf.ReadIdf();
 //        System.out.println(tfIdf.getDocId_TokensList().getValue(0));
-        IdListDouble DocId_TfidfList = tfIdf.getTfIdf();
+//        IdListDouble DocId_TfidfList = tfIdf.calculateTfIdf();
 //        DocId_TfidfList.getValue(1);
 //        System.out.println(DocId_TfidfList.getValue(1));
 //        double cosinsimilarity = tfIdf.getCosineSimilarity(DocId_TfidfList.getValue(1),DocId_TfidfList.getValue(2));
@@ -54,49 +53,49 @@ public class CsvFileWriter_CommonFactor {
 
 //        System.out.println(Dict.get(0));
 
-        FileWriter fileWriter = null;
-        try {
-
-            fileWriter = new FileWriter(fileName);
-
-            //Write the CSV file header
-            fileWriter.append(FILE_HEADER);
-
-            //Add a new line separator after the header
-            fileWriter.append(NEW_LINE_SEPARATOR);
-            //Write new subjects to the CSV file
-            //Process documents
-            for (int i = 0; i < numberofDocs; i++) {
-
-                double start = System.currentTimeMillis();
-                List<String> keywords = tfIdf.getKeyWords(DocId_TfidfList.getValue(i), numberofKeyWords);
-
-                fileWriter.append(String.valueOf(i));
-                for (int j = 0; j < numberofKeyWords; j++){
-                    fileWriter.append(COMMA_DELIMITER);
-                    fileWriter.append(keywords.get(j));
-                }
-                fileWriter.append(NEW_LINE_SEPARATOR);
-                double end = System.currentTimeMillis();
-                System.out.println(end-start);
-                System.out.println("Document " + i + " is done.");
-
-            }
-
-            System.out.println("CSV file was created successfully!");
-
-        } catch (Exception e) {
-            System.out.println("Error in CsvFileWriter_Features!");
-            e.printStackTrace();
-        } finally {
-            try {
-                fileWriter.flush();
-                fileWriter.close();
-            }catch (IOException e){
-                System.out.println("Error while flushing/closing fileWriter!");
-                e.printStackTrace();
-            }
-        }
+//        FileWriter fileWriter = null;
+//        try {
+//
+//            fileWriter = new FileWriter(fileName);
+//
+//            //Write the CSV file header
+//            fileWriter.append(FILE_HEADER);
+//
+//            //Add a new line separator after the header
+//            fileWriter.append(NEW_LINE_SEPARATOR);
+//            //Write new subjects to the CSV file
+//            //Process documents
+//            for (int i = 0; i < numberofDocs; i++) {
+//
+//                double start = System.currentTimeMillis();
+////                List<String> keywords = tfIdf.getKeyWords(DocId_TfidfList.getValue(i), numberofKeyWords);
+//
+//                fileWriter.append(String.valueOf(i));
+//                for (int j = 0; j < numberofKeyWords; j++){
+//                    fileWriter.append(COMMA_DELIMITER);
+//                    fileWriter.append(keywords.get(j));
+//                }
+//                fileWriter.append(NEW_LINE_SEPARATOR);
+//                double end = System.currentTimeMillis();
+//                System.out.println(end-start);
+//                System.out.println("Document " + i + " is done.");
+//
+//            }
+//
+//            System.out.println("CSV file was created successfully!");
+//
+//        } catch (Exception e) {
+//            System.out.println("Error in CsvFileWriter_Features!");
+//            e.printStackTrace();
+//        } finally {
+//            try {
+//                fileWriter.flush();
+//                fileWriter.close();
+//            }catch (IOException e){
+//                System.out.println("Error while flushing/closing fileWriter!");
+//                e.printStackTrace();
+//            }
+//        }
 
     }
 }

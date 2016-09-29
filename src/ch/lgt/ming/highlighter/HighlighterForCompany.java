@@ -3,10 +3,7 @@ package ch.lgt.ming.highlighter;
 import ch.lgt.ming.cleanup.Corpus;
 import ch.lgt.ming.cleanup.Document;
 import ch.lgt.ming.cleanup.HTMLStrings;
-import ch.lgt.ming.feature.UncertaintyFeature;
 import ch.lgt.ming.helper.FileHandler;
-import edu.stanford.nlp.ling.CoreAnnotations;
-import edu.stanford.nlp.util.CoreMap;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -36,7 +33,7 @@ public class HighlighterForCompany {
         FileHandler filehandler = new FileHandler();
         HighlighterForCompany highlighterForCompany = new HighlighterForCompany();
         for (int i = 0; i < companies.size(); i++){
-            Corpus corpus = new Corpus("data/corpus4/" + Folders.get(i));
+            Corpus corpus = new Corpus("data/corpus4/" + Folders.get(i), false);
             for (int j = 0; j < corpus.getDocCount(); j++){
                 String higlightedText = highlighterForCompany.highlight(corpus.getDocuments().get(j),companies.get(i));
                 if (!higlightedText.equals(""))
@@ -63,12 +60,12 @@ public class HighlighterForCompany {
 
         boolean highlighted = false;
 
-        for (int i = 0; i < document.getTokenText().size(); i++) {
+        for (int i = 0; i < document.getTokenTextList().size(); i++) {
 
-            if (document.getTokenText().get(i).equals(company)) {
+            if (document.getTokenTextList().get(i).equals(company)) {
 
                 highlightedString = highlightedString + before_highlighted;
-                highlightedString = highlightedString + document.getTokenText().get(i) + " ";
+                highlightedString = highlightedString + document.getTokenTextList().get(i) + " ";
                 highlightedString = highlightedString + after_highlighted;
                 highlighted = true;
 
@@ -76,7 +73,7 @@ public class HighlighterForCompany {
             else {
 
 				highlightedString = highlightedString + before_standard;
-				highlightedString = highlightedString + document.getTokenText().get(i) + " ";
+				highlightedString = highlightedString + document.getTokenTextList().get(i) + " ";
 				highlightedString = highlightedString + after_standard;
 
 			}
