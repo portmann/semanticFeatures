@@ -92,7 +92,7 @@ public class Document implements Serializable {
 		File[] listOfFiles = folder.listFiles();
 
 		StanfordCore.init();
-		for (int i = 1200; i < 4000; i++) {
+		for (int i = 4000; i < 4210; i++) {
 			Integer index = Integer.valueOf(listOfFiles[i].getName().substring(0, listOfFiles[i].getName().lastIndexOf('.')));
 			Document document = new Document(fileHandler.loadFileToString(listOfFiles[i].getPath()), index, DocTime.get(index));
 			System.out.printf("%d is done\n", i);

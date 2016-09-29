@@ -103,7 +103,7 @@ public class Surprise {
      *
      * */
 
-    public static List<Integer> extract(Annotation document, String reg, String company, Integer threshold) {
+    public static List<Integer> extract(Annotation document, String reg, String company, int threshold) {
 
         List<CoreMap> sentences = document.get(CoreAnnotations.SentencesAnnotation.class);
         SurpriseFeature surprise = new SurpriseFeature();
