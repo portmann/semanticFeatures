@@ -103,7 +103,8 @@ public class kmeans {
             for(int j = 0; j < NumberOfCluster; j++){
 //                System.out.println(Centroids.getValue(j));
 //                System.out.println(Obs.getValue(i));
-                Double distance = 1 - tfidf.cosineSimilarity(Obs.getValue(i),Centroids.getValue(j));
+                Double distance = 1 - tfidf.getCosineSimilarity(Obs.getValue(i),Centroids.getValue(j));
+
                 disvector.add(j,distance);
 //                System.out.println("distance: " + distance);
             }

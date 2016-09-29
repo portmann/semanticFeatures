@@ -48,9 +48,9 @@ public class CsvFileWriter_CommonFactor {
         IdListDouble DocId_TfidfList = tfIdf.getTfIdf();
 //        DocId_TfidfList.getValue(1);
 //        System.out.println(DocId_TfidfList.getValue(1));
-//        double cosinsimilarity = tfIdf.cosineSimilarity(DocId_TfidfList.getValue(1),DocId_TfidfList.getValue(2));
+//        double cosinsimilarity = tfIdf.getCosineSimilarity(DocId_TfidfList.getValue(1),DocId_TfidfList.getValue(2));
 //        System.out.println(cosinsimilarity);
-//        tfIdf.getSimilarDoc(0.1);
+//        tfIdf.getCosineMatrix(0.1);
 
 //        System.out.println(Dict.get(0));
 

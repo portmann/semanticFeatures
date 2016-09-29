@@ -21,8 +21,9 @@ import java.util.regex.Pattern;
 public class SurpriseFeature {
 
     private static Env env = TokenSequencePattern.getNewEnv();
-    private List<String> NegWordForNoun = Arrays.asList("little", "few");
-    private List<String> NegWordForVerb = Arrays.asList("hardly", "barely", "rarely", "seldom", "scarcely");
+    private List<String> NegWordForNoun = Arrays.asList("no","little", "few");
+    private List<String> NegWordForVerb = Arrays.asList("not","hardly", "barely", "rarely", "seldom", "scarcely");
+    private List<String> NegWordForOthers = Arrays.asList("not", "hardly", "barely", "rarely", "seldom", "scarcely");
 
     public SurpriseFeature() {
 
@@ -42,7 +43,8 @@ public class SurpriseFeature {
         props.setProperty("annotators", "tokenize, ssplit, pos, lemma, ner, parse, tense");
         StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
         String[] myString = {
-                "I am so surprised about the amazing news. ",
+                "I am not so surprised about the news. ",
+                "Not surprisingly, he refused me suggestion.",
                 "The 'Amazing' IPO Change That May Restart The Flow Of New Stocks.",
                 "Opinion: CFOs want a stunning 14% annual return on investments — and that’s holding back the economy",
                 "Gap shares slump as July sales disappoint, but analysts upbeat."
@@ -61,7 +63,18 @@ public class SurpriseFeature {
         }
     }
 
-    public List<Integer> Surprise(CoreMap sentence, String Reg) {
+    /**
+     * This function extract the counts of specific sentiments from a document.
+     *
+     * @param sentence the annotation of the sentence
+     * @param reg regular expression of surprise sentiment
+     *
+     * @return a list of integer of length 6, represent the counts of "noun_pos","noun_neg",
+     *          "verb_pos","verb_neg","othertype_pos","othertype_neg" of the document.
+     *
+     * */
+
+    public List<Integer> Surprise(CoreMap sentence, String reg) {
 
         List<Integer> counts = new ArrayList<>();
         int noun_pos = 0;
@@ -71,7 +84,7 @@ public class SurpriseFeature {
         int othertype_pos = 0;
         int othertype_neg = 0;
 
-        TokenSequencePattern pattern = TokenSequencePattern.compile(env, Reg);
+        TokenSequencePattern pattern = TokenSequencePattern.compile(env, reg);
         List<CoreLabel> tokens = sentence.get(CoreAnnotations.TokensAnnotation.class);
         TokenSequenceMatcher matcher = pattern.getMatcher(tokens);
         while (matcher.find()) {
@@ -100,21 +113,21 @@ public class SurpriseFeature {
                                 IndexedWord governor = td.gov();
                                 if (governor.value().equals(matcher.group())) {
                                     noun_neg++;
-                                    System.out.println("Surprise " + Reg + " noun_neg++:" + noun_neg);
+                                    System.out.println("Surprise " + reg + " noun_neg++:" + noun_neg);
                                 }
-                            } else if (relation.getShortName().equals("amod")) {
-                                System.out.println("find amod!!!");
+                            } else if (relation.getShortName().equals("amod")||relation.getShortName().equals("dep")) {
+                                System.out.println("find amod/dep!!!");
                                 IndexedWord governor = td.gov();
                                 IndexedWord dependent = td.dep();
                                 if (governor.value().equals(matcher.group()) && NegWordForNoun.contains(dependent.value().toLowerCase())) {
                                     noun_neg++;
-                                    System.out.println("Surprise " + Reg + " noun_neg++:" + noun_neg);
+                                    System.out.println("Surprise " + reg + " noun_neg++:" + noun_neg);
                                 }
                             }
                         }
                         if (noun_neg == 0) {
                             noun_pos++;
-                            System.out.println("Surprise " + Reg + " noun_pos++:" + noun_pos);
+                            System.out.println("Surprise " + reg + " noun_pos++:" + noun_pos);
                         }
                         break;
                     }
@@ -131,26 +144,25 @@ public class SurpriseFeature {
                                 IndexedWord governor = td.gov();
                                 if (governor.value().equals(matcher.group())) {
                                     verb_neg++;
-                                    System.out.println("Surprise " + Reg + " verb_neg++:" + verb_neg);
+                                    System.out.println("Surprise " + reg + " verb_neg++:" + verb_neg);
                                 }
-                            } else if (relation.getShortName().equals("advmod")) {
-                                System.out.println("find advmod!!!");
+                            } else if (relation.getShortName().equals("advmod")||relation.getShortName().equals("dep")) {
+                                System.out.println("find advmod/dep!!!");
                                 IndexedWord governor = td.gov();
                                 IndexedWord dependent = td.dep();
                                 if (governor.value().equals(matcher.group()) && NegWordForVerb.contains(dependent.value().toLowerCase())) {
                                     verb_neg++;
-                                    System.out.println("Surprise " + Reg + " verb_neg++:" + verb_neg);
+                                    System.out.println("Surprise " + reg + " verb_neg++:" + verb_neg);
                                 }
                             }
                         }
                         if (verb_neg == 0) {
                             verb_pos++;
-                            System.out.println("Surprise " + Reg + " verb_pos++:" + verb_pos);
+                            System.out.println("Surprise " + reg + " verb_pos++:" + verb_pos);
                         }
                         break;
                     }
                     default: {
-
                         for (TypedDependency td : tds) {
                             GrammaticalRelation relation = td.reln();
                             if (relation.getShortName().equals("neg")) {
@@ -158,13 +170,21 @@ public class SurpriseFeature {
                                 IndexedWord governor = td.gov();
                                 if (governor.value().equals(matcher.group())) {
                                     othertype_neg++;
-                                    System.out.println("Surprise " + Reg + " othertype_neg++:" + othertype_neg);
+                                    System.out.println("Surprise " + reg + " othertype_neg++:" + othertype_neg);
+                                }
+                            }else if (relation.getShortName().equals("advmod")||relation.getShortName().equals("dep")) {
+                                System.out.println("find advmod/dep!!!");
+                                IndexedWord governor = td.gov();
+                                IndexedWord dependent = td.dep();
+                                if (governor.value().equals(matcher.group()) && NegWordForOthers.contains(dependent.value().toLowerCase())) {
+                                    othertype_neg++;
+                                    System.out.println("Surprise " + reg + " othertype_neg++:" + othertype_neg);
                                 }
                             }
                         }
                         if (othertype_neg == 0) {
                             othertype_pos++;
-                            System.out.println("Surprise " + Reg + " othertype_pos++:" + othertype_pos);
+                            System.out.println("Surprise " + reg + " othertype_pos++:" + othertype_pos);
                         }
                         break;
                     }

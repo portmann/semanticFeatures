@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class IdListId implements Datastore<Integer, List<Integer>> {
+public class IdListInt implements Datastore<Integer, List<Integer>> {
 	
 	private Map<Integer, List<Integer>> mapStore = new HashMap<>();
 

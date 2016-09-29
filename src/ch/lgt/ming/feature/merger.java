@@ -16,7 +16,11 @@ import java.util.regex.Pattern;
  */
 public class merger {
 
-    public static boolean IsMerge(CoreMap sentence) {
+    /**
+     * This function checks if there's merger mentioned in the sentence
+     * */
+
+    public static boolean isMerger(CoreMap sentence) {
 
         Env env = TokenSequencePattern.getNewEnv();
         env.setDefaultStringPatternFlags(Pattern.CASE_INSENSITIVE);

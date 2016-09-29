@@ -2,18 +2,14 @@ package ch.lgt.ming.extraction.sentnence;
 
 import ch.lgt.ming.cleanup.Corpus;
 import ch.lgt.ming.cleanup.Document;
-import ch.lgt.ming.corenlp.StanfordCore;
-import ch.lgt.ming.datastore.IdListId;
+import ch.lgt.ming.datastore.IdListInt;
 import ch.lgt.ming.feature.SurpriseFeature;
 import ch.lgt.ming.helper.FileHandler;
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.util.CoreMap;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.ObjectInputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -24,32 +20,41 @@ import java.util.List;
 public class Surprise {
 
     public static void main(String[] args) throws IOException {
-        Corpus corpus = null;
-		FileInputStream fileInputStream = null;
-		try {
-			fileInputStream = new FileInputStream("data/corpus4/Amazon100.ser");
-			ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-			corpus = (Corpus) objectInputStream.readObject();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+
+		FileHandler fileHandler = new FileHandler();
+		File folder = new File("data/corpus7");
+		File[] listOfFiles = folder.listFiles();
+		Corpus corpus = new Corpus();
+
+		FileInputStream fileInputStream ;
+
+		for (int i = 0; i < 10; i++){
+
+			try {
+				fileInputStream = new FileInputStream("data/corpus7/" + listOfFiles[i].getName());
+				ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+				Document document = (Document) objectInputStream.readObject();
+				corpus.addDocument(document);
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			System.out.printf("%d is done\n",i);
 		}
-//
-//        FileHandler fileHandler = new FileHandler();
+
 //        StanfordCore.init();
-//        Annotation annotation =  StanfordCore.pipeline.process(fileHandler.loadFileToString("data/corpus4/Amazon/573.html"));
-//        Surprise.extract(annotation, "$SURPRISE", 100, "amazon");
+//        Annotation annotation =  StanfordCore.pipeline.process(fileHandler.loadFileToString("data/corpus5/Amazon/3312.html"));
+//        Surprise.extract(annotation, "$SURPRISE", "amazon", 100);
 //        Surprise.extract(annotation, "$SURPRISE");
 
-//        for (int i = 0; i < corpus.getDocCount(); i++){
-//            System.out.printf("-------------------------------------Document %d ---------------------------------\n",i);
-//            Surprise.extract(corpus.getDocuments().get(i).getDocument(), "$SURPRISE", 5, "amazon");
-//            Surprise.extract(corpus.getDocuments().get(i).getDocument(), "$SURPRISE");
-
-//        }
+        for (int i = 0; i < corpus.getDocCount(); i++){
+            System.out.printf("-------------------------------------Document %d ---------------------------------\n",i);
+//            Surprise.extract(corpus.getDocuments().get(i).getDocument(), "$SURPRISE", "amazon", 5);
+            Surprise.extract(corpus.getDocuments().get(i).getDocument(), "$SURPRISE");
+        }
     }
 
     /**
@@ -90,7 +95,7 @@ public class Surprise {
      *
      * @param document the annotation of the text
      * @param reg regular expression of surprise sentiment
-     * @param com company name to be detected
+     * @param company company name to be detected
      * @param threshold sentence distance threshold
      *
      * @return a list of integer of length 6, represent the counts of "noun_pos","noun_neg",
@@ -98,20 +103,21 @@ public class Surprise {
      *
      * */
 
-    public static List<Integer> extract(Annotation document, String reg, String com, Integer threshold) {
+    public static List<Integer> extract(Annotation document, String reg, String company, Integer threshold) {
 
         List<CoreMap> sentences = document.get(CoreAnnotations.SentencesAnnotation.class);
         SurpriseFeature surprise = new SurpriseFeature();
 
         List<Integer> counts = Arrays.asList(0,0,0,0,0,0);
-        IdListId SentId_counts = new IdListId();
+        IdListInt SentId_counts = new IdListInt();
         List<Boolean> SentId_isCom = new ArrayList<>();
 
         for (int i = 0; i < sentences.size(); i++) {
             List<Integer> counts2 = surprise.Surprise(sentences.get(i), reg);
+            SentId_counts.putValue(i, counts2);                                                 //Store the uncertainty counts of every sentence
+
             String sentenceText = sentences.get(i).get(CoreAnnotations.TextAnnotation.class);
-            SentId_counts.putValue(i, counts2);
-            SentId_isCom.add(i, sentenceText.toLowerCase().contains(com));
+            SentId_isCom.add(i, sentenceText.toLowerCase().contains(company));                  //Store the result if the company name appears in the sentence
         }
 
 //        System.out.println(SentId_isCom);
@@ -122,17 +128,17 @@ public class Surprise {
             }
             if (b){
                 for (int j = 0; j < 6; j++){
-                    counts.set(j, counts.get(j) + SentId_counts.getValue(i).get(j));
-                }
+                    counts.set(j, counts.get(j) + SentId_counts.getValue(i).get(j));            //Add the uncertainty counts of the sentence to total counts only if
+                }                                                                               //it is near a company name
             }
-//            System.out.println(
-//                    "Sentence" + i + ": " +
-//                            "noun_pos" + "," + counts.get(0) + "," +
-//                            "noun_neg" + "," + counts.get(1) + "," +
-//                            "verb_pos" + "," + counts.get(2) + "," +
-//                            "verb_neg" + "," + counts.get(3) + "," +
-//                            "othertype_pos" + "," + counts.get(4) + "," +
-//                            "othertype_neg" + "," + counts.get(5));
+            System.out.println(
+                    "Sentence" + i + ": " +
+                            "noun_pos" + "," + counts.get(0) + "," +
+                            "noun_neg" + "," + counts.get(1) + "," +
+                            "verb_pos" + "," + counts.get(2) + "," +
+                            "verb_neg" + "," + counts.get(3) + "," +
+                            "othertype_pos" + "," + counts.get(4) + "," +
+                            "othertype_neg" + "," + counts.get(5));
         }
         return counts;
     }

@@ -221,11 +221,11 @@ public class featuretest {
 
 //            System.out.println("========================================= Merger =========================================");
 //            merger merger = new merger();
-//            System.out.println(merger.IsMerge(sentence));
+//            System.out.println(merger.isMerger(sentence));
 
 //            System.out.println("========================================= Acquisition ======================================");
 //            acquisition acquisition = new acquisition();
-//            System.out.println(acquisition.IsAcquisition(sentence));
+//            System.out.println(acquisition.isAcquisition(sentence));
 
             System.out.println("======================================== Surprise ========================================");
             SurpriseFeature surprise = new SurpriseFeature();

@@ -9,10 +9,7 @@ import ch.lgt.ming.helper.FileHandler;
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.util.CoreMap;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.ObjectInputStream;
+import java.io.*;
 import java.util.Arrays;
 import java.util.List;
 
@@ -43,24 +40,23 @@ public class HighlighterForSurprise {
         FileHandler filehandler = new FileHandler();
         HighlighterForSurprise highlighterForSurprise = new HighlighterForSurprise();
 
-        Corpus corpus = null;
-        FileInputStream fileInputStream = null;
-        try {
-            fileInputStream = new FileInputStream("data/corpus4/Amazon100.ser");
-            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-            corpus = (Corpus) objectInputStream.readObject();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        /**
+         * Reading Documents.ser
+         * */
+		FileHandler fileHandler = new FileHandler();
+		File folder = new File("data/corpus7");
+		File[] listOfFiles = folder.listFiles();
+		Corpus corpus = new Corpus();
 
-//        for (int i = 0; i < companies.size(); i++){
-//            Corpus corpus = new Corpus("data/corpus4/" + Folders.get(i));
-            for (int j = 0; j < corpus.getDocCount(); j++){
-                String higlightedText = highlighterForSurprise.highlight(corpus.getDocuments().get(j));
+		FileInputStream fileInputStream = null;
+
+		for (int i = 0; i < 10; i++){
+
+			try {
+				fileInputStream = new FileInputStream("data/corpus7/" + listOfFiles[i].getName());
+				ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+				Document document = (Document) objectInputStream.readObject();
+                String higlightedText = highlighterForSurprise.highlight(document);
                 if (!higlightedText.equals(""))
 
                 {
@@ -68,13 +64,21 @@ public class HighlighterForSurprise {
                             htmlStrings.getAfterTitle() + higlightedText +
                             htmlStrings.getEnd();
 
-                    System.out.println(corpus.getDocuments().get(j).getIndex());
-
-                    filehandler.saveStringAsFile("data/highlighted2/Amazon/Surprise/" + corpus.getDocuments().get(j).getIndex() + ".html", higlightedText);
-
+                    System.out.println(document.getIndex() + " is done.");
+                    filehandler.saveStringAsFile("data/highlighted2/Surprise/" + document.getIndex() + ".html", higlightedText);
                 }
-            }
-        }
+
+            } catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			System.out.printf("%d is done\n",i);
+		}
+	}
+
 
 //    }
 

@@ -16,8 +16,14 @@ public class PosWordCount{
     private static FileHandler fileHandler = new FileHandler();
     private static StringId positiveWords = new StringId();
 
-    //Input: Annotation of the text
-    //Output: Number of Positive Words in each Sentence
+
+    /**
+     * This function extracts the number of positive words of the document according to L&MPos.txt
+     *
+     * @param document the annotation of the document
+     *
+     * @return number of negative words
+     * */
     public static int extract(Annotation document) throws Exception {
 
         positiveWords.setMap(fileHandler.loadFileToMap("data/dictionaries/L&MPos.txt", true));

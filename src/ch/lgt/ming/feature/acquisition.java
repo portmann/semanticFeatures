@@ -13,7 +13,11 @@ import java.util.List;
  */
 public class acquisition {
 
-    public Boolean IsAcquisition(CoreMap sentence){
+    /**
+     * This function checks if there's acquisition mentioned in the sentence
+    * */
+
+    public Boolean isAcquisition(CoreMap sentence){
 
         TokenSequencePattern pattern = TokenSequencePattern.compile(
 
