@@ -25,15 +25,17 @@ public class DocbyWebsite {
         List<String> Folders = Arrays.asList("Amazon", "Boeing", "Delta_Airline", "Facebook", "Ford",
                 "Goldman_Sachs", "Google", "Intel", "Microsoft", "Netflix");
 
-
+        /**
+         * This part of code
+        * */
         for (int i = 0; i < companies.size(); i++){
+
             String path = "data/corpus4/" + Folders.get(i);
             File folder = new File(path);
             File[] listOfFiles = folder.listFiles();
             FileHandler fileHandler = new FileHandler();
             IdString DocId_Text = new IdString();
 
-//            Load the documents
             for (int j = 0; j < listOfFiles.length; j++) {
                 DocId_Text.putValue(j, fileHandler.loadFileToString(path + "/" + listOfFiles[j].getName()));
             }
@@ -66,12 +68,11 @@ public class DocbyWebsite {
 //                Files.copy(Paths.get(path + "/" + file.getName()),
 //                        Paths.get("data/corpus6/" + file.getName()));
 //            }
-//
 //        }
 
-/**
- * This code group all annotated documents from seeking alpha according to companies in corpus8
-* */
+        /**
+         * This part of code group all annotated documents from seeking alpha according to company names into folder corpus8
+        * */
 //        String path = "data/corpus5";
 //        for (int i = 0; i < 10; i++) {
 //            File folder = new File(path + "/" + Folders.get(i));

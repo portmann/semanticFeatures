@@ -21,17 +21,17 @@ public class Surprise {
 
     public static void main(String[] args) throws IOException {
 
-		FileHandler fileHandler = new FileHandler();
-		File folder = new File("data/corpus7");
+//		FileHandler fileHandler = new FileHandler();
+		File folder = new File("data/corpus8/Amazon");
 		File[] listOfFiles = folder.listFiles();
 		Corpus corpus = new Corpus();
 
 		FileInputStream fileInputStream ;
 
-		for (int i = 0; i < 10; i++){
+		for (int i = 0; i < 100; i++){
 
 			try {
-				fileInputStream = new FileInputStream("data/corpus7/" + listOfFiles[i].getName());
+				fileInputStream = new FileInputStream("data/corpus8/Amazon/" + listOfFiles[i].getName());
 				ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
 				Document document = (Document) objectInputStream.readObject();
 				corpus.addDocument(document);

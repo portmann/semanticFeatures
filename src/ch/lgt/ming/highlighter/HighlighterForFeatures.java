@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * Created by Ming Deng on 9/22/2016.
  */
-public class HighlighterForSurprise {
+public class HighlighterForFeatures {
 
 	// Highlighter highlights like
 	// For highlighted text: *before_highlighted* *String* *after_highlighted*
@@ -38,13 +38,13 @@ public class HighlighterForSurprise {
     public static void main(String[] args) throws IOException {
         HTMLStrings htmlStrings = new HTMLStrings();
         FileHandler filehandler = new FileHandler();
-        HighlighterForSurprise highlighterForSurprise = new HighlighterForSurprise();
+        HighlighterForFeatures highlighterForFeatures = new HighlighterForFeatures();
 
         /**
          * Reading Documents.ser
          * */
 		FileHandler fileHandler = new FileHandler();
-		File folder = new File("data/corpus7");
+		File folder = new File("data/corpus8/Facebook");
 		File[] listOfFiles = folder.listFiles();
 		Corpus corpus = new Corpus();
 
@@ -53,10 +53,10 @@ public class HighlighterForSurprise {
 		for (int i = 0; i < 10; i++){
 
 			try {
-				fileInputStream = new FileInputStream("data/corpus7/" + listOfFiles[i].getName());
+				fileInputStream = new FileInputStream("data/corpus8/" + listOfFiles[i].getName());
 				ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
 				Document document = (Document) objectInputStream.readObject();
-                String higlightedText = highlighterForSurprise.highlight(document);
+                String higlightedText = highlighterForFeatures.highlight(document);
                 if (!higlightedText.equals(""))
 
                 {
@@ -65,7 +65,7 @@ public class HighlighterForSurprise {
                             htmlStrings.getEnd();
 
                     System.out.println(document.getIndex() + " is done.");
-                    filehandler.saveStringAsFile("data/highlighted2/Surprise/" + document.getIndex() + ".html", higlightedText);
+                    filehandler.saveStringAsFile("data/highlighted2/Amazon/" + document.getIndex() + ".html", higlightedText);
                 }
 
             } catch (FileNotFoundException e) {

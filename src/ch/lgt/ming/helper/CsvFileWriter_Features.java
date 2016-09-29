@@ -1,14 +1,15 @@
 package ch.lgt.ming.helper;
 
+import ch.lgt.ming.cleanup.Corpus;
+import ch.lgt.ming.cleanup.Document;
 import ch.lgt.ming.corenlp.StanfordCore;
 import ch.lgt.ming.datastore.*;
 import ch.lgt.ming.extraction.sentnence.*;
 import edu.stanford.nlp.pipeline.Annotation;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -22,7 +23,7 @@ public class CsvFileWriter_Features {
     private static final String NEW_LINE_SEPARATOR = "\n";
 
     //CSV file header
-    private static final String FILE_HEADER = "docID," +
+    private static final String FILE_HEADER = "docID," + "Date," +
             "Uncertainty_unspecified_noun,Uncertainty_unspecified_noun_neg," +
             "Uncertainty_unspecified_verb,Uncertainty_unspecified_verb_neg," +
             "Uncertainty_unspecified_othertype,Uncertainty_unspecified_othertype_neg," +
@@ -54,10 +55,114 @@ public class CsvFileWriter_Features {
     private static IdString docId_Text = new IdString();
 
     public static void main(String[] args) {
-        CsvFileWriter_Features.writeCsvFileWriter("featureFiles/features50.csv", 1);
+        CsvFileWriter_Features.writeCsvFile("data/featureFiles/Amazon.csv", 865);
+//        CsvFileWriter_Features.writeCsvFile("data/featureFiles/Amazon.csv", 10);
+
     }
 
-    public static void writeCsvFileWriter(String fileName, int numberofdocs){
+    /**
+     * This function writes the feature counts into a csv file, using annotated documents.
+     *
+     * @param fileName The name of the csv file to be stored
+     * @param numberofdocs number of documents to write
+     *
+    * */
+
+    public static void writeCsvFile(String fileName, int numberofdocs){
+
+        File folder = new File("data/corpus8/Amazon");
+        File[] listOfFiles = folder.listFiles();
+
+        FileInputStream fileInputStream ;
+        FileWriter fileWriter = null;
+
+        try {
+            fileWriter = new FileWriter(fileName);
+
+            fileWriter.append(FILE_HEADER);                                     //Write the CSV file header
+            fileWriter.append(NEW_LINE_SEPARATOR);                              //Add a new line separator after the header
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+            //Write new subjects to the CSV file
+            for (int key = 0; key < numberofdocs; key++){
+
+                fileInputStream = new FileInputStream("data/corpus8/Amazon/" + listOfFiles[key].getName());
+                ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+                Document document = (Document) objectInputStream.readObject();
+
+                fileWriter.append(String.valueOf(document.getIndex()));
+                fileWriter.append(COMMA_DELIMITER);
+
+                String strDate = dateFormat.format(document.getDate());
+                fileWriter.append(strDate);
+                fileWriter.append(COMMA_DELIMITER);
+
+                Annotation annotation = document.getDocument();
+
+                List<String> Uncertainty_Reg = Arrays.asList("$UNSPECIFIED", "$FEAR", "$HOPE", "$ANXIETY");
+                List<String> Uncertainty_Reg2 = Arrays.asList("$CONDITIONALITY1", "$CONDITIONALITY2");
+                List<String> Surprise_Reg = Arrays.asList("$UNSPECIFIED", "$DISAPPOINTMENT", "$RELIEF");
+
+                for (int i = 0; i < Uncertainty_Reg.size(); i++){
+                    List<Integer> result = Uncertainty.extract(annotation, Uncertainty_Reg.get(i));
+                    for (int j = 0; j < 6; j++){
+                        fileWriter.append((String.valueOf(result.get(j))));
+                        fileWriter.append(COMMA_DELIMITER);
+                    }
+                }
+                for (int i = 0; i < Uncertainty_Reg2.size(); i++){
+                    List<Integer> result = Uncertainty.extractConditionality(annotation, Uncertainty_Reg2.get(i));
+                    for (int j = 0; j < 3; j++){
+                        fileWriter.append((String.valueOf(result.get(j))));
+                        fileWriter.append(COMMA_DELIMITER);
+                    }
+                }
+                for (int i = 0; i < Surprise_Reg.size(); i++){
+                    List<Integer> result = Surprise.extract(annotation, Surprise_Reg.get(i));
+                    for (int j = 0; j < 6; j++) {
+                        fileWriter.append(String.valueOf(result.get(j)));
+                        fileWriter.append(COMMA_DELIMITER);
+                    }
+                }
+                fileWriter.append(String.valueOf(Surprise.extractComparative(annotation)));
+                fileWriter.append(COMMA_DELIMITER);
+                fileWriter.append(String.valueOf(PosWordCount.extract(annotation)));
+                fileWriter.append(COMMA_DELIMITER);
+                fileWriter.append(String.valueOf(NegWordCount.extract(annotation)));
+                fileWriter.append(NEW_LINE_SEPARATOR);
+                System.out.printf("%d is done\n", key);
+            }
+            System.out.println("CSV file was created successfully!");
+
+        }catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }catch (IOException e) {
+            e.printStackTrace();
+        }catch (Exception e) {
+            System.out.println("Error in CsvFileWriter_Features!");
+            e.printStackTrace();
+        }finally {
+            try {
+                fileWriter.flush();
+                fileWriter.close();
+            } catch (IOException e) {
+                System.out.println("Error while flushing/closing fileWriter!");
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * This function writes the feature counts into a csv file, using raw html documents.
+     *
+     * @param fileName The name of the csv file to be stored
+     * @param numberofdocs number of documents to write
+     *
+     * */
+
+    public static void writeCsvFile2(String fileName, int numberofdocs){
 
         // Initialize corenlp
         StanfordCore.init();
