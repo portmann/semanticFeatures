@@ -17,33 +17,6 @@
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="jdk" jdkName="1.8" jdkType="JavaSDK" />
-    <orderEntry type="module-library">
-      <library name="ejml-0.23.jar">
-        <CLASSES>
-          <root url="file://lib/ejml-0.23.jar" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="stanford-corenlp-3.5.2-models.jar">
-        <CLASSES>
-          <root url="file://lib/stanford-corenlp-3.5.2-models.jar" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="stanford-corenlp-3.5.2.jar">
-        <CLASSES>
-          <root url="file://lib/stanford-corenlp-3.5.2.jar" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
     <orderEntry type="library" name="stanford-corenlp-full-2015-12-09" level="project" />
     <orderEntry type="module-library">
       <library>
@@ -73,5 +46,6 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="java" level="project" />
   </component>
 </module>

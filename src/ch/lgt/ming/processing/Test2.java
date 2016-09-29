@@ -25,8 +25,7 @@ public class Test2 {
 		// variable declaration
 		FileHandler fileHandler = new FileHandler();
 		IdString docId_Text = new IdString();
-		Extractor<IdListString> companyExtractor = new CompaniesAll();
-		Extractor<IdBoolean> mergerExtractor = new Merger();
+
 
 		// initialize corenlp
 		StanfordCore.init();
@@ -37,35 +36,35 @@ public class Test2 {
 		File[] listOfFiles = folder.listFiles();
 		
 		//load the documents
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 10; i++) {
 			docId_Text.putValue(i, fileHandler.loadFileToString(path + "/" + listOfFiles[i].getName()));
 		}
 
 		//process documents
 		for (Integer key : docId_Text.getMap().keySet()) {
 
-			double time = System.currentTimeMillis();
+			double start = System.currentTimeMillis();
 
-			System.out.print("document " + key + " :");
 
 			Annotation annotation = StanfordCore.pipeline.process(docId_Text.getValue(key));
 
-			// Key - Company Name map
-			IdListString sentenceCompany = companyExtractor.extract(annotation);
-			List<List<String>> comlist = new ArrayList<>(sentenceCompany.getMap().values());
-			List<String> comflat = comlist.stream()
-							.flatMap(l -> l.stream())
-							.collect(Collectors.toList());
+//			// Key - Company Name map
+//			IdListString sentenceCompany = companyExtractor.extract(annotation);
+//			List<List<String>> comlist = new ArrayList<>(sentenceCompany.getMap().values());
+//			List<String> comflat = comlist.stream()
+//							.flatMap(l -> l.stream())
+//							.collect(Collectors.toList());
+//
+//			Set<String> comset = new HashSet<>(comflat);
+//			System.out.println(comset);
+//			// Key - IsMerger map
+//			IdBoolean isMerger = mergerExtractor.extract(annotation);
+//			System.out.println(isMerger);
 
-			Set<String> comset = new HashSet<>(comflat);
-			System.out.println(comset);
-			// Key - IsMerger map
-			IdBoolean isMerger = mergerExtractor.extract(annotation);
-			System.out.println(isMerger);
 
-
-			double time2 = System.currentTimeMillis();
-			System.out.println(time2 - time);
+			System.out.print("document " + key + " is done.");
+			double end = System.currentTimeMillis();
+			System.out.println(end - start);
 		}
 
 

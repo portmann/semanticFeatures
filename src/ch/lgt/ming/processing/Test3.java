@@ -26,8 +26,7 @@ public class Test3 {
         Extractor<IdListString> companyExtractor = new CompaniesAll();
         Extractor<IdBoolean> mergerExtractor = new Merger();
         Extractor<IdString> tenseExtractor = new Tense();
-        Extractor<IdBoolean> uncertaintyExtractor = new Uncertainty();
-        Extractor<IdBoolean> surpriseExtractor = new Surprice();
+//        Extractor<IdBoolean> surpriseExtractor = new Surprice();
 
         // initialize corenlp
         StanfordCore.init();
@@ -51,12 +50,12 @@ public class Test3 {
 
 //        IdString myTense = tenseExtractor.extract(document);
 //        IdBoolean myUncertainty = uncertaintyExtractor.extract(document);
-        IdBoolean mySurPrise = surpriseExtractor.extract(document);
+//        IdBoolean mySurPrise = surpriseExtractor.extract(document);
 
 
 //        System.out.println(myTense.getMap());
 //        System.out.println(myUncertainty.getMap());
-        System.out.println(mySurPrise.getMap());
+//        System.out.println(mySurPrise.getMap());
 
     }
 }

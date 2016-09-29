@@ -10,18 +10,45 @@ import edu.stanford.nlp.util.CoreMap;
 
 public class Document {
 	
-	List<String> sentence = new ArrayList<String>();
+	List<String> sentenceText = new ArrayList<String>();
 	String documentText = "";
+	Annotation document;
 	
 	public Document(String documentText){
 		
 		this.documentText = documentText;
 		
-		Annotation document = StanfordCore.pipeline.process(documentText);
+		this.document = StanfordCore.pipeline.process(documentText);
 		
 		for (CoreMap sentenceStanford : document.get(CoreAnnotations.SentencesAnnotation.class)) {
 			// Put text contents into textSentenceID
-			sentence.add(sentenceStanford.get(CoreAnnotations.TextAnnotation.class));
+			sentenceText.add(sentenceStanford.get(CoreAnnotations.TextAnnotation.class));
 		}
 	}
+
+	public List<String> getSentence() {
+		return sentenceText;
+	}
+
+	public void setSentence(List<String> sentence) {
+		this.sentenceText = sentence;
+	}
+
+	public String getDocumentText() {
+		return documentText;
+	}
+
+	public void setDocumentText(String documentText) {
+		this.documentText = documentText;
+	}
+
+	public Annotation getDocument() {
+		return document;
+	}
+
+	public void setDocument(Annotation document) {
+		this.document = document;
+	}
+	
+	
 }

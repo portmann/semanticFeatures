@@ -18,7 +18,7 @@ public class PosWordCount implements Extractor<IdValue>{
 
     public PosWordCount() throws Exception {
         // load positive words
-        this.positiveWords.setMap(fileHandler.loadFileToMap("dictionaries/HARVPos.txt", true));
+        this.positiveWords.setMap(fileHandler.loadFileToMap("dictionaries/L&MPos.txt", true));
     }
 
     @Override
@@ -43,5 +43,16 @@ public class PosWordCount implements Extractor<IdValue>{
 
         }
         return sentencePos;
+    }
+
+    @Override
+    public int extractCounts(Annotation document) {
+
+        int counts = 0;
+        for (CoreLabel token: document.get(CoreAnnotations.TokensAnnotation.class)){
+            String word = token.get(CoreAnnotations.TextAnnotation.class);
+            if (positiveWords.getMap().containsKey(word)) counts++;
+        }
+        return counts;
     }
 }
