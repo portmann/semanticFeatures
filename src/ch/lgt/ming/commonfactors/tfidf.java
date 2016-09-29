@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
  * Created by Ming Deng on 8/15/2016.
  */
 
-public class TFIDF {
+public class tfidf {
 
     private int numberOfDocuments = 0;
     private String CorpusPath = new String();
@@ -29,7 +29,14 @@ public class TFIDF {
 
     public static void main(String[] args) throws IOException {
 
-        TFIDF tfIdf = new TFIDF(100, "data/corpus5/Google");
+
+        tfidf tfIdf = new tfidf(100, "data/corpus5/Amazon");
+
+        tfIdf.ReadDict();
+        tfIdf.ReadStopword();
+        tfIdf.ReadIdf();
+        tfIdf.DocProcess();
+        tfIdf.getTfIdf();
 
         /**
          * This is to test function getKeyWords, kwyWordsOverlap,
@@ -79,16 +86,22 @@ public class TFIDF {
 //
 //        tfIdf.getKeyWords(DocId_TfidfList.getValue(0), 10);
     }
+
+/**
+*   Constructor: calculate the tf-idf of a specific Corpus
+*/
+    public tfidf(int numberOfDocuments, String CorpusPath) throws IOException {
+
     /**
      *  Constructor: calculate the tf-idf of a specific Corpus
      *
      *  @param numberOfDocuments number of documents in the corpus
      *  @param corpusPath the path of the corpus
     */
-    public TFIDF(int numberOfDocuments, String corpusPath) throws IOException {
+
 
         this.numberOfDocuments = numberOfDocuments;
-        this.CorpusPath = corpusPath;
+        this.CorpusPath = CorpusPath;
         ReadDict();
         ReadStopword();
         ReadIdf();
