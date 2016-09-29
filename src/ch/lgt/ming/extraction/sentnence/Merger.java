@@ -18,7 +18,7 @@ public class Merger implements Extractor<IdBoolean> {
         IdBoolean SentID_Merger = new IdBoolean();
         for(CoreMap sentence: document.get(CoreAnnotations.SentencesAnnotation.class)){
 
-            boolean isMerger = merger.IsMerge(sentence);
+            boolean isMerger = merger.isMerger(sentence);
             SentID_Merger.putValue(sentenceIndex,isMerger);
             sentenceIndex++;
 
@@ -26,8 +26,4 @@ public class Merger implements Extractor<IdBoolean> {
         return  SentID_Merger;
     }
 
-    @Override
-    public int extractCounts(Annotation document) {
-        return 0;
-    }
 }

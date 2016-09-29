@@ -11,42 +11,22 @@ import edu.stanford.nlp.util.CoreMap;
 /**
  * Created by Ming Deng on 4/30/2016.
  */
-public class PosWordCount implements Extractor<IdValue>{
+public class PosWordCount{
 
-    private FileHandler fileHandler = new FileHandler();
-    private StringId positiveWords = new StringId();
+    private static FileHandler fileHandler = new FileHandler();
+    private static StringId positiveWords = new StringId();
 
-    public PosWordCount() throws Exception {
-        // load positive words
-        this.positiveWords.setMap(fileHandler.loadFileToMap("dictionaries/L&MPos.txt", true));
-    }
 
-    @Override
-    //Input: Annotation of the text
-    //Output: Number of Positive Words in each Sentence
-    public IdValue extract(Annotation document){
+    /**
+     * This function extracts the number of positive words of the document according to L&MPos.txt
+     *
+     * @param document the annotation of the document
+     *
+     * @return number of negative words
+     * */
+    public static int extract(Annotation document) throws Exception {
 
-        IdValue sentencePos = new IdValue();
-        int sentenceIndex = 0;
-        for(CoreMap sentence: document.get(CoreAnnotations.SentencesAnnotation.class)){
-
-            double SentenceCountPos = 0;
-            for (CoreLabel token: sentence.get(CoreAnnotations.TokensAnnotation.class)){
-
-                String word = token.get(CoreAnnotations.TextAnnotation.class);
-                if (positiveWords.getMap().containsKey(word)) SentenceCountPos++;
-
-            }
-            sentencePos.putValue(sentenceIndex, SentenceCountPos);
-       
-            sentenceIndex++;
-
-        }
-        return sentencePos;
-    }
-
-    @Override
-    public int extractCounts(Annotation document) {
+        positiveWords.setMap(fileHandler.loadFileToMap("data/dictionaries/LMPos.txt", true));
 
         int counts = 0;
         for (CoreLabel token: document.get(CoreAnnotations.TokensAnnotation.class)){
@@ -54,5 +34,7 @@ public class PosWordCount implements Extractor<IdValue>{
             if (positiveWords.getMap().containsKey(word)) counts++;
         }
         return counts;
+
     }
+
 }

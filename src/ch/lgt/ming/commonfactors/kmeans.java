@@ -7,7 +7,7 @@ import java.util.*;
 /**
  * Created by Ming Deng on 8/31/2016.
  */
-public class Kmeans {
+public class kmeans {
 
     private static int NumberOfFeatures;
     private static int NumberOfCluster;
@@ -49,7 +49,7 @@ public class Kmeans {
         doc6.add(1,-0.7);
         docs.putValue(5,doc6);
 
-        Kmeans kmeans = new Kmeans(2,2,6);
+        kmeans kmeans = new kmeans(2,2,6);
         IdListDouble Centroids = kmeans.randInitialization(0,2);
         List<Integer> cluster = kmeans.Getcluster(docs, Centroids);
         System.out.println(cluster);
@@ -60,7 +60,7 @@ public class Kmeans {
     }
 
 
-    public Kmeans(int NumberOfFeatures, int NumberOfCluster, int NumberOfDocs) {
+    public kmeans(int NumberOfFeatures, int NumberOfCluster, int NumberOfDocs) {
 
         this.NumberOfFeatures = NumberOfFeatures;
         this.NumberOfCluster = NumberOfCluster;
@@ -103,7 +103,8 @@ public class Kmeans {
             for(int j = 0; j < NumberOfCluster; j++){
 //                System.out.println(Centroids.getValue(j));
 //                System.out.println(Obs.getValue(i));
-                Double distance = 1 - TFIDF.cosineSimilarity(Obs.getValue(i),Centroids.getValue(j));
+                Double distance = 1 - tfidf.getCosineSimilarity(Obs.getValue(i),Centroids.getValue(j));
+
                 disvector.add(j,distance);
 //                System.out.println("distance: " + distance);
             }

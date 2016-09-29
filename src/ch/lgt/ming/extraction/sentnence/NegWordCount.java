@@ -11,50 +11,30 @@ import edu.stanford.nlp.util.CoreMap;
 /**
  * Created by Ming Deng on 5/1/2016.
  */
-public class NegWordCount implements Extractor<IdValue> {
+public class NegWordCount{
 
-    private FileHandler fileHandler = new FileHandler();
-    private StringId negativeWords = new StringId();
+    private static FileHandler fileHandler = new FileHandler();
+    private static StringId negativeWords = new StringId();
 
-    public NegWordCount() throws Exception {
-        // load positive words
-        this.negativeWords.setMap(fileHandler.loadFileToMap("dictionaries/L&MNeg.txt", true));
-    }
+   /**
+    * This function extracts the number of negative words of the document according to L&MNeg.txt
+    *
+    * @param document the annotation of the document
+    *
+    * @return number of negative words
+   * */
 
-    @Override
-    //Input: Annotation of the text
-    //Output: Number of Negative Words in each Sentence
-    public IdValue extract(Annotation document){
+    public static int extract(Annotation document) throws Exception {
 
-        IdValue sentenceNeg = new IdValue();
-        int sentenceIndex = 0;
-        for(CoreMap sentence: document.get(CoreAnnotations.SentencesAnnotation.class)){
-
-            double SentenceCountNeg = 0;
-            for (CoreLabel token: sentence.get(CoreAnnotations.TokensAnnotation.class)){
-
-                String word = token.get(CoreAnnotations.TextAnnotation.class);
-                if (negativeWords.getMap().containsKey(word)) SentenceCountNeg++;
-
-            }
-            sentenceNeg.putValue(sentenceIndex, SentenceCountNeg);
-            sentenceIndex++;
-
-        }
-        return sentenceNeg;
-    }
-
-    @Override
-    //Input: Annotation of the text
-    //Output: Number of Negative Words in the whole document
-    public int extractCounts(Annotation document){
+        negativeWords.setMap(fileHandler.loadFileToMap("data/dictionaries/LMNeg.txt", true));
 
         int counts = 0;
         for (CoreLabel token: document.get(CoreAnnotations.TokensAnnotation.class)){
             String word = token.get(CoreAnnotations.TextAnnotation.class);
-             if (negativeWords.getMap().containsKey(word)) counts++;
-            }
+            if (negativeWords.getMap().containsKey(word)) counts++;
+        }
         return counts;
     }
+
 
 }

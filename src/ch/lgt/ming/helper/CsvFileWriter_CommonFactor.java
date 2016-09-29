@@ -1,6 +1,6 @@
 package ch.lgt.ming.helper;
 
-import ch.lgt.ming.commonfactors.TFIDF;
+import ch.lgt.ming.commonfactors.tfidf;
 import ch.lgt.ming.datastore.IdListDouble;
 import ch.lgt.ming.datastore.IdString;
 
@@ -28,7 +28,7 @@ public class CsvFileWriter_CommonFactor {
     }
 
     public static void main(String[] args) throws IOException {
-        CsvFileWriter_CommonFactor.writeCsvFileWriter("featureFiles/commonFactors499.csv", 499, 10);
+        CsvFileWriter_CommonFactor.writeCsvFileWriter("data/featureFiles/commonFactors499.csv", 499, 50);
     }
 
 
@@ -39,7 +39,7 @@ public class CsvFileWriter_CommonFactor {
         }
 
 //        TFIDF tfIdf = new TFIDF(numberofDocs, "corpus2/test1");
-        TFIDF tfIdf = new TFIDF(numberofDocs, "corpus");
+        tfidf tfIdf = new tfidf(numberofDocs, "data/corpus");
         tfIdf.ReadDict();
         tfIdf.ReadStopword();
         tfIdf.ReadIdf();
@@ -48,9 +48,9 @@ public class CsvFileWriter_CommonFactor {
         IdListDouble DocId_TfidfList = tfIdf.getTfIdf();
 //        DocId_TfidfList.getValue(1);
 //        System.out.println(DocId_TfidfList.getValue(1));
-//        double cosinsimilarity = tfIdf.cosineSimilarity(DocId_TfidfList.getValue(1),DocId_TfidfList.getValue(2));
+//        double cosinsimilarity = tfIdf.getCosineSimilarity(DocId_TfidfList.getValue(1),DocId_TfidfList.getValue(2));
 //        System.out.println(cosinsimilarity);
-//        tfIdf.getSimilarDoc(0.1);
+//        tfIdf.getCosineMatrix(0.1);
 
 //        System.out.println(Dict.get(0));
 
@@ -70,6 +70,7 @@ public class CsvFileWriter_CommonFactor {
 
                 double start = System.currentTimeMillis();
                 List<String> keywords = tfIdf.getKeyWords(DocId_TfidfList.getValue(i), numberofKeyWords);
+
                 fileWriter.append(String.valueOf(i));
                 for (int j = 0; j < numberofKeyWords; j++){
                     fileWriter.append(COMMA_DELIMITER);
