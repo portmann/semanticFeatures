@@ -216,8 +216,8 @@ public class UncertaintyFeature {
         FileHandler fileHandler = new FileHandler();
         StringId positiveWords = new StringId();
         StringId negativeWords = new StringId();
-        positiveWords.setMap(fileHandler.loadFileToMap("dictionaries/L&MPos.txt", true));
-        negativeWords.setMap(fileHandler.loadFileToMap("dictionaries/L&MNeg.txt", true));
+        positiveWords.setMap(fileHandler.loadFileToMap("data/dictionaries/LMPos.txt", true));
+        negativeWords.setMap(fileHandler.loadFileToMap("data/dictionaries/LMNeg.txt", true));
         List<Integer> counts = new ArrayList<>();
         int conditionality = 0;
         int conditionality_pos = 0;

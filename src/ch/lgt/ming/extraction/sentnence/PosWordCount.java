@@ -26,7 +26,7 @@ public class PosWordCount{
      * */
     public static int extract(Annotation document) throws Exception {
 
-        positiveWords.setMap(fileHandler.loadFileToMap("data/dictionaries/L&MPos.txt", true));
+        positiveWords.setMap(fileHandler.loadFileToMap("data/dictionaries/LMPos.txt", true));
 
         int counts = 0;
         for (CoreLabel token: document.get(CoreAnnotations.TokensAnnotation.class)){

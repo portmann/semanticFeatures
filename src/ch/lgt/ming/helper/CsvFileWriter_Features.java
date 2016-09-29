@@ -4,13 +4,11 @@ import ch.lgt.ming.corenlp.StanfordCore;
 import ch.lgt.ming.datastore.*;
 import ch.lgt.ming.extraction.sentnence.*;
 import edu.stanford.nlp.pipeline.Annotation;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.*;
-import java.util.stream.Collectors;
+
 
 /**
  * Created by Ming Deng on 8/25/2016.
@@ -54,7 +52,9 @@ public class CsvFileWriter_Features {
     private static IdString docId_Text = new IdString();
 
     public static void main(String[] args) {
-        CsvFileWriter_Features.writeCsvFileWriter("featureFiles/features50.csv", 1);
+    	
+    	String path = "data/featureFiles/featuresBoris.csv";
+    	writeCsvFileWriter(path, 25	);
     }
 
     public static void writeCsvFileWriter(String fileName, int numberofdocs){
@@ -63,7 +63,9 @@ public class CsvFileWriter_Features {
         StanfordCore.init();
 
         // Load corpus
-        String path = "corpus";
+        String path = "data/corpusBoris";
+        
+        
         File folder = new File(path);
         File[] listOfFiles = folder.listFiles();
 
@@ -82,37 +84,33 @@ public class CsvFileWriter_Features {
             //Load the documents
             for (int i = 0; i < numberofdocs; i++) {
                 docId_Text.putValue(i, fileHandler.loadFileToString(path + "/" + listOfFiles[i].getName()));
-            }
 
-            //Process documents
-            for (Integer key : docId_Text.getMap().keySet()) {
-
-                fileWriter.append(String.valueOf(key));
+                fileWriter.append(listOfFiles[i].getName().replaceAll(".html", ""));
                 fileWriter.append(COMMA_DELIMITER);
 
                 double start = System.currentTimeMillis();
-                Annotation annotation = StanfordCore.pipeline.process(docId_Text.getValue(key));
+                Annotation annotation = StanfordCore.pipeline.process(docId_Text.getValue(i));
 
                 List<String> Uncertainty_Reg = Arrays.asList("$UNSPECIFIED", "$FEAR", "$HOPE", "$ANXIETY");
                 List<String> Uncertainty_Reg2 = Arrays.asList("$CONDITIONALITY1", "$CONDITIONALITY2");
                 List<String> Surprise_Reg = Arrays.asList("$UNSPECIFIED", "$DISAPPOINTMENT", "$RELIEF");
 
-                for (int i = 0; i < Uncertainty_Reg.size(); i++){
-                    List<Integer> result = Uncertainty.extract(annotation, Uncertainty_Reg.get(i));
+                for (int ii = 0; ii < Uncertainty_Reg.size(); ii++){
+                    List<Integer> result = Uncertainty.extract(annotation, Uncertainty_Reg.get(ii));
                     for (int j = 0; j < 6; j++){
                         fileWriter.append((String.valueOf(result.get(j))));
                         fileWriter.append(COMMA_DELIMITER);
                     }
                 }
-                for (int i = 0; i < Uncertainty_Reg2.size(); i++){
-                    List<Integer> result = Uncertainty.extractConditionality(annotation, Uncertainty_Reg2.get(i));
+                for (int ii = 0; ii < Uncertainty_Reg2.size(); ii++){
+                    List<Integer> result = Uncertainty.extractConditionality(annotation, Uncertainty_Reg2.get(ii));
                     for (int j = 0; j < 3; j++){
                         fileWriter.append((String.valueOf(result.get(j))));
                         fileWriter.append(COMMA_DELIMITER);
                     }
                 }
-                for (int i = 0; i < Surprise_Reg.size(); i++){
-                    List<Integer> result = Surprise.extract(annotation, Surprise_Reg.get(i));
+                for (int ii = 0; ii < Surprise_Reg.size(); ii++){
+                    List<Integer> result = Surprise.extract(annotation, Surprise_Reg.get(ii));
                     for (int j = 0; j < 6; j++) {
                         fileWriter.append(String.valueOf(result.get(j)));
                         fileWriter.append(COMMA_DELIMITER);
@@ -126,7 +124,7 @@ public class CsvFileWriter_Features {
                 fileWriter.append(NEW_LINE_SEPARATOR);
                 double end = System.currentTimeMillis();
                 System.out.println(end-start);
-                System.out.println("Document " + key + " is done.");
+                System.out.println("Document " + i + " is done.");
 
             }
             System.out.println("CSV file was created successfully!");

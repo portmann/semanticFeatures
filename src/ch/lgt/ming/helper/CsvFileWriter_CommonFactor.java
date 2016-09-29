@@ -28,7 +28,7 @@ public class CsvFileWriter_CommonFactor {
     }
 
     public static void main(String[] args) throws IOException {
-        CsvFileWriter_CommonFactor.writeCsvFileWriter("featureFiles/commonFactors499.csv", 499, 50);
+        CsvFileWriter_CommonFactor.writeCsvFileWriter("data/featureFiles/commonFactors499.csv", 499, 50);
     }
 
 
@@ -39,7 +39,7 @@ public class CsvFileWriter_CommonFactor {
         }
 
 //        TFIDF tfIdf = new TFIDF(numberofDocs, "corpus2/test1");
-        tfidf tfIdf = new tfidf(numberofDocs, "corpus");
+        tfidf tfIdf = new tfidf(numberofDocs, "data/corpus");
         tfIdf.ReadDict();
         tfIdf.ReadStopword();
         tfIdf.ReadIdf();
