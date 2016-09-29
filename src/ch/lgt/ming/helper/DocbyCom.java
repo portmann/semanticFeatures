@@ -45,7 +45,6 @@ public class DocbyCom {
             DocId_TokensSet.putValue(i, setoftokens);
         }
             //Categorize the documents by companies
-
             for (int i = 0; i < listOfFiles.length; i++) {
                 for (int j = 0; j < 10; j ++){
 //            System.out.println(DocId_TokensSet.getValue(i));
