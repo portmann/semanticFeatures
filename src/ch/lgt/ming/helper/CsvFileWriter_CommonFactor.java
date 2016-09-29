@@ -1,6 +1,6 @@
 package ch.lgt.ming.helper;
 
-import ch.lgt.ming.commonfactors.TFIDF;
+import ch.lgt.ming.commonfactors.tfidf;
 import ch.lgt.ming.datastore.IdListDouble;
 import ch.lgt.ming.datastore.IdString;
 
@@ -39,7 +39,7 @@ public class CsvFileWriter_CommonFactor {
         }
 
 //        TFIDF tfIdf = new TFIDF(numberofDocs, "corpus2/test1");
-        TFIDF tfIdf = new TFIDF(numberofDocs, "corpus");
+        tfidf tfIdf = new tfidf(numberofDocs, "corpus");
         tfIdf.ReadDict();
         tfIdf.ReadStopword();
         tfIdf.ReadIdf();

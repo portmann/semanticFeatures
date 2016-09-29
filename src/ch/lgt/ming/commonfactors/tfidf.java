@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
  * Created by Ming Deng on 8/15/2016.
  */
 
-public class TFIDF {
+public class tfidf {
 
     private int numberOfDocuments = 0;
     private String CorpusPath = new String();
@@ -74,7 +74,7 @@ public class TFIDF {
 
     public static void main(String[] args) throws IOException {
 
-        TFIDF tfIdf = new TFIDF(100, "data/corpus5/Amazon");
+        tfidf tfIdf = new tfidf(100, "data/corpus5/Amazon");
 
         tfIdf.ReadDict();
         tfIdf.ReadStopword();
@@ -127,7 +127,7 @@ public class TFIDF {
 /**
 *   Constructor: calculate the tf-idf of a specific Corpus
 */
-    public TFIDF(int numberOfDocuments, String CorpusPath){
+    public tfidf(int numberOfDocuments, String CorpusPath){
 
         this.numberOfDocuments = numberOfDocuments;
         this.CorpusPath = CorpusPath;
