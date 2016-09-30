@@ -30,29 +30,29 @@ public class DocbyWebsite {
         * */
         for (int i = 0; i < companies.size(); i++){
 
-            String path = "data/corpus4/" + Folders.get(i);
-            File folder = new File(path);
-            File[] listOfFiles = folder.listFiles();
-            FileHandler fileHandler = new FileHandler();
-            IdString DocId_Text = new IdString();
-
-            for (int j = 0; j < listOfFiles.length; j++) {
-                DocId_Text.putValue(j, fileHandler.loadFileToString(path + "/" + listOfFiles[j].getName()));
-            }
+//            String path = "data/corpus4/" + Folders.get(i);
+//            File folder = new File(path);
+//            File[] listOfFiles = folder.listFiles();
+//            FileHandler fileHandler = new FileHandler();
+//            IdString DocId_Text = new IdString();
+//
+//            for (int j = 0; j < listOfFiles.length; j++) {
+//                DocId_Text.putValue(j, fileHandler.loadFileToString(path + "/" + listOfFiles[j].getName()));
+//            }
             /**
              * This line creates new directories in the new corpus folder
              * */
-            Files.createDirectories(Paths.get("data/corpus8/" + Folders.get(i) ));
+            Files.createDirectories(Paths.get("data/highlighted2/" + Folders.get(i) ));
             /**
              * This part moves docs from seeking alpha to corpus5
             * */
-            for (int j = 0; j < listOfFiles.length; j++) {
-                if (DocId_Text.getValue(j).toLowerCase().contains("seeking alpha")){
-                    System.out.println("Found " + "seeking alpha");
-                    Files.copy(Paths.get(path + "/" + listOfFiles[j].getName()),
-                            Paths.get("data/corpus5/" + Folders.get(i) + "/" + listOfFiles[j].getName()));
-                }
-            }
+//            for (int j = 0; j < listOfFiles.length; j++) {
+//                if (DocId_Text.getValue(j).toLowerCase().contains("seeking alpha")){
+//                    System.out.println("Found " + "seeking alpha");
+//                    Files.copy(Paths.get(path + "/" + listOfFiles[j].getName()),
+//                            Paths.get("data/corpus5/" + Folders.get(i) + "/" + listOfFiles[j].getName()));
+//                }
+//            }
         }
 
 //        String path = "data/DataForMing_V2";

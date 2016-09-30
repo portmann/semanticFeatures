@@ -109,7 +109,7 @@ public class UncertaintyFeature {
 
             for (CoreMap token : matchedTokens) {
                 String POS = token.get(CoreAnnotations.PartOfSpeechAnnotation.class);
-                System.out.println("POS:" + POS);
+//                System.out.println("POS:" + POS);
                 switch (POS) {
                     case "NN":
                     case "NNS":
@@ -118,14 +118,14 @@ public class UncertaintyFeature {
                         for (TypedDependency td : tds) {
                             GrammaticalRelation relation = td.reln();
                             if (relation.getShortName().equals("neg")) {
-                                System.out.println("find neg!!!");
+//                                System.out.println("find neg!!!");
                                 IndexedWord governor = td.gov();
                                 if (governor.value().equals(matcher.group())) {
                                     noun_neg++;
                                     System.out.println("Uncertainty " + reg + " noun_neg++:" + noun_neg);
                                 }
                             } else if (relation.getShortName().equals("amod")) {
-                                System.out.println("find amod!!!");
+//                                System.out.println("find amod!!!");
                                 IndexedWord governor = td.gov();
                                 IndexedWord dependent = td.dep();
                                 if (governor.value().equals(matcher.group()) && NegWordForNoun.contains(dependent.value().toLowerCase())) {
@@ -148,16 +148,16 @@ public class UncertaintyFeature {
                     case "VBZ": {
                         for (TypedDependency td : tds) {
                             GrammaticalRelation relation = td.reln();
-                            System.out.println(relation);
+//                            System.out.println(relation);
                             if (relation.getShortName().equals("neg")) {
-                                System.out.println("find neg!!!");
+//                                System.out.println("find neg!!!");
                                 IndexedWord governor = td.gov();
                                 if (governor.value().equals(matcher.group())) {
                                     verb_neg++;
                                     System.out.println("Uncertainty " + reg + " verb_neg++:" + verb_neg);
                                 }
                             } else if (relation.getShortName().equals("advmod")||relation.getShortName().equals("dep")) {
-                                System.out.println("find advmod/dep!!!");
+//                                System.out.println("find advmod/dep!!!");
                                 IndexedWord governor = td.gov();
                                 IndexedWord dependent = td.dep();
                                 if (governor.value().equals(matcher.group()) && NegWordForVerb.contains(dependent.value().toLowerCase())) {
@@ -177,14 +177,14 @@ public class UncertaintyFeature {
                         for (TypedDependency td : tds) {
                             GrammaticalRelation relation = td.reln();
                             if (relation.getShortName().equals("neg")) {
-                                System.out.println("find neg!!!");
+//                                System.out.println("find neg!!!");
                                 IndexedWord governor = td.gov();
                                 if (governor.value().equals(matcher.group())) {
                                     othertype_neg++;
                                     System.out.println("Uncertainty " + reg + " othertype_neg++:" + othertype_neg);
                                 }
                             }else if (relation.getShortName().equals("advmod")||relation.getShortName().equals("dep")) {
-                                System.out.println("find advmod/dep!!!");
+//                                System.out.println("find advmod/dep!!!");
                                 IndexedWord governor = td.gov();
                                 IndexedWord dependent = td.dep();
                                 if (governor.value().equals(matcher.group()) && NegWordForOthers.contains(dependent.value().toLowerCase())) {
