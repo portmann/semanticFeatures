@@ -24,7 +24,6 @@ public class Surprise {
 //		FileHandler fileHandler = new FileHandler();
 		File folder = new File("data/corpus8/Amazon");
 		File[] listOfFiles = folder.listFiles();
-		Corpus corpus = new Corpus();
 
 		FileInputStream fileInputStream ;
 
@@ -34,7 +33,6 @@ public class Surprise {
 				fileInputStream = new FileInputStream("data/corpus8/Amazon/" + listOfFiles[i].getName());
 				ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
 				Document document = (Document) objectInputStream.readObject();
-				corpus.addDocument(document);
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			} catch (ClassNotFoundException e) {
@@ -42,7 +40,6 @@ public class Surprise {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			System.out.printf("%d is done\n",i);
 		}
 
 //        StanfordCore.init();
@@ -50,11 +47,6 @@ public class Surprise {
 //        Surprise.extract(annotation, "$SURPRISE", "amazon", 100);
 //        Surprise.extract(annotation, "$SURPRISE");
 
-        for (int i = 0; i < corpus.getDocCount(); i++){
-            System.out.printf("-------------------------------------Document %d ---------------------------------\n",i);
-//            Surprise.extract(corpus.getDocuments().get(i).getDocument(), "$SURPRISE", "amazon", 5);
-            Surprise.extract(corpus.getDocuments().get(i).getDocument(), "$SURPRISE");
-        }
     }
 
     /**

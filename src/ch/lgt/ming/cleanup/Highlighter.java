@@ -12,5 +12,5 @@ public interface Highlighter {
 	public String after_standard = "";
 
 	public String highlight(Document document);
-	
+
 }

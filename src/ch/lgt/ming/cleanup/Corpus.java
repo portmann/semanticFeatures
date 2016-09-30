@@ -15,10 +15,7 @@ import javax.print.Doc;
 
 public class Corpus implements Serializable{
 
-	private List<Document> documents;
-	private IdListDouble DocId_tfidfList = new IdListDouble();                         //Document Index - List of TFIDF of each word in the dictionary
-	private List<Integer> DocId_DocName = new ArrayList<>();                           //Document Index - Document name(which is also an index)
-	private List<Date> DocId_DocDate = new ArrayList<>();                              //Document Index - Document Date
+	private List<Document2> documents;
 
 	public Corpus(){
 		documents = new ArrayList<>();
@@ -29,10 +26,9 @@ public class Corpus implements Serializable{
 	 * Constructor: create a corpus with a collection of documents
 	 *
 	 * @param path the path of the corpus
-	 * @param annotation to decide if includes annotations in the documents
 	 * */
 
-	public Corpus(String path, boolean annotation) throws IOException {
+	public Corpus(String path) throws IOException {
 
 		FileHandler fileHandler = new FileHandler();
 		File folder = new File(path);
@@ -65,7 +61,7 @@ public class Corpus implements Serializable{
 
 			try {
 				Integer index = Integer.valueOf(listOfFiles[i].getName().substring(0, listOfFiles[i].getName().lastIndexOf('.')));
-				documents.add(new Document(fileHandler.loadFileToString(listOfFiles[i].getPath()),index, DocTime.get(index), annotation));
+				documents.add(new Document2(fileHandler.loadFileToString(listOfFiles[i].getPath()),index, DocTime.get(index)));
 
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -84,26 +80,26 @@ public class Corpus implements Serializable{
 
 	}
 
-	
+
 	public int getDocCount(){
-		
+
 		return this.documents.size();
-		
+
 	}
 
-	public List<Document> getDocuments() {
+	public List<Document2> getDocuments() {
 		return documents;
 	}
 
-	public Document getDocument(int i){
+	public Document2 getDocument(int i){
 		return documents.get(i);
 	}
 
-	public void setDocuments(List<Document> documents) {
+	public void setDocuments(List<Document2> documents) {
 		this.documents = documents;
 	}
 
-	public void addDocument(Document document){
+	public void addDocument(Document2 document){
 		this.documents.add(document);
 	}
 

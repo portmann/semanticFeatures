@@ -14,7 +14,7 @@ public class Main {
 
 //		StanfordCore.init();
 
-		Corpus corpus = new Corpus("corpus4/Facebook", false);
+		Corpus corpus = new Corpus("corpus4/Facebook");
 		HighlighterForCompany highlighter = new HighlighterForCompany();
 		FileHandler filehandler = new FileHandler();
 		HTMLStrings htmlStrings = new HTMLStrings();

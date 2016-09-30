@@ -1,7 +1,7 @@
 package ch.lgt.ming.highlighter;
 
 import ch.lgt.ming.cleanup.Corpus;
-import ch.lgt.ming.cleanup.Document;
+import ch.lgt.ming.cleanup.Document2;
 import ch.lgt.ming.cleanup.HTMLStrings;
 import ch.lgt.ming.helper.FileHandler;
 
@@ -30,31 +30,27 @@ public class HighlighterForCompany {
 
     public static void main(String[] args) throws IOException {
         HTMLStrings htmlStrings = new HTMLStrings();
-        FileHandler filehandler = new FileHandler();
+        FileHandler fileHandler = new FileHandler();
         HighlighterForCompany highlighterForCompany = new HighlighterForCompany();
         for (int i = 0; i < companies.size(); i++){
-            Corpus corpus = new Corpus("data/corpus4/" + Folders.get(i), false);
+            Corpus corpus = new Corpus("data/corpus5/" + Folders.get(i));
             for (int j = 0; j < corpus.getDocCount(); j++){
-                String higlightedText = highlighterForCompany.highlight(corpus.getDocuments().get(j),companies.get(i));
-                if (!higlightedText.equals(""))
+                String higlightedText = highlighterForCompany.highlight(corpus.getDocument(j),companies.get(i));
+                if (!higlightedText.equals("")) {
 
-                {
                     higlightedText = htmlStrings.getBeforeTitle() + Folders.get(i) +
                             htmlStrings.getAfterTitle() + higlightedText +
                             htmlStrings.getEnd();
 
-
-//                        System.out.println(corpus.getDocumentId().get(j));
-//
-//
-//                    filehandler.saveStringAsFile("data/highlighted2/" + corpus.getDocumentId().get(j),higlightedText);
+                    System.out.println(corpus.getDocument(j));
+                    fileHandler.saveStringAsFile("data/highlighted2/" + Folders.get(i) + "/" + corpus.getDocument(j).getIndex() + ".html",higlightedText);
 
                 }
             }
         }
     }
 
-    public String highlight(Document document, String company) {
+    public String highlight(Document2 document, String company) {
 
         String highlightedString = "";
 
@@ -83,6 +79,5 @@ public class HighlighterForCompany {
             return highlightedString;
         else
             return "";
-
     }
 }

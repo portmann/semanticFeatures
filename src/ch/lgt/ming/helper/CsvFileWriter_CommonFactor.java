@@ -39,18 +39,11 @@ public class CsvFileWriter_CommonFactor {
         }
 
 //        TFIDF tfIdf = new TFIDF(numberofDocs, "corpus2/test1");
-<<<<<<< HEAD
 //        tfidf tfIdf = new tfidf(corpus);
 //        tfIdf.ReadDict();
 //        tfIdf.ReadStopword();
 //        tfIdf.ReadIdf();
-=======
-        tfidf tfIdf = new tfidf(numberofDocs, "data/corpus");
-        tfIdf.ReadDict();
-        tfIdf.ReadStopword();
-        tfIdf.ReadIdf();
-        tfIdf.DocProcess();
->>>>>>> 1ebb6a9d934d0c7ae9234f57a9d7f25ad092de2e
+
 //        System.out.println(tfIdf.getDocId_TokensList().getValue(0));
 //        IdListDouble DocId_TfidfList = tfIdf.calculateTfIdf();
 //        DocId_TfidfList.getValue(1);

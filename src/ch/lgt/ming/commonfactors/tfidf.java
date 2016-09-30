@@ -2,6 +2,8 @@ package ch.lgt.ming.commonfactors;
 
 import ch.lgt.ming.cleanup.Corpus;
 import ch.lgt.ming.cleanup.Document;
+import ch.lgt.ming.cleanup.Document2;
+import ch.lgt.ming.corenlp.StanfordCore;
 import ch.lgt.ming.datastore.*;
 import ch.lgt.ming.helper.FileHandler;
 
@@ -26,24 +28,27 @@ public class tfidf {
 
     public static void main(String[] args) throws IOException {
 
-        Corpus corpus = new Corpus("data/corpusBoris", false);
+        Corpus corpus = new Corpus("data/corpusBoris");
+
         tfidf tfIdf = new tfidf(corpus, 100);
 //        tfidf tfIdf = new tfidf(corpus, corpus.getDocCount());
         tfIdf.calculateClosestPredecessor();
 
+
+
         /**
          * This is to test function getKeyWords, kwyWordsOverlap,
         * */
-        System.out.println(tfIdf.getKeyWords(tfIdf.corpus.getDocument(0).getTfidf(),10));
-        System.out.println(tfIdf.getKeyWords(tfIdf.corpus.getDocument(1).getTfidf(),10));
-        List<String> commonKeywords = tfIdf.getCommonKeyWords(tfIdf.corpus.getDocument(0).getTfidf(), tfIdf.corpus.getDocument(1).getTfidf(), 10);
-        System.out.println("commonKeywords: " + commonKeywords);
-
-        double ratio = tfIdf.keyWordsOverlap(tfIdf.corpus.getDocument(0).getTfidf(),tfIdf.corpus.getDocument(1).getTfidf(),50);
-        System.out.println("keywords overlap ratio: " + ratio);
-
-        double cosineSim = tfIdf.getCosineSimilarity(tfIdf.corpus.getDocument(0).getTfidf(),tfIdf.corpus.getDocument(1).getTfidf());
-        System.out.println("Cosine similarity: " + cosineSim);
+//        System.out.println(tfIdf.getKeyWords(tfIdf.corpus.getDocument(0).getTfidf(),10));
+//        System.out.println(tfIdf.getKeyWords(tfIdf.corpus.getDocument(1).getTfidf(),10));
+//        List<String> commonKeywords = tfIdf.getCommonKeyWords(tfIdf.corpus.getDocument(0).getTfidf(), tfIdf.corpus.getDocument(1).getTfidf(), 10);
+//        System.out.println("commonKeywords: " + commonKeywords);
+//
+//        double ratio = tfIdf.keyWordsOverlap(tfIdf.corpus.getDocument(0).getTfidf(),tfIdf.corpus.getDocument(1).getTfidf(),50);
+//        System.out.println("keywords overlap ratio: " + ratio);
+//
+//        double cosineSim = tfIdf.getCosineSimilarity(tfIdf.corpus.getDocument(0).getTfidf(),tfIdf.corpus.getDocument(1).getTfidf());
+//        System.out.println("Cosine similarity: " + cosineSim);
 
         /**
          * This is to test if there's huge difference between using cosine similarity or key words intersection to decide
@@ -367,7 +372,7 @@ public class tfidf {
 
     public void calculateClosestPredecessor(){
         for (int i = 0; i < numberOfDocuments; i++){
-            Document document = corpus.getDocument(i);
+            Document2 document = corpus.getDocument(i);
             List<Integer> closestDocuments = new ArrayList<>();
             for (int j = 0; j < 8; j++){
                 int index = getClosestPredecessor(document.getTfidf(), document.getIndex(), document.getDate(), 50,j, false);
