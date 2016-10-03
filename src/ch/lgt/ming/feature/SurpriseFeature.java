@@ -209,7 +209,7 @@ public class SurpriseFeature {
         List<CoreLabel> tokens = sentence.get(CoreAnnotations.TokensAnnotation.class);
         for (CoreLabel token : tokens) {
             String POS = token.get(CoreAnnotations.PartOfSpeechAnnotation.class);
-            if (POS.equals("JJR")) {
+            if (POS.equals("JJR")||POS.equals("RBR")) {
                 System.out.println("Found Sentence：" + sentence.toString());
                 count++;
                 System.out.println("SurpreiseComparative count++" + count);

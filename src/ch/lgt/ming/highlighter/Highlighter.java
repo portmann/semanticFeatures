@@ -71,12 +71,14 @@ public class Highlighter {
                     e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         }
     }
 
-    public String highlight(Document document, String company) {
+    public String highlight(Document document, String company) throws Exception {
 
         String highlightedString = "";
         SurpriseFeature surpriseFeature = new SurpriseFeature();
@@ -92,34 +94,37 @@ public class Highlighter {
 
             List<Integer> result1 = surpriseFeature.Surprise(sentenceStanford, "$SURPRISE");
             Integer sum1 = result1.stream().mapToInt(i -> i.intValue()).sum();
+            Integer comparative = surpriseFeature.SurpriseComparative(sentenceStanford);
             String matchedWord1 = "";
 
             List<Integer> result2 = uncertatintyFeature.Uncertainty(sentenceStanford, "$UNCERTAINTY");
             Integer sum2 = result2.stream().mapToInt(i -> i.intValue()).sum();
+            List<Integer> result3 = uncertatintyFeature.UncertaintyConditionality(sentenceStanford, "$CONDITIONALITY");
+            Integer sum3 = result3.stream().mapToInt(i -> i.intValue()).sum();
             String matchedWord2 = "";
 
             if (string.contains(company)) {
-                if (sum1 > 0) {
+                if (sum1 > 0 || comparative > 0) {
                     matchedWord1 = surpriseFeature.getMatchedWord();
-                    if (sum2 > 0) {
+                    if (sum2 > 0 || sum3 > 0) {
                         matchedWord2 = uncertatintyFeature.getMatchedWord();
                         c = 1;
                     } else c = 2;
                 } else {
-                    if (sum2 > 0) {
+                    if (sum2 > 0 || sum3 > 0) {
                         matchedWord2 = uncertatintyFeature.getMatchedWord();
                         c = 3;
                     } else c = 4;
                 }
             } else {
-                if (sum1 > 0) {
+                if (sum1 > 0 || comparative > 0) {
                     matchedWord1 = surpriseFeature.getMatchedWord();
-                    if (sum2 > 0) {
+                    if (sum2 > 0 || sum3 > 0) {
                         matchedWord2 = uncertatintyFeature.getMatchedWord();
                         c = 5;
                     } else c = 6;
                 } else {
-                    if (sum2 > 0) {
+                    if (sum2 > 0 || sum3 > 0) {
                         matchedWord2 = uncertatintyFeature.getMatchedWord();
                         c = 7;
                     } else c = 8;
@@ -130,13 +135,16 @@ public class Highlighter {
                     String wordString = "";
                     for (int i = 0; i < tokens.size(); i++){
                         String word = tokens.get(i).get(CoreAnnotations.TextAnnotation.class);
+                        String pos = tokens.get(i).get(CoreAnnotations.PartOfSpeechAnnotation.class);
                         if (word.equals("-LRB-")) word = "(";
                         if (word.equals("-RRB-")) word = ")";
                         if (word.equals(company)){
                             wordString += "<b><mark>" + word + "</mark></b> ";
                         }else if ( word.equals(matchedWord1) || word.equals(matchedWord2)) {
                             wordString += "<b>" + word + "</b> ";
-                        }else {
+                        }else if ( pos.equals("JJR")||pos.equals("RBR")) {
+                            wordString += "<i>" + word + "</i> ";
+                        }else{
                             wordString += word + " ";
                         }
                     }
@@ -149,12 +157,15 @@ public class Highlighter {
                     String wordString = "";
                     for (int i = 0; i < tokens.size(); i++){
                         String word = tokens.get(i).get(CoreAnnotations.TextAnnotation.class);
+                        String pos = tokens.get(i).get(CoreAnnotations.PartOfSpeechAnnotation.class);
                         if (word.equals("-LRB-")) word = "(";
                         if (word.equals("-RRB-")) word = ")";
                         if (word.equals(company)){
                             wordString += "<b><mark>" + word + "</mark></b> ";
                         }else if ( word.equals(matchedWord1) || word.equals(matchedWord2)) {
                             wordString += "<b>" + word + "</b> ";
+                        }else if ( pos.equals("JJR")||pos.equals("RBR")) {
+                            wordString += "<i>" + word + "</i> ";
                         }else {
                             wordString += word + " ";
                         }
@@ -168,12 +179,15 @@ public class Highlighter {
                     String wordString = "";
                     for (int i = 0; i < tokens.size(); i++){
                         String word = tokens.get(i).get(CoreAnnotations.TextAnnotation.class);
+                        String pos = tokens.get(i).get(CoreAnnotations.PartOfSpeechAnnotation.class);
                         if (word.equals("-LRB-")) word = "(";
                         if (word.equals("-RRB-")) word = ")";
                         if (word.equals(company)){
                             wordString += "<b><mark>" + word + "</mark></b> ";
                         }else if ( word.equals(matchedWord1) || word.equals(matchedWord2)) {
                             wordString += "<b>" + word + "</b> ";
+                        }else if ( pos.equals("JJR")||pos.equals("RBR")) {
+                            wordString += "<i>" + word + "</i> ";
                         }else {
                             wordString += word + " ";
                         }
@@ -205,10 +219,13 @@ public class Highlighter {
                     String wordString = "";
                     for (int i = 0; i < tokens.size(); i++){
                         String word = tokens.get(i).get(CoreAnnotations.TextAnnotation.class);
+                        String pos = tokens.get(i).get(CoreAnnotations.PartOfSpeechAnnotation.class);
                         if (word.equals("-LRB-")) word = "(";
                         if (word.equals("-RRB-")) word = ")";
                         if (word.equals(matchedWord1) || word.equals(matchedWord2)){
                             wordString += "<b>" + word + "</b> ";
+                        }else if ( pos.equals("JJR")||pos.equals("RBR")) {
+                            wordString += "<i>" + word + "</i> ";
                         }else {
                             wordString += word + " ";
                         }
@@ -222,10 +239,13 @@ public class Highlighter {
                     String wordString = "";
                     for (int i = 0; i < tokens.size(); i++){
                         String word = tokens.get(i).get(CoreAnnotations.TextAnnotation.class);
+                        String pos = tokens.get(i).get(CoreAnnotations.PartOfSpeechAnnotation.class);
                         if (word.equals("-LRB-")) word = "(";
                         if (word.equals("-RRB-")) word = ")";
                         if (word.equals(matchedWord1) || word.equals(matchedWord2)){
                             wordString += "<b>" + word + "</b> ";
+                        }else if ( pos.equals("JJR")||pos.equals("RBR")) {
+                            wordString += "<i>" + word + "</i> ";
                         }else {
                             wordString += word + " ";
                         }

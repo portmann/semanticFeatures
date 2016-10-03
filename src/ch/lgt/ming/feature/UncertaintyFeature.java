@@ -58,9 +58,10 @@ public class UncertaintyFeature {
         env.bind("$CONDITIONALITY1", "([{word:/[Ii]f/}]&[tense:Past])[]*[{word:/(then)|,/}]?");
         env.bind("$CONDITIONALITY2", "([{word:/[Ii]f/}]&[tense:Future])[]*[{word:/(then)|,/}]?");
         env.bind("$UNCERTAINTY", "$UNSPECIFIED|$FEAR|$HOPE|$ANXIETY");
+        env.bind("$CONDITIONALITY", "$CONDITIONALITY1|$CONDITIONALITY2");
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         System.out.println("--------------------------------------- Pipeline ------------------------------------------");
         Properties props = new Properties();
         props.setProperty("customAnnotatorClass.tense", "ch.lgt.ming.corenlp.TenseAnnotator");
@@ -68,7 +69,8 @@ public class UncertaintyFeature {
         StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
         String[] myString = {
                 "I am not so afraid about the news. ",
-                "Not horrified, he accepted my request."
+                "Not horrified, he accepted my request.",
+                "If the interest rate will not increase, the market will relax."
         };
         for (int i = 0; i < myString.length; i++) {
             System.out.printf("-------------------------------------Sentence %d ---------------------------------\n",i);
@@ -80,6 +82,7 @@ public class UncertaintyFeature {
             UncertaintyFeature uncertaintyFeature = new UncertaintyFeature();
 //            surprise.Surprise(sentence, "$UNSPECIFIED");
             uncertaintyFeature.Uncertainty(sentence, "$UNCERTAINTY");
+            uncertaintyFeature.UncertaintyConditionality(sentence, "$CONDITIONALITY");
 
         }
     }

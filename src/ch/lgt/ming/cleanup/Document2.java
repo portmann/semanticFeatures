@@ -13,7 +13,7 @@ import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.util.CoreMap;
 
 /**
- * Document Class stores the information of each document including document text, sentence, token, Stanford Annotation,
+ * Document Class stores the information of each document including document text, sentence, token,
  * Date of each doc, index of each doc.
  * */
 public class Document2 implements Serializable {
