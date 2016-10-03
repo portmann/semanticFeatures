@@ -27,6 +27,7 @@ public class UncertaintyFeature {
     private List<String> NegWordForNoun = Arrays.asList("little", "few");
     private List<String> NegWordForVerb = Arrays.asList("not","hardly", "barely", "rarely", "seldom", "scarcely");
     private List<String> NegWordForOthers = Arrays.asList("not", "hardly", "barely", "rarely", "seldom", "scarcely");
+    private String matchedWord = "";
 
 
     public UncertaintyFeature() {
@@ -37,7 +38,7 @@ public class UncertaintyFeature {
                 "anticipat\\w*|apparent\\w*|appear\\w*|approximat\\w*|arbitrar\\w*|assum\\w*|" +
                 "believ\\w*|cautious\\w*|clarification\\w*|conceivabl\\w*|conditional\\w*|" +
                 "confus\\w*|contingen\\w*|could|crossroad\\w*|depend\\w*|destabliz\\w*|" +
-                "deviat\\w*|differ\\w*|doubt\\w*|exposure\\w*|fluctuat\\w*|hidden|hinges|" +
+                "deviat\\w*|differ|differed|differing|differs|doubt\\w*|exposure\\w*|fluctuat\\w*|hidden|hinges|" +
                 "imprecis\\w*|improbab\\w*|incompleteness|indefinite\\w*|indetermina\\w*|" +
                 "inexact\\w*|instabilit\\w*|intangible\\w*|likelihood|may|maybe|might|nearly|" +
                 "nonassessable|occasionally|ordinarily|pending|perhaps|possib\\w*|" +
@@ -100,6 +101,8 @@ public class UncertaintyFeature {
             List<CoreMap> matchedTokens = matcher.groupNodes();
             System.out.println("Found Sentence：" + sentence.toString());
             System.out.println(matchedTokens.toString());
+            matchedWord = matchedTokens.get(0).get(CoreAnnotations.TextAnnotation.class);
+            System.out.println(matchedWord);
 
             Tree tree = sentence.get(TreeCoreAnnotations.TreeAnnotation.class);
             TreebankLanguagePack tlp = new PennTreebankLanguagePack();
@@ -262,6 +265,10 @@ public class UncertaintyFeature {
         counts.add(1, conditionality_pos);
         counts.add(2, conditionality_neg);
         return counts;
+    }
+
+    public String getMatchedWord() {
+        return matchedWord;
     }
 }
 

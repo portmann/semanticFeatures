@@ -24,6 +24,7 @@ public class SurpriseFeature {
     private List<String> NegWordForNoun = Arrays.asList("no","little", "few");
     private List<String> NegWordForVerb = Arrays.asList("not","hardly", "barely", "rarely", "seldom", "scarcely");
     private List<String> NegWordForOthers = Arrays.asList("not", "hardly", "barely", "rarely", "seldom", "scarcely");
+    private String matchedWord = "";
 
     public SurpriseFeature() {
 
@@ -31,7 +32,7 @@ public class SurpriseFeature {
 
         env.bind("$UNSPECIFIED", "/amaze\\w*|amazing|astonish\\w*|dumbfound\\w*|startl\\w*|stunn\\w*|surpris\\w*|aback|thunderstruck|wonder\\w*/");
         env.bind("$DISAPPOINTMENT", "/comedown|disappoint\\w*|discontent\\w*|disenchant\\w*|disgruntl\\w*|disillusion\\w*|frustrat\\w*|jilt\\w*/");
-        env.bind("$RELIEF", "/relie\\w*/");
+        env.bind("$RELIEF", "/relief|relieve|relieved/");
         env.bind("$SURPRISE","$UNSPECIFIED|$DISAPPOINTMENT|$RELIEF");
 
     }
@@ -91,6 +92,8 @@ public class SurpriseFeature {
             List<CoreMap> matchedTokens = matcher.groupNodes();
             System.out.println("Found Sentence：" + sentence.toString());
             System.out.println(matchedTokens);
+            matchedWord = matchedTokens.get(0).get(CoreAnnotations.TextAnnotation.class);
+            System.out.println(matchedWord);
 
             Tree tree = sentence.get(TreeCoreAnnotations.TreeAnnotation.class);
             TreebankLanguagePack tlp = new PennTreebankLanguagePack();
@@ -213,5 +216,9 @@ public class SurpriseFeature {
             }
         }
         return count;
+    }
+
+    public String getMatchedWord() {
+        return matchedWord;
     }
 }

@@ -48,7 +48,7 @@ public class Highlighter {
             File folder = new File("data/corpus8/" + Folders.get(i));
             File[] listOfFiles = folder.listFiles();
 //            for (int j = 0; j < listOfFiles.length; j++){
-            for (int j = 0; j < 10; j++) {
+            for (int j = 0; j < listOfFiles.length; j++) {
 
                 try {
                     fileInputStream = new FileInputStream("data/corpus8/" + Folders.get(i) + "/" + listOfFiles[j].getName());
@@ -92,27 +92,35 @@ public class Highlighter {
 
             List<Integer> result1 = surpriseFeature.Surprise(sentenceStanford, "$SURPRISE");
             Integer sum1 = result1.stream().mapToInt(i -> i.intValue()).sum();
+            String matchedWord1 = "";
 
             List<Integer> result2 = uncertatintyFeature.Uncertainty(sentenceStanford, "$UNCERTAINTY");
             Integer sum2 = result2.stream().mapToInt(i -> i.intValue()).sum();
+            String matchedWord2 = "";
 
             if (string.contains(company)) {
                 if (sum1 > 0) {
+                    matchedWord1 = surpriseFeature.getMatchedWord();
                     if (sum2 > 0) {
+                        matchedWord2 = uncertatintyFeature.getMatchedWord();
                         c = 1;
                     } else c = 2;
                 } else {
                     if (sum2 > 0) {
+                        matchedWord2 = uncertatintyFeature.getMatchedWord();
                         c = 3;
                     } else c = 4;
                 }
             } else {
                 if (sum1 > 0) {
+                    matchedWord1 = surpriseFeature.getMatchedWord();
                     if (sum2 > 0) {
+                        matchedWord2 = uncertatintyFeature.getMatchedWord();
                         c = 5;
                     } else c = 6;
                 } else {
                     if (sum2 > 0) {
+                        matchedWord2 = uncertatintyFeature.getMatchedWord();
                         c = 7;
                     } else c = 8;
                 }
@@ -125,6 +133,8 @@ public class Highlighter {
                         if (word.equals("-LRB-")) word = "(";
                         if (word.equals("-RRB-")) word = ")";
                         if (word.equals(company)){
+                            wordString += "<b><mark>" + word + "</mark></b> ";
+                        }else if ( word.equals(matchedWord1) || word.equals(matchedWord2)) {
                             wordString += "<b>" + word + "</b> ";
                         }else {
                             wordString += word + " ";
@@ -142,6 +152,8 @@ public class Highlighter {
                         if (word.equals("-LRB-")) word = "(";
                         if (word.equals("-RRB-")) word = ")";
                         if (word.equals(company)){
+                            wordString += "<b><mark>" + word + "</mark></b> ";
+                        }else if ( word.equals(matchedWord1) || word.equals(matchedWord2)) {
                             wordString += "<b>" + word + "</b> ";
                         }else {
                             wordString += word + " ";
@@ -159,6 +171,8 @@ public class Highlighter {
                         if (word.equals("-LRB-")) word = "(";
                         if (word.equals("-RRB-")) word = ")";
                         if (word.equals(company)){
+                            wordString += "<b><mark>" + word + "</mark></b> ";
+                        }else if ( word.equals(matchedWord1) || word.equals(matchedWord2)) {
                             wordString += "<b>" + word + "</b> ";
                         }else {
                             wordString += word + " ";
@@ -176,6 +190,8 @@ public class Highlighter {
                         if (word.equals("-LRB-")) word = "(";
                         if (word.equals("-RRB-")) word = ")";
                         if (word.equals(company)){
+                            wordString += "<b><mark>" + word + "</mark></b> ";
+                        }else if ( word.equals(matchedWord1) || word.equals(matchedWord2)) {
                             wordString += "<b>" + word + "</b> ";
                         }else {
                             wordString += word + " ";
@@ -186,19 +202,52 @@ public class Highlighter {
                     break;
                 }
                 case 5: {
-                    highlightedString += before_highlighted + sentenceStanford.get(CoreAnnotations.TextAnnotation.class) +
+                    String wordString = "";
+                    for (int i = 0; i < tokens.size(); i++){
+                        String word = tokens.get(i).get(CoreAnnotations.TextAnnotation.class);
+                        if (word.equals("-LRB-")) word = "(";
+                        if (word.equals("-RRB-")) word = ")";
+                        if (word.equals(matchedWord1) || word.equals(matchedWord2)){
+                            wordString += "<b>" + word + "</b> ";
+                        }else {
+                            wordString += word + " ";
+                        }
+                    }
+                    highlightedString += before_highlighted + wordString +
                             " (Surprise & Uncertainty) " + after_highlighted;
                     highlighted = true;
                     break;
                 }
                 case 6: {
-                    highlightedString += before_highlighted2 + sentenceStanford.get(CoreAnnotations.TextAnnotation.class) +
+                    String wordString = "";
+                    for (int i = 0; i < tokens.size(); i++){
+                        String word = tokens.get(i).get(CoreAnnotations.TextAnnotation.class);
+                        if (word.equals("-LRB-")) word = "(";
+                        if (word.equals("-RRB-")) word = ")";
+                        if (word.equals(matchedWord1) || word.equals(matchedWord2)){
+                            wordString += "<b>" + word + "</b> ";
+                        }else {
+                            wordString += word + " ";
+                        }
+                    }
+                    highlightedString += before_highlighted2 + wordString +
                             " (Surprise) " + after_highlighted;
                     highlighted = true;
                     break;
                 }
                 case 7: {
-                    highlightedString += before_highlighted3 + sentenceStanford.get(CoreAnnotations.TextAnnotation.class) +
+                    String wordString = "";
+                    for (int i = 0; i < tokens.size(); i++){
+                        String word = tokens.get(i).get(CoreAnnotations.TextAnnotation.class);
+                        if (word.equals("-LRB-")) word = "(";
+                        if (word.equals("-RRB-")) word = ")";
+                        if (word.equals(matchedWord1) || word.equals(matchedWord2)){
+                            wordString += "<b>" + word + "</b> ";
+                        }else {
+                            wordString += word + " ";
+                        }
+                    }
+                    highlightedString += before_highlighted3 + wordString +
                             " (Uncertainty) " + after_highlighted;
                     highlighted = true;
                     break;
