@@ -77,6 +77,48 @@ public class Highlighter {
             }
         }
     }
+    /**
+     * This function highlights the company name, surprise and uncertainty feature in the documents
+     * Below is the structure of the switch control flow
+     * company name ->  true
+     *                        surprise -> true
+     *                                          uncertainty -> true   case 1    Company: Surprise & Uncertainty
+     *
+     *                                                      -> false  case 2    Company: Surprise
+     *                                 -> false
+     *                                          uncertainty -> true   case 3    Company: Uncertainty
+     *
+     *                                                      -> false  case 4    Company
+     *              ->  false
+     *                        surprise -> true
+     *                                          uncertainty -> true   case 5    Surprise & Uncertainty
+     *
+     *                                                      -> false  case 6    Surprise
+     *                                 -> false
+     *                                          uncertainty -> true   case 7    Uncertainty
+     *
+     *                                                      -> false  case 8
+     *
+     *  Since "(" and ")" are transformed to "-LRB-" and "-RRB-"  by commands .get(CoreAnnotations.TextAnnotation.class),
+     *  we need to convert them to their original form when write the text to a html file.
+     *
+     *  In the case where company name appears, we check the words one by one and add mark to the name which results in yellow
+     *  background color and highlight it in bold.
+     *
+     *  In the case where surprise/uncertainty feature appears, we check the words one by one and highlight the key word in bold.
+     *
+     *  In the case where surprise_comparative feature appears, we check the pos one by one and highlight the comparative word in italic.
+     *
+     *  In the case where uncertainty_conditionality feature appears, we just highlight the whole sentence.
+     *
+     *  At the end of each case, we will add what appears in the sentence(the company name, surprise feature or uncertainty feature).
+     *
+     * @param document the annotation of the document
+     * @param company the name string of the company
+     *
+     * @return the strings of highlighted document
+     *
+     * */
 
     public String highlight(Document document, String company) throws Exception {
 
@@ -179,15 +221,12 @@ public class Highlighter {
                     String wordString = "";
                     for (int i = 0; i < tokens.size(); i++){
                         String word = tokens.get(i).get(CoreAnnotations.TextAnnotation.class);
-                        String pos = tokens.get(i).get(CoreAnnotations.PartOfSpeechAnnotation.class);
                         if (word.equals("-LRB-")) word = "(";
                         if (word.equals("-RRB-")) word = ")";
                         if (word.equals(company)){
                             wordString += "<b><mark>" + word + "</mark></b> ";
                         }else if ( word.equals(matchedWord1) || word.equals(matchedWord2)) {
                             wordString += "<b>" + word + "</b> ";
-                        }else if ( pos.equals("JJR")||pos.equals("RBR")) {
-                            wordString += "<i>" + word + "</i> ";
                         }else {
                             wordString += word + " ";
                         }
