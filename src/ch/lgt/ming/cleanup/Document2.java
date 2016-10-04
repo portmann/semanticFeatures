@@ -38,7 +38,7 @@ public class Document2 implements Serializable {
 
         String[] strings = documentText.replaceAll("[[^a-zA-Z_]&&\\S]", "").split("\\W+");
         this.tokenTextList = Arrays.asList(strings).stream()
-//                .map(String::toLowerCase)
+                .map(String::toLowerCase)
                 .collect(Collectors.toList());
         this.tokenTextSet = new HashSet<>(this.tokenTextList);
 

@@ -1,14 +1,14 @@
 package ch.lgt.ming.commonfactors;
 
 import ch.lgt.ming.cleanup.Corpus;
-import ch.lgt.ming.cleanup.Document;
 import ch.lgt.ming.cleanup.Document2;
-import ch.lgt.ming.corenlp.StanfordCore;
 import ch.lgt.ming.datastore.*;
 import ch.lgt.ming.helper.FileHandler;
 
 import java.io.*;
-import java.sql.Time;
+import java.lang.instrument.Instrumentation;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -23,26 +23,24 @@ public class tfidf {
     private List<String> StopwordList = new ArrayList<>();                             //Stopword - List of stopwords
     private List<Double> idfList = new ArrayList<>();                                  //List of idf of each word based on the whole corpus
     private List<Integer> DocId_DocName = new ArrayList<>();
-//    private IdListDouble DocId_tfidf = new IdListDouble();
+    private Date date = new Date();
+    private int timeInterval;
     double [][] cosineSimMatrix;
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, ParseException {
 
         Corpus corpus = new Corpus("data/corpusBoris");
-
-        tfidf tfIdf = new tfidf(corpus, 100);
-//        tfidf tfIdf = new tfidf(corpus, corpus.getDocCount());
+        Date date = new SimpleDateFormat("yyyy-MM-dd").parse("2015-10-13");
+        tfidf tfIdf = new tfidf(corpus, corpus.getDocCount(), date, 50);
         tfIdf.calculateClosestPredecessor();
-
-
 
         /**
          * This is to test function getKeyWords, kwyWordsOverlap,
         * */
-//        System.out.println(tfIdf.getKeyWords(tfIdf.corpus.getDocument(0).getTfidf(),10));
-//        System.out.println(tfIdf.getKeyWords(tfIdf.corpus.getDocument(1).getTfidf(),10));
-//        List<String> commonKeywords = tfIdf.getCommonKeyWords(tfIdf.corpus.getDocument(0).getTfidf(), tfIdf.corpus.getDocument(1).getTfidf(), 10);
-//        System.out.println("commonKeywords: " + commonKeywords);
+        System.out.println(tfIdf.getKeyWords(tfIdf.corpus.getDocument(0).getTfidf(),10));
+        System.out.println(tfIdf.getKeyWords(tfIdf.corpus.getDocument(1).getTfidf(),10));
+        List<String> commonKeywords = tfIdf.getCommonKeyWords(tfIdf.corpus.getDocument(0).getTfidf(), tfIdf.corpus.getDocument(1).getTfidf(), 50);
+        System.out.println("commonKeywords: " + commonKeywords);
 //
 //        double ratio = tfIdf.keyWordsOverlap(tfIdf.corpus.getDocument(0).getTfidf(),tfIdf.corpus.getDocument(1).getTfidf(),50);
 //        System.out.println("keywords overlap ratio: " + ratio);
@@ -67,22 +65,6 @@ public class tfidf {
 //                    tfIdf.corpus.getDocument(tfIdf.getDocId_DocName().indexOf(m)).getTfidf(), 50);
 //            System.out.println(commonKeywords2);
 //        }
-
-//        IdListDouble DocId_TfidfList = tfIdf.calculateTfIdf();
-//        System.out.println(DocId_TfidfList.getValue(1));
-//        double cosinsimilarity = tfIdf.getCosineSimilarity(DocId_TfidfList.getValue(0),DocId_TfidfList.getValue(1));
-//        System.out.println(cosinsimilarity);
-//        List<Pair<Integer,Integer>> similarPair = tfIdf.getCosineMatrix(0.7);
-//        System.out.printf("The cosine similarity of the following documents are lager than %f\n", 0.7);
-//        for (int i = 0; i < similarPair.size(); i++){
-//            System.out.printf(similarPair.get(i) + ": %f\n",tfIdf.getCosineSimMatrix()[similarPair.get(i).getLeft()][similarPair.get(i).getRight()]);
-//        }
-//        Kmeans kmeans = new Kmeans(tfIdf.getDict().size(),3, tfIdf.getNumberOfDocuments());
-//        IdListDouble Centroids = kmeans.randInitialization(0,1);
-//        System.out.println(DocId_TfidfList.getValue(1));
-//        kmeans.KmeansIteration(DocId_TfidfList,Centroids,10);
-//
-//        tfIdf.getKeyWords(DocId_TfidfList.getValue(0), 10);
     }
 
 
@@ -92,14 +74,20 @@ public class tfidf {
      *  @param corpus the corpus to process
      */
 
-    public tfidf(Corpus corpus, int numberOfDocuments) throws IOException {
+    public tfidf(Corpus corpus, int numberOfDocuments, Date date, int timeInterval) throws IOException {
 
-        this.corpus = corpus;
-        this.numberOfDocuments = numberOfDocuments;
-        for (int i = 0; i < numberOfDocuments; i++){
-            DocId_DocName.add(i, corpus.getDocument(i).getIndex());
+        for (int i = -timeInterval; i < timeInterval+1; i++){
+            Date date1 = DateUtil.addDays(date, i);
+            for (int j = 0; j < numberOfDocuments; j++){
+                if (corpus.getDocument(j).getDate().equals(date1)){
+                    this.corpus.addDocument(corpus.getDocument(j));
+                }
+            }
         }
-        ReadDict();
+        this.numberOfDocuments = this.corpus.getDocCount();
+        this.date = date;
+        System.out.println(this.numberOfDocuments);
+        ReadDict(false);
         ReadStopword();
         ReadIdf();
         calculateTfIdf();
@@ -108,14 +96,24 @@ public class tfidf {
     /**
      * This function reads dictionary into the Dict variable of the class.
     */
-    public void ReadDict() throws IOException {
-        FileHandler fileHandler = new FileHandler();
-        String myString[] = fileHandler.loadFileToString("data/dictionaries/60k_dictionary_with_names.csv").
-                toLowerCase().split(System.getProperty("line.separator"));
-        Dict = Arrays.asList(myString);
+    public void ReadDict(boolean b) throws IOException {
+        if (b) {
+            FileHandler fileHandler = new FileHandler();
+            String myString[] = fileHandler.loadFileToString("data/dictionaries/60k_dictionary_with_names.csv").
+                    toLowerCase().split(System.getProperty("line.separator"));
+            Dict = Arrays.asList(myString);
 //        System.out.println(Dict);
 //        System.out.println(Dict.get(0).equals("the"));
 //        System.out.print("SIZE:" + Dict.size());
+        }else {
+            Set<String> corpusSet = new HashSet<>();
+            for (int i = 0; i < numberOfDocuments; i++){
+                 corpusSet.addAll(corpus.getDocument(i).getTokenTextSet());
+            }
+            Dict = new ArrayList<>(corpusSet);
+            System.out.println(Dict.size());
+
+        }
     }
 
     /**
@@ -164,7 +162,7 @@ public class tfidf {
     }
 
     /**
-     *  This function return the inverse term frequency of termToCheck among all documents
+     *  This function returns the inverse term frequency of termToCheck among all documents
      *
      *  @param termToCheck the term we need to check in the corpus
      *
@@ -173,12 +171,10 @@ public class tfidf {
     */
     public double idf(String termToCheck){
         double count = 0;                                                                                               //count denotes the number of documents that contains termToCheck
-        for (int i = 0; i < corpus.getDocCount(); i++){                                                                 //For every document
-            for (String s: corpus.getDocument(i).getTokenTextSet()){                                                    //If the document contains termToCheck then count++
-                if (s.equalsIgnoreCase(termToCheck)) {
+        for (int i = 0; i < numberOfDocuments; i++){                                                                 //For every document
+            if (corpus.getDocument(i).getTokenTextSet().contains(termToCheck)) {                         //If the document contains termToCheck then count++
                     count++;
                     break;
-                }
             }
         }
         return 1 + Math.log(numberOfDocuments/count);                                                                     //If every document contains the termToCheck,
@@ -190,27 +186,27 @@ public class tfidf {
      */
     public void calculateTfIdf(){
         for (int i = 0; i < numberOfDocuments; i++){                                                                    //Loop over all documents. For each document, construct a vector to store the tdidf.
-            long start = System.currentTimeMillis();
-            List<Double> tdidfVector = new ArrayList<>(Dict.size());
+//            long start = System.currentTimeMillis();
+            List<Double> tfidfVector = new ArrayList<>(Dict.size());
             for (int j = 0; j < Dict.size(); j++){                                                                      //Loop over the dictionary. For each word, calculate its tf and idf
                 if (corpus.getDocument(i).getTokenTextSet().contains(Dict.get(j).toLowerCase())&&                       //Only calculate tf-idf when the word is in the document
                         !StopwordList.contains(Dict.get(j).toLowerCase())){                                             //and it's not a stop-word
                     double tf = tf(i, Dict.get(j));
-//                    double idf = idf(s);
-                    double idf = idfList.get(j);
+                    double idf = idf(Dict.get(j));
+//                    double idf = idfList.get(j);
                     double tfidf = tf*idf;
 //                    System.out.printf("Document %d, The tf of '%s' is '%f'\n", i, j, tf);
 //                    System.out.printf("Document %d, The idf of '%s' is '%f'\n", i, j, idf);
 //                    System.out.printf("Document %d, The tfidf of '%s' is '%f'\n", i, j, tfidf);
-                    tdidfVector.add(j,tfidf);
+                    tfidfVector.add(j,tfidf);
 //                    System.out.println(TFIDF);
 //                    System.out.println(count);
-                } else tdidfVector.add(j, 0.0);                                              //Or set tf-idf to be zero
+                } else tfidfVector.add(j, 0.0);                                              //Or set tf-idf to be zero
             }
-//            this.DocId_tfidf.putValue(i, tdidfVector);
-            corpus.getDocument(i).setTfidf(tdidfVector);
-            long end = System.currentTimeMillis();
-            System.out.println(end - start);
+//            this.DocId_tfidf.putValue(i, tfidfVector);
+            corpus.getDocument(i).setTfidf(tfidfVector);
+//            long end = System.currentTimeMillis();
+//            System.out.println(end - start);
             System.out.println("Document " + i + ": " + corpus.getDocument(i).getIndex() + " done.");
         }
     }
@@ -366,7 +362,7 @@ public class tfidf {
                 }
             }
         }
-        System.out.printf("The closest predecessor of doc %d within %d days is %d\n", id, timeHorizon, index);
+//        System.out.printf("The closest predecessor of doc %d within %d days is %d\n", id, timeHorizon, index);
         return index;
     }
 
@@ -425,5 +421,12 @@ public class tfidf {
         return numberOfDocuments;
     }
 
+    public Date getDate() {
+        return date;
+    }
+
+    public int getTimeInterval() {
+        return timeInterval;
+    }
 }
 
