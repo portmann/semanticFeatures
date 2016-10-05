@@ -1,16 +1,23 @@
 package ch.lgt.ming.helper;
 
+<<<<<<< HEAD
 import ch.lgt.ming.cleanup.Corpus;
 import ch.lgt.ming.commonfactors.tfidf;
 import ch.lgt.ming.datastore.IdListDouble;
 import ch.lgt.ming.datastore.IdString;
+=======
+>>>>>>> 8059df198a5b9ffa628e384624a81025e23f6540
 
-import java.io.FileWriter;
+import ch.lgt.ming.datastore.IdString;
 import java.io.IOException;
+<<<<<<< HEAD
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+=======
+
+>>>>>>> 8059df198a5b9ffa628e384624a81025e23f6540
 
 /**
  * Created by Ming Deng on 8/29/2016.
@@ -24,8 +31,20 @@ public class CsvFileWriter_CommonFactor {
     //CSV file header
     private static  String FILE_HEADER = "docID";
 
+<<<<<<< HEAD
     public static void main(String[] args) throws IOException, ParseException {
         CsvFileWriter_CommonFactor.writeCsvFileWriter("data/featureFiles/commonFactors.csv", 50, 50);
+=======
+    // Variable declaration
+    private static IdString docId_Text = new IdString();
+
+    public static String getFileHeader() {
+        return FILE_HEADER;
+    }
+
+    public static void main(String[] args) throws IOException {
+        CsvFileWriter_CommonFactor.writeCsvFileWriter("data/featureFiles/commonFactors499Boris.csv", 499, 50);
+>>>>>>> 8059df198a5b9ffa628e384624a81025e23f6540
     }
 
     /**
