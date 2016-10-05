@@ -75,7 +75,7 @@ public class CsvFileWriter_Features {
 
     public static void writeCsvFile(String fileName, int numberofdocs){
 
-        File folder = new File("data/corpus8/Amazon");
+        File folder = new File("data/corpusBoris/");
         File[] listOfFiles = folder.listFiles();
 
         FileInputStream fileInputStream ;
@@ -91,7 +91,7 @@ public class CsvFileWriter_Features {
             //Write new subjects to the CSV file
             for (int key = 0; key < numberofdocs; key++){
 
-                fileInputStream = new FileInputStream("data/corpus8/Amazon/" + listOfFiles[key].getName());
+                fileInputStream = new FileInputStream("data/corpusBoris/" + listOfFiles[key].getName());
                 ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
                 Document document = (Document) objectInputStream.readObject();
 

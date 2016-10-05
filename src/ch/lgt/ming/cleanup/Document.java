@@ -1,4 +1,3 @@
-
 package ch.lgt.ming.cleanup;
 
 import ch.lgt.ming.corenlp.StanfordCore;
@@ -6,7 +5,6 @@ import ch.lgt.ming.helper.FileHandler;
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.util.CoreMap;
-
 import java.io.*;
 import java.text.ParseException;
 import java.util.ArrayList;

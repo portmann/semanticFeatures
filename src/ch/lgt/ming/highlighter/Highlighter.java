@@ -28,8 +28,6 @@ public class Highlighter {
     public String before_standard = "";
     public String after_standard = "";
 
-
-
     public static void main(String[] args) throws IOException {
 
         List<String> companies = Arrays.asList("Amazon", "Boeing", "Delta", "Facebook", "Ford",
@@ -39,7 +37,6 @@ public class Highlighter {
 
         HTMLStrings htmlStrings = new HTMLStrings();
         Highlighter highlighter = new Highlighter();
-
 
         FileHandler fileHandler = new FileHandler();
         FileInputStream fileInputStream = null;
@@ -285,3 +282,5 @@ public class Highlighter {
             return "";
     }
 }
+
+

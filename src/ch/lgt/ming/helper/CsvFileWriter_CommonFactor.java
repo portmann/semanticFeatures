@@ -1,12 +1,9 @@
 package ch.lgt.ming.helper;
 
-import ch.lgt.ming.commonfactors.tfidf;
-import ch.lgt.ming.datastore.IdListDouble;
-import ch.lgt.ming.datastore.IdString;
 
-import java.io.FileWriter;
+import ch.lgt.ming.datastore.IdString;
 import java.io.IOException;
-import java.util.List;
+
 
 /**
  * Created by Ming Deng on 8/29/2016.
@@ -28,7 +25,7 @@ public class CsvFileWriter_CommonFactor {
     }
 
     public static void main(String[] args) throws IOException {
-        CsvFileWriter_CommonFactor.writeCsvFileWriter("data/featureFiles/commonFactors499.csv", 499, 50);
+        CsvFileWriter_CommonFactor.writeCsvFileWriter("data/featureFiles/commonFactors499Boris.csv", 499, 50);
     }
 
 

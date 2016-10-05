@@ -1,4 +1,4 @@
-0<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
      xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd">
  <info organisation="in.ex" module="simpleivy" status="integration">
@@ -8,6 +8,7 @@
 	<dependency org="edu.stanford.nlp" name="stanford-corenlp" rev="3.6.0"/>
 	<dependency org="org.apache.poi" name="poi-ooxml" rev="3.9"/>
 	<dependency org="com.sun.xml.parsers" name="jaxp-ri" rev="1.4.5"/>
+	<dependency org="commons-io" name="commons-io" rev="2.5"/>
  </dependencies>
  
 </ivy-module>
