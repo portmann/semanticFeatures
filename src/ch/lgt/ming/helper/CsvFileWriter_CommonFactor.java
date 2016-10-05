@@ -1,11 +1,15 @@
 package ch.lgt.ming.helper;
 
+import ch.lgt.ming.cleanup.Corpus;
 import ch.lgt.ming.commonfactors.tfidf;
 import ch.lgt.ming.datastore.IdListDouble;
 import ch.lgt.ming.datastore.IdString;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -20,83 +24,77 @@ public class CsvFileWriter_CommonFactor {
     //CSV file header
     private static  String FILE_HEADER = "docID";
 
-    // Variable declaration
-    private static IdString docId_Text = new IdString();
-
-    public static String getFileHeader() {
-        return FILE_HEADER;
+    public static void main(String[] args) throws IOException, ParseException {
+        CsvFileWriter_CommonFactor.writeCsvFileWriter("data/featureFiles/commonFactors.csv", 50, 50);
     }
 
-    public static void main(String[] args) throws IOException {
-        CsvFileWriter_CommonFactor.writeCsvFileWriter("data/featureFiles/commonFactors499.csv", 499, 50);
-    }
+    /**
+     * This function writes the csv file of common factors.
+     *
+     * @param fileName The address where the csv file will be written;
+     * @param timeInterval The time interval considered for the corpus;
+     * @param numberofKeyWords The number of keywords to be written.
+     *
+    * */
 
-
-    public static void writeCsvFileWriter(String fileName, int numberofDocs, int numberofKeyWords) throws IOException {
+    public static void writeCsvFileWriter(String fileName, int timeInterval, int numberofKeyWords)
+            throws IOException, ParseException {
 
         for (int i = 0; i < numberofKeyWords; i++){
             FILE_HEADER += "," + i;
         }
 
-//        TFIDF tfIdf = new TFIDF(numberofDocs, "corpus2/test1");
-//        tfidf tfIdf = new tfidf(corpus);
-//        tfIdf.ReadDict();
-//        tfIdf.ReadStopword();
-//        tfIdf.ReadIdf();
+        Corpus corpus = new Corpus("data/corpusBoris");
+        Date date = new SimpleDateFormat("yyyy-MM-dd").parse("2015-10-13");
+        tfidf tfIdf = new tfidf(corpus, date, timeInterval);
 
-//        System.out.println(tfIdf.getDocId_TokensList().getValue(0));
-//        IdListDouble DocId_TfidfList = tfIdf.calculateTfIdf();
-//        DocId_TfidfList.getValue(1);
-//        System.out.println(DocId_TfidfList.getValue(1));
-//        double cosinsimilarity = tfIdf.getCosineSimilarity(DocId_TfidfList.getValue(1),DocId_TfidfList.getValue(2));
-//        System.out.println(cosinsimilarity);
-//        tfIdf.getCosineMatrix(0.1);
+        FileWriter fileWriter = null;
+        try {
 
-//        System.out.println(Dict.get(0));
+            fileWriter = new FileWriter(fileName);
 
-//        FileWriter fileWriter = null;
-//        try {
-//
-//            fileWriter = new FileWriter(fileName);
-//
-//            //Write the CSV file header
-//            fileWriter.append(FILE_HEADER);
-//
-//            //Add a new line separator after the header
-//            fileWriter.append(NEW_LINE_SEPARATOR);
-//            //Write new subjects to the CSV file
-//            //Process documents
-//            for (int i = 0; i < numberofDocs; i++) {
-//
-//                double start = System.currentTimeMillis();
-////                List<String> keywords = tfIdf.getKeyWords(DocId_TfidfList.getValue(i), numberofKeyWords);
-//
-//                fileWriter.append(String.valueOf(i));
-//                for (int j = 0; j < numberofKeyWords; j++){
-//                    fileWriter.append(COMMA_DELIMITER);
-//                    fileWriter.append(keywords.get(j));
-//                }
-//                fileWriter.append(NEW_LINE_SEPARATOR);
-//                double end = System.currentTimeMillis();
-//                System.out.println(end-start);
-//                System.out.println("Document " + i + " is done.");
-//
-//            }
-//
-//            System.out.println("CSV file was created successfully!");
-//
-//        } catch (Exception e) {
-//            System.out.println("Error in CsvFileWriter_Features!");
-//            e.printStackTrace();
-//        } finally {
-//            try {
-//                fileWriter.flush();
-//                fileWriter.close();
-//            }catch (IOException e){
-//                System.out.println("Error while flushing/closing fileWriter!");
-//                e.printStackTrace();
-//            }
-//        }
+            //Write the CSV file header
+            fileWriter.append(FILE_HEADER);
 
+            //Add a new line separator after the header
+            fileWriter.append(NEW_LINE_SEPARATOR);
+            //Write new subjects to the CSV file
+            //Process documents
+            for (int i = 0; i < tfIdf.getNumberOfDocuments(); i++) {
+
+                double start = System.currentTimeMillis();
+                List<String> keywords = tfIdf.getKeyWords(tfIdf.getCorpus().getDocument(i).getTfidf(), numberofKeyWords);
+
+                fileWriter.append(String.valueOf(i));
+                for (int j = 0; j < numberofKeyWords; j++){
+                    fileWriter.append(COMMA_DELIMITER);
+                    fileWriter.append(keywords.get(j));
+                }
+                fileWriter.append(NEW_LINE_SEPARATOR);
+                double end = System.currentTimeMillis();
+                System.out.println(end-start);
+                System.out.println("Document " + i + " is done.");
+
+            }
+
+            System.out.println("CSV file was created successfully!");
+
+        } catch (Exception e) {
+            System.out.println("Error in CsvFileWriter_Features!");
+            e.printStackTrace();
+        } finally {
+            try {
+                fileWriter.flush();
+                fileWriter.close();
+            }catch (IOException e){
+                System.out.println("Error while flushing/closing fileWriter!");
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    public static String getFileHeader() {
+        return FILE_HEADER;
     }
 }

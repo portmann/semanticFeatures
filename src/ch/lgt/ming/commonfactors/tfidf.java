@@ -31,7 +31,7 @@ public class tfidf {
 
         Corpus corpus = new Corpus("data/corpusBoris");
         Date date = new SimpleDateFormat("yyyy-MM-dd").parse("2015-10-13");
-        tfidf tfIdf = new tfidf(corpus, corpus.getDocCount(), date, 50);
+        tfidf tfIdf = new tfidf(corpus, date, 50);
         tfIdf.calculateClosestPredecessor();
 
         /**
@@ -69,16 +69,18 @@ public class tfidf {
 
 
     /**
-     *  Constructor: calculate the tf-idf of a specific Corpus
+     *  Constructor: calculate the tf-idf of a specific corpus
      *
-     *  @param corpus the corpus to process
+     *  @param corpus the whole corpus, but we will built a smaller one based on the time span we are interested in
+     *  @param date the date which we will considered to construct the smaller corpus
+     *  @param timeInterval the smaller corpus will only includes the documents in the period of [date-timeInterval, date+timeInterval]
      */
 
-    public tfidf(Corpus corpus, int numberOfDocuments, Date date, int timeInterval) throws IOException {
+    public tfidf(Corpus corpus, Date date, int timeInterval) throws IOException {
 
         for (int i = -timeInterval; i < timeInterval+1; i++){
             Date date1 = DateUtil.addDays(date, i);
-            for (int j = 0; j < numberOfDocuments; j++){
+            for (int j = 0; j < corpus.getDocCount(); j++){
                 if (corpus.getDocument(j).getDate().equals(date1)){
                     this.corpus.addDocument(corpus.getDocument(j));
                 }
@@ -427,6 +429,10 @@ public class tfidf {
 
     public int getTimeInterval() {
         return timeInterval;
+    }
+
+    public Corpus getCorpus() {
+        return corpus;
     }
 }
 
