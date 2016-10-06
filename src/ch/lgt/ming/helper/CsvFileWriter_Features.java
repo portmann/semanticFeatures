@@ -66,9 +66,9 @@ public class CsvFileWriter_Features {
         /**
          * This part of code writes featuresBoris using raw documents
          * */
-        String inputFilePath = "data/corpusBoris";
-        String outputFilePath = "data/featureFiles/featuresBoris.csv";
-        CsvFileWriter_Features.writeCsvFile(inputFilePath, outputFilePath, 10, false);
+//        String inputFilePath = "data/corpusBoris";
+//        String outputFilePath = "data/featureFiles/featuresBoris.csv";
+//        CsvFileWriter_Features.writeCsvFile(inputFilePath, outputFilePath, 10, false);
 
 //        String inputFilePath = "data/corpus5/Amazon";
 //        String outputFilePath = "data/featureFiles/featuresAmazon.csv";
