@@ -367,7 +367,35 @@ public class tfidf {
 //        System.out.printf("The closest predecessor of doc %d within %d days is %d\n", id, timeHorizon, index);
         return index;
     }
+    
+    public int getClosestPredecessor2(List<Double> tfidf, int id, Date date, int n, int timeHorizon, boolean isCosine, double threshold){
 
+        double ratio = 0;
+        Integer index = -1;
+        for (int i = 0; i < timeHorizon + 1; i++){
+            Date date1 = DateUtil.addDays(date, -i);
+            for (int j = 0; j <  numberOfDocuments && corpus.getDocument(j).getIndex() != id; j++){
+                if (corpus.getDocument(j).getDate().equals(date1)){
+                    if (isCosine){
+                        double ratio2 = getCosineSimilarity(tfidf, corpus.getDocument(j).getTfidf());
+                        if (ratio2 > ratio && ratio2 > threshold){
+                            ratio = ratio2;
+                            index = corpus.getDocument(j).getIndex();
+                        }
+                    }else {
+                        double ratio2 = keyWordsOverlap(tfidf, corpus.getDocument(j).getTfidf(), n);
+                        if (ratio2 > ratio && ratio2 > threshold){
+                            ratio = ratio2;
+                            index = corpus.getDocument(j).getIndex();
+                        }
+                    }
+                }
+            }
+        }
+//        System.out.printf("The closest predecessor of doc %d within %d days is %d\n", id, timeHorizon, index);
+        return index;
+    }
+    
     public void calculateClosestPredecessor(){
         for (int i = 0; i < numberOfDocuments; i++){
             Document2 document = corpus.getDocument(i);

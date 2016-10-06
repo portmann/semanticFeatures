@@ -1,11 +1,13 @@
 package ch.lgt.ming.helper;
 
 import ch.lgt.ming.cleanup.Corpus;
+import ch.lgt.ming.cleanup.Document2;
 import ch.lgt.ming.commonfactors.tfidf;
 import ch.lgt.ming.datastore.IdString;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -21,10 +23,10 @@ public class CsvFileWriter_CommonFactor {
     private static final String NEW_LINE_SEPARATOR = "\n";
 
     //CSV file header
-    private static  String FILE_HEADER = "docID";
+    private static  String FILE_HEADER = "date,docID,refDocID";
 
     public static void main(String[] args) throws IOException, ParseException {
-        CsvFileWriter_CommonFactor.writeCsvFileWriter("data/featureFiles/commonFactors1.csv", 50, 20);
+        CsvFileWriter_CommonFactor.writeCsvFileWriter("data/featureFiles/commonFactors5.csv", 50, 20);
     }
 
     /**
@@ -46,7 +48,8 @@ public class CsvFileWriter_CommonFactor {
         Corpus corpus = new Corpus("data/corpusBoris");
         Date date = new SimpleDateFormat("yyyy-MM-dd").parse("2015-10-13");
         tfidf tfIdf = new tfidf(corpus, date, timeInterval);
-
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        
         FileWriter fileWriter = null;
         try {
 
@@ -62,9 +65,17 @@ public class CsvFileWriter_CommonFactor {
             for (int i = 0; i < tfIdf.getNumberOfDocuments(); i++) {
 
                 double start = System.currentTimeMillis();
-                List<String> keywords = tfIdf.getKeyWords(tfIdf.getCorpus().getDocument(i).getTfidf(), numberofKeyWords);
-
-                fileWriter.append(String.valueOf(i));
+                Document2 doc = tfIdf.getCorpus().getDocument(i);
+                List<String> keywords = tfIdf.getKeyWords(doc.getTfidf(), numberofKeyWords);
+                int pre = tfIdf.getClosestPredecessor2(doc.getTfidf(), doc.getIndex(), doc.getDate(),numberofKeyWords, timeInterval, false, 0.25); 
+         
+                String strDate = dateFormat.format(doc.getDate());
+                fileWriter.append(String.valueOf(strDate));
+                fileWriter.append(COMMA_DELIMITER);      
+                fileWriter.append(String.valueOf(doc.getIndex()));
+                fileWriter.append(COMMA_DELIMITER);                
+                fileWriter.append(String.valueOf(pre));
+                
                 for (int j = 0; j < numberofKeyWords; j++){
                     fileWriter.append(COMMA_DELIMITER);
                     fileWriter.append(keywords.get(j));
