@@ -78,7 +78,7 @@ public class tfidf {
 
     public tfidf(Corpus corpus, Date date, int timeInterval) throws IOException {
 
-        for (int i = -timeInterval; i < timeInterval+1; i++){
+        for (int i = -timeInterval; i < 1; i++){
             Date date1 = DateUtil.addDays(date, i);
             for (int j = 0; j < corpus.getDocCount(); j++){
                 if (corpus.getDocument(j).getDate().equals(date1)){
@@ -364,7 +364,7 @@ public class tfidf {
                 }
             }
         }
-//        System.out.printf("The closest predecessor of doc %d within %d days is %d\n", id, timeHorizon, index);
+        System.out.printf("The closest predecessor of doc %d within %d days is %d\n", id, timeHorizon, index);
         return index;
     }
     
@@ -400,8 +400,8 @@ public class tfidf {
         for (int i = 0; i < numberOfDocuments; i++){
             Document2 document = corpus.getDocument(i);
             List<Integer> closestDocuments = new ArrayList<>();
-            for (int j = 0; j < 8; j++){
-                int index = getClosestPredecessor(document.getTfidf(), document.getIndex(), document.getDate(), 50,j, false);
+            for (int j = 0; j < 4; j++){
+                int index = getClosestPredecessor(document.getTfidf(), document.getIndex(), document.getDate(), 50, j, false);
                 closestDocuments.add(j, index);
             }
             document.setClosestDocuments(closestDocuments);

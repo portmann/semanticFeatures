@@ -85,7 +85,10 @@ public class DocbyWebsite {
 //            }
 //        }
 
-
+        /**
+         * This part of code found all documents from Reuters
+         *
+         * */
         String path = "data/DataForMing_V2";
         File folder = new File(path);
         File[] listOfFiles = folder.listFiles();
