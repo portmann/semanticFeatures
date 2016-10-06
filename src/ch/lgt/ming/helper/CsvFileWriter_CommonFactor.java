@@ -2,7 +2,6 @@ package ch.lgt.ming.helper;
 
 import ch.lgt.ming.cleanup.Corpus;
 import ch.lgt.ming.commonfactors.tfidf;
-import ch.lgt.ming.datastore.IdString;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -30,16 +29,16 @@ public class CsvFileWriter_CommonFactor {
     /**
      * This function writes the csv file of common factors.
      *
-     * @param fileName The address where the csv file will be written;
+     * @param outputFilePath The address where the csv file will be written;
      * @param timeInterval The time interval considered for the corpus;
-     * @param numberofKeyWords The number of keywords to be written.
+     * @param numberOfKeyWords The number of keywords to be written.
      *
     * */
 
-    public static void writeCsvFileWriter(String fileName, int timeInterval, int numberofKeyWords)
+    public static void writeCsvFileWriter(String outputFilePath, int timeInterval, int numberOfKeyWords)
             throws IOException, ParseException {
 
-        for (int i = 0; i < numberofKeyWords; i++){
+        for (int i = 0; i < numberOfKeyWords; i++){
             FILE_HEADER += "," + i;
         }
 
@@ -50,7 +49,7 @@ public class CsvFileWriter_CommonFactor {
         FileWriter fileWriter = null;
         try {
 
-            fileWriter = new FileWriter(fileName);
+            fileWriter = new FileWriter(outputFilePath);
 
             //Write the CSV file header
             fileWriter.append(FILE_HEADER);
@@ -62,10 +61,10 @@ public class CsvFileWriter_CommonFactor {
             for (int i = 0; i < tfIdf.getNumberOfDocuments(); i++) {
 
                 double start = System.currentTimeMillis();
-                List<String> keywords = tfIdf.getKeyWords(tfIdf.getCorpus().getDocument(i).getTfidf(), numberofKeyWords);
+                List<String> keywords = tfIdf.getKeyWords(tfIdf.getCorpus().getDocument(i).getTfidf(), numberOfKeyWords);
 
                 fileWriter.append(String.valueOf(i));
-                for (int j = 0; j < numberofKeyWords; j++){
+                for (int j = 0; j < numberOfKeyWords; j++){
                     fileWriter.append(COMMA_DELIMITER);
                     fileWriter.append(keywords.get(j));
                 }

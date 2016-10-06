@@ -1,6 +1,5 @@
 package ch.lgt.ming.helper;
 
-import ch.lgt.ming.cleanup.Corpus;
 import ch.lgt.ming.cleanup.Document;
 import ch.lgt.ming.corenlp.StanfordCore;
 import ch.lgt.ming.datastore.*;
@@ -22,6 +21,7 @@ public class CsvFileWriter_Features {
     private static final String COMMA_DELIMITER = ",";
     private static final String NEW_LINE_SEPARATOR = "\n";
 
+    private static FileHandler fileHandler = new FileHandler();
     //CSV file header
     private static final String FILE_HEADER = "docID," + "Date," +
             "Uncertainty_unspecified_noun,Uncertainty_unspecified_noun_neg," +
@@ -50,206 +50,228 @@ public class CsvFileWriter_Features {
             "Surprise_comparative," +
             "Valence_Pos,Valence_Neg";
 
-    // Variable declaration
-    private static FileHandler fileHandler = new FileHandler();
-    private static IdString docId_Text = new IdString();
 
     public static void main(String[] args) {
+        /**
+         * This part of code writes featuresBoris using annotated documents
+        * */
+//        String inputFilePath = "data/corpusBorisSer";
+//        String outputFilePath = "data/featureFiles/featuresBoris.csv";
+//        CsvFileWriter_Features.writeCsvFile(inputFilePath, outputFilePath, 10, true);
 
+//        String inputFilePath = "data/corpus8/Amazon";
+//        String outputFilePath = "data/featureFiles/featuresAmazon.csv";
+//        CsvFileWriter_Features.writeCsvFile(inputFilePath, outputFilePath, 100, true);
 
-    	String path = "data/featureFiles/featuresBoris.csv";
-    	CsvFileWriter_Features.writeCsvFile(path, 25	);
+        /**
+         * This part of code writes featuresBoris using raw documents
+         * */
+        String inputFilePath = "data/corpusBoris";
+        String outputFilePath = "data/featureFiles/featuresBoris.csv";
+        CsvFileWriter_Features.writeCsvFile(inputFilePath, outputFilePath, 10, false);
 
-//        CsvFileWriter_Features.writeCsvFile("data/featureFiles/Amazon.csv", 865);
-//        CsvFileWriter_Features.writeCsvFile("data/featureFiles/Amazon.csv", 10);
-
+//        String inputFilePath = "data/corpus5/Amazon";
+//        String outputFilePath = "data/featureFiles/featuresAmazon.csv";
+//        CsvFileWriter_Features.writeCsvFile(inputFilePath, outputFilePath, 100, false);
     }
 
     /**
      * This function writes the feature counts into a csv file, using annotated documents.
      *
-     * @param fileName The name of the csv file to be stored
-     * @param numberofdocs number of documents to write
+     * @param inputFilePath The location of the folder where the documents are stored
+     * @param outputFilePath The name of the csv file to be stored
+     * @param numberOfDocs number of documents to write
+     * @param annotatedDocument indicating if the input files are annotated documents(true) or raw documents(false)
      *
     * */
 
-    public static void writeCsvFile(String fileName, int numberofdocs){
+    public static void writeCsvFile(String inputFilePath, String outputFilePath, int numberOfDocs, boolean annotatedDocument){
+        if (annotatedDocument){
 
-        File folder = new File("data/corpusBoris/");
-        File[] listOfFiles = folder.listFiles();
+            File folder = new File(inputFilePath);
+            File[] listOfFiles = folder.listFiles();
 
-        FileInputStream fileInputStream ;
-        FileWriter fileWriter = null;
+            FileInputStream fileInputStream ;
+            FileWriter fileWriter = null;
 
-        try {
-            fileWriter = new FileWriter(fileName);
+            try {
+                fileWriter = new FileWriter(outputFilePath);
 
-            fileWriter.append(FILE_HEADER);                                     //Write the CSV file header
-            fileWriter.append(NEW_LINE_SEPARATOR);                              //Add a new line separator after the header
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                fileWriter.append(FILE_HEADER);                                     //Write the CSV file header
+                fileWriter.append(NEW_LINE_SEPARATOR);                              //Add a new line separator after the header
+                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-            //Write new subjects to the CSV file
-            for (int key = 0; key < numberofdocs; key++){
+                //Write new subjects to the CSV file
+                for (int key = 0; key < numberOfDocs; key++){
 
-                fileInputStream = new FileInputStream("data/corpusBoris/" + listOfFiles[key].getName());
+                    fileInputStream = new FileInputStream(inputFilePath + "/" + listOfFiles[key].getName());
+                    ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+                    Document document = (Document) objectInputStream.readObject();
+
+                    fileWriter.append(String.valueOf(document.getIndex()));
+                    fileWriter.append(COMMA_DELIMITER);
+
+                    String strDate = dateFormat.format(document.getDate());
+                    fileWriter.append(strDate);
+                    fileWriter.append(COMMA_DELIMITER);
+
+                    Annotation annotation = document.getDocument();
+
+                    List<String> Uncertainty_Reg = Arrays.asList("$UNSPECIFIED", "$FEAR", "$HOPE", "$ANXIETY");
+                    List<String> Uncertainty_Reg2 = Arrays.asList("$CONDITIONALITY1", "$CONDITIONALITY2");
+                    List<String> Surprise_Reg = Arrays.asList("$UNSPECIFIED", "$DISAPPOINTMENT", "$RELIEF");
+
+                    for (int i = 0; i < Uncertainty_Reg.size(); i++){
+                        List<Integer> result = Uncertainty.extract(annotation, Uncertainty_Reg.get(i));
+                        for (int j = 0; j < 6; j++){
+                            fileWriter.append((String.valueOf(result.get(j))));
+                            fileWriter.append(COMMA_DELIMITER);
+                        }
+                    }
+                    for (int i = 0; i < Uncertainty_Reg2.size(); i++){
+                        List<Integer> result = Uncertainty.extractConditionality(annotation, Uncertainty_Reg2.get(i));
+                        for (int j = 0; j < 3; j++){
+                            fileWriter.append((String.valueOf(result.get(j))));
+                            fileWriter.append(COMMA_DELIMITER);
+                        }
+                    }
+                    for (int i = 0; i < Surprise_Reg.size(); i++){
+                        List<Integer> result = Surprise.extract(annotation, Surprise_Reg.get(i));
+                        for (int j = 0; j < 6; j++) {
+                            fileWriter.append(String.valueOf(result.get(j)));
+                            fileWriter.append(COMMA_DELIMITER);
+                        }
+                    }
+                    fileWriter.append(String.valueOf(Surprise.extractComparative(annotation)));
+                    fileWriter.append(COMMA_DELIMITER);
+                    fileWriter.append(String.valueOf(PosWordCount.extract(annotation)));
+                    fileWriter.append(COMMA_DELIMITER);
+                    fileWriter.append(String.valueOf(NegWordCount.extract(annotation)));
+                    fileWriter.append(NEW_LINE_SEPARATOR);
+                    System.out.printf("%d is done\n", key);
+                }
+                System.out.println("CSV file was created successfully!");
+
+            }catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }catch (IOException e) {
+                e.printStackTrace();
+            }catch (Exception e) {
+                System.out.println("Error in CsvFileWriter_Features!");
+                e.printStackTrace();
+            }finally {
+                try {
+                    fileWriter.flush();
+                    fileWriter.close();
+                } catch (IOException e) {
+                    System.out.println("Error while flushing/closing fileWriter!");
+                    e.printStackTrace();
+                }
+            }
+
+        }else{
+
+            File folder = new File(inputFilePath);
+            File[] listOfFiles = folder.listFiles();
+
+            FileInputStream fileInputStream ;
+            FileWriter fileWriter = null;
+
+            StanfordCore.init();
+
+            /**
+             * This part reads the Date from DataTime.ser
+             * */
+            Map<Integer,Date> DocTime = new HashMap<>();
+            try {
+                fileInputStream = new FileInputStream("data/corpus4/DataTime.ser");
                 ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-                Document document = (Document) objectInputStream.readObject();
-
-                fileWriter.append(String.valueOf(document.getIndex()));
-                fileWriter.append(COMMA_DELIMITER);
-
-                String strDate = dateFormat.format(document.getDate());
-                fileWriter.append(strDate);
-                fileWriter.append(COMMA_DELIMITER);
-
-                Annotation annotation = document.getDocument();
-
-                List<String> Uncertainty_Reg = Arrays.asList("$UNSPECIFIED", "$FEAR", "$HOPE", "$ANXIETY");
-                List<String> Uncertainty_Reg2 = Arrays.asList("$CONDITIONALITY1", "$CONDITIONALITY2");
-                List<String> Surprise_Reg = Arrays.asList("$UNSPECIFIED", "$DISAPPOINTMENT", "$RELIEF");
-
-                for (int i = 0; i < Uncertainty_Reg.size(); i++){
-                    List<Integer> result = Uncertainty.extract(annotation, Uncertainty_Reg.get(i));
-                    for (int j = 0; j < 6; j++){
-                        fileWriter.append((String.valueOf(result.get(j))));
-                        fileWriter.append(COMMA_DELIMITER);
-                    }
-                }
-                for (int i = 0; i < Uncertainty_Reg2.size(); i++){
-                    List<Integer> result = Uncertainty.extractConditionality(annotation, Uncertainty_Reg2.get(i));
-                    for (int j = 0; j < 3; j++){
-                        fileWriter.append((String.valueOf(result.get(j))));
-                        fileWriter.append(COMMA_DELIMITER);
-                    }
-                }
-                for (int i = 0; i < Surprise_Reg.size(); i++){
-                    List<Integer> result = Surprise.extract(annotation, Surprise_Reg.get(i));
-                    for (int j = 0; j < 6; j++) {
-                        fileWriter.append(String.valueOf(result.get(j)));
-                        fileWriter.append(COMMA_DELIMITER);
-                    }
-                }
-                fileWriter.append(String.valueOf(Surprise.extractComparative(annotation)));
-                fileWriter.append(COMMA_DELIMITER);
-                fileWriter.append(String.valueOf(PosWordCount.extract(annotation)));
-                fileWriter.append(COMMA_DELIMITER);
-                fileWriter.append(String.valueOf(NegWordCount.extract(annotation)));
-                fileWriter.append(NEW_LINE_SEPARATOR);
-                System.out.printf("%d is done\n", key);
-            }
-            System.out.println("CSV file was created successfully!");
-
-        }catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }catch (IOException e) {
-            e.printStackTrace();
-        }catch (Exception e) {
-            System.out.println("Error in CsvFileWriter_Features!");
-            e.printStackTrace();
-        }finally {
-            try {
-                fileWriter.flush();
-                fileWriter.close();
+                DocTime = (Map<Integer, Date>) objectInputStream.readObject();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
             } catch (IOException e) {
-                System.out.println("Error while flushing/closing fileWriter!");
                 e.printStackTrace();
             }
-        }
-    }
 
-    /**
-     * This function writes the feature counts into a csv file, using raw html documents.
-     *
-     * @param fileName The name of the csv file to be stored
-     * @param numberofdocs number of documents to write
-     *
-     * */
-
-    public static void writeCsvFile2(String fileName, int numberofdocs){
-
-        // Initialize corenlp
-        StanfordCore.init();
-
-        // Load corpus
-        String path = "data/corpusBoris";
-
-
-        File folder = new File(path);
-        File[] listOfFiles = folder.listFiles();
-
-        FileWriter fileWriter = null;
-        try {
-
-            fileWriter = new FileWriter(fileName);
-
-            //Write the CSV file header
-            fileWriter.append(FILE_HEADER);
-
-            //Add a new line separator after the header
-            fileWriter.append(NEW_LINE_SEPARATOR);
-
-            //Write new subjects to the CSV file
-            //Load the documents
-            for (int i = 0; i < numberofdocs; i++) {
-                docId_Text.putValue(i, fileHandler.loadFileToString(path + "/" + listOfFiles[i].getName()));
-
-                fileWriter.append(listOfFiles[i].getName().replaceAll(".html", ""));
-                fileWriter.append(COMMA_DELIMITER);
-
-                double start = System.currentTimeMillis();
-                Annotation annotation = StanfordCore.pipeline.process(docId_Text.getValue(i));
-
-                List<String> Uncertainty_Reg = Arrays.asList("$UNSPECIFIED", "$FEAR", "$HOPE", "$ANXIETY");
-                List<String> Uncertainty_Reg2 = Arrays.asList("$CONDITIONALITY1", "$CONDITIONALITY2");
-                List<String> Surprise_Reg = Arrays.asList("$UNSPECIFIED", "$DISAPPOINTMENT", "$RELIEF");
-
-                for (int ii = 0; ii < Uncertainty_Reg.size(); ii++){
-                    List<Integer> result = Uncertainty.extract(annotation, Uncertainty_Reg.get(ii));
-                    for (int j = 0; j < 6; j++){
-                        fileWriter.append((String.valueOf(result.get(j))));
-                        fileWriter.append(COMMA_DELIMITER);
-                    }
-                }
-                for (int ii = 0; ii < Uncertainty_Reg2.size(); ii++){
-                    List<Integer> result = Uncertainty.extractConditionality(annotation, Uncertainty_Reg2.get(ii));
-                    for (int j = 0; j < 3; j++){
-                        fileWriter.append((String.valueOf(result.get(j))));
-                        fileWriter.append(COMMA_DELIMITER);
-                    }
-                }
-                for (int ii = 0; ii < Surprise_Reg.size(); ii++){
-                    List<Integer> result = Surprise.extract(annotation, Surprise_Reg.get(ii));
-                    for (int j = 0; j < 6; j++) {
-                        fileWriter.append(String.valueOf(result.get(j)));
-                        fileWriter.append(COMMA_DELIMITER);
-                    }
-                }
-                fileWriter.append(String.valueOf(Surprise.extractComparative(annotation)));
-                fileWriter.append(COMMA_DELIMITER);
-                fileWriter.append(String.valueOf(PosWordCount.extract(annotation)));
-                fileWriter.append(COMMA_DELIMITER);
-                fileWriter.append(String.valueOf(NegWordCount.extract(annotation)));
-                fileWriter.append(NEW_LINE_SEPARATOR);
-                double end = System.currentTimeMillis();
-                System.out.println(end-start);
-                System.out.println("Document " + i + " is done.");
-
-            }
-            System.out.println("CSV file was created successfully!");
-        } catch (Exception e) {
-            System.out.println("Error in CsvFileWriter_Features!");
-            e.printStackTrace();
-        } finally {
             try {
-                fileWriter.flush();
-                fileWriter.close();
-            }catch (IOException e){
-                System.out.println("Error while flushing/closing fileWriter!");
+                fileWriter = new FileWriter(outputFilePath);
+
+                fileWriter.append(FILE_HEADER);                                     //Write the CSV file header
+                fileWriter.append(NEW_LINE_SEPARATOR);                              //Add a new line separator after the header
+                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+                //Write new subjects to the CSV file
+                for (int key = 0; key < numberOfDocs; key++){
+
+                    Integer index = Integer.valueOf(listOfFiles[key].getName().substring(0, listOfFiles[key].getName().lastIndexOf('.')));
+                    Document document = new Document(fileHandler.loadFileToString(listOfFiles[key].getPath()), index, DocTime.get(index));
+
+                    fileWriter.append(String.valueOf(document.getIndex()));
+                    fileWriter.append(COMMA_DELIMITER);
+
+                    String strDate = dateFormat.format(document.getDate());
+                    fileWriter.append(strDate);
+                    fileWriter.append(COMMA_DELIMITER);
+
+                    Annotation annotation = document.getDocument();
+
+                    List<String> Uncertainty_Reg = Arrays.asList("$UNSPECIFIED", "$FEAR", "$HOPE", "$ANXIETY");
+                    List<String> Uncertainty_Reg2 = Arrays.asList("$CONDITIONALITY1", "$CONDITIONALITY2");
+                    List<String> Surprise_Reg = Arrays.asList("$UNSPECIFIED", "$DISAPPOINTMENT", "$RELIEF");
+
+                    for (int i = 0; i < Uncertainty_Reg.size(); i++){
+                        List<Integer> result = Uncertainty.extract(annotation, Uncertainty_Reg.get(i));
+                        for (int j = 0; j < 6; j++){
+                            fileWriter.append((String.valueOf(result.get(j))));
+                            fileWriter.append(COMMA_DELIMITER);
+                        }
+                    }
+                    for (int i = 0; i < Uncertainty_Reg2.size(); i++){
+                        List<Integer> result = Uncertainty.extractConditionality(annotation, Uncertainty_Reg2.get(i));
+                        for (int j = 0; j < 3; j++){
+                            fileWriter.append((String.valueOf(result.get(j))));
+                            fileWriter.append(COMMA_DELIMITER);
+                        }
+                    }
+                    for (int i = 0; i < Surprise_Reg.size(); i++){
+                        List<Integer> result = Surprise.extract(annotation, Surprise_Reg.get(i));
+                        for (int j = 0; j < 6; j++) {
+                            fileWriter.append(String.valueOf(result.get(j)));
+                            fileWriter.append(COMMA_DELIMITER);
+                        }
+                    }
+                    fileWriter.append(String.valueOf(Surprise.extractComparative(annotation)));
+                    fileWriter.append(COMMA_DELIMITER);
+                    fileWriter.append(String.valueOf(PosWordCount.extract(annotation)));
+                    fileWriter.append(COMMA_DELIMITER);
+                    fileWriter.append(String.valueOf(NegWordCount.extract(annotation)));
+                    fileWriter.append(NEW_LINE_SEPARATOR);
+                    System.out.printf("%d is done\n", key);
+                }
+                System.out.println("CSV file was created successfully!");
+
+            }catch (FileNotFoundException e) {
                 e.printStackTrace();
+            }catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }catch (IOException e) {
+                e.printStackTrace();
+            }catch (Exception e) {
+                System.out.println("Error in CsvFileWriter_Features!");
+                e.printStackTrace();
+            }finally {
+                try {
+                    fileWriter.flush();
+                    fileWriter.close();
+                } catch (IOException e) {
+                    System.out.println("Error while flushing/closing fileWriter!");
+                    e.printStackTrace();
+                }
             }
         }
-
     }
 }
