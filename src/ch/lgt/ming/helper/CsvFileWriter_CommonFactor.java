@@ -25,7 +25,7 @@ public class CsvFileWriter_CommonFactor {
     private static  String FILE_HEADER = "date,docID,refDocID";
 
     public static void main(String[] args) throws IOException, ParseException {
-        CsvFileWriter_CommonFactor.writeCsvFileWriter("data/featureFiles/commonFactors1.csv", 50, 20);
+        CsvFileWriter_CommonFactor.writeCsvFileWriter("data/featureFiles/commonFactors5.csv", 50, 20);
     }
 
     /**
@@ -67,13 +67,13 @@ public class CsvFileWriter_CommonFactor {
 
                 Document2 doc = tfIdf.getCorpus().getDocument(i);
                 List<String> keywords = tfIdf.getKeyWords(doc.getTfidf(), numberOfKeyWords);
-                int pre = tfIdf.getClosestPredecessor(doc.getTfidf(), doc.getIndex(), doc.getDate(),numberOfKeyWords, timeInterval, false);
-
+                int pre = tfIdf.getClosestPredecessor2(doc.getTfidf(), doc.getIndex(), doc.getDate(),numberOfKeyWords, timeInterval, false, 0.25);
+         
                 String strDate = dateFormat.format(doc.getDate());
                 fileWriter.append(String.valueOf(strDate));
-                fileWriter.append(COMMA_DELIMITER);
+                fileWriter.append(COMMA_DELIMITER);      
                 fileWriter.append(String.valueOf(doc.getIndex()));
-                fileWriter.append(COMMA_DELIMITER);
+                fileWriter.append(COMMA_DELIMITER);                
                 fileWriter.append(String.valueOf(pre));
 
                 for (int j = 0; j < numberOfKeyWords; j++){
