@@ -7,10 +7,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.text.BreakIterator;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -86,22 +84,59 @@ public class DocbyWebsite {
 //        }
 
         /**
-         * This part of code found all documents from Reuters
+         * This part of code found all documents from Seeking Alpha
          *
          * */
-        String path = "data/DataForMing_V2";
+        String path = "data/Seeking_Alpha";
         File folder = new File(path);
         File[] listOfFiles = folder.listFiles();
 
-
-        for (File file : listOfFiles) {
-
+        for (int i = 0; i < listOfFiles.length; i++) {
+            File file = listOfFiles[i];
             String docText = fileHandler.loadFileToString(path + "/" + file.getName());
-            if (docText.toLowerCase().contains("reuters")) {
-                System.out.println("Found " + "reuters");
-                Files.copy(Paths.get(path + "/" + file.getName()),
-                        Paths.get("data/Reuters/" + file.getName()));
+            System.out.println(docText);
+
+            if (docText.contains("| Seeking Alpha")) {
+                System.out.println("Found " + "Seeking Alpha");
+//                Files.copy(Paths.get(path + "/" + file.getName()),
+//                        Paths.get("data/Seeking_Alpha/" + file.getName()));
             }
         }
+
+        /**
+         * This part of code found all documents from Reuters
+         * */
+//        String path = "data/DataForMing_V2";
+//        File folder = new File(path);
+//        File[] listOfFiles = folder.listFiles();
+//
+//        for (int i = 0; i < listOfFiles.length; i++) {
+//            File file = listOfFiles[i];
+//            String docText = fileHandler.loadFileToString(path + "/" + file.getName());
+//
+//            if (docText.contains("| Reuters")) {
+//                System.out.println("Found " + "Reuters");
+//                Files.copy(Paths.get(path + "/" + file.getName()),
+//                        Paths.get("data/Reuters/" + file.getName()));
+//            }
+//        }
+
+//        String path = "data/Reuters";
+//        File folder = new File(path);
+//        File[] listOfFiles = folder.listFiles();
+//
+//        for (int i = 0; i < 10; i++) {
+//            File file = listOfFiles[i];
+//            String docText = fileHandler.loadFileToString(path + "/" + file.getName());
+//            String[] strings =  docText.split("[|] Reuters");
+//            System.out.println(docText);
+//            System.out.println(strings[0]);
+
+//            if (docText.contains("Reuters")) {
+//                System.out.println("Found " + "Reuters");
+//                Files.copy(Paths.get(path + "/" + file.getName()),
+//                        Paths.get("data/Reuters/" + file.getName()));
+//            }
+//        }
     }
 }
