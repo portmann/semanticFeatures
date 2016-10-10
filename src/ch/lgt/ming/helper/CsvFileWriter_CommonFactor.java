@@ -1,10 +1,16 @@
 package ch.lgt.ming.helper;
 
-
+import ch.lgt.ming.cleanup.Corpus;
+import ch.lgt.ming.cleanup.Document2;
 import ch.lgt.ming.commonfactors.tfidf;
 import ch.lgt.ming.datastore.IdString;
+import java.io.FileWriter;
 import java.io.IOException;
-
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Ming Deng on 8/29/2016.
@@ -16,22 +22,26 @@ public class CsvFileWriter_CommonFactor {
     private static final String NEW_LINE_SEPARATOR = "\n";
 
     //CSV file header
-    private static  String FILE_HEADER = "docID";
+    private static  String FILE_HEADER = "date,docID,refDocID";
 
-    // Variable declaration
-    private static IdString docId_Text = new IdString();
-
-    public static String getFileHeader() {
-        return FILE_HEADER;
-    }
-
-    public static void main(String[] args) throws IOException {
-        CsvFileWriter_CommonFactor.writeCsvFileWriter("data/featureFiles/commonFactors499Boris.csv", 499, 50);
+    public static void main(String[] args) throws IOException, ParseException {
+        CsvFileWriter_CommonFactor.writeCsvFileWriter("data/featureFiles/commonFactors5.csv", 50, 20);
     }
 
     public static void writeCsvFileWriter(String fileName, int numberofDocs, int numberofKeyWords) throws IOException {
+    /**
+     * This function writes the csv file of common factors.
+     *
+     * @param outputFilePath The address where the csv file will be written;
+     * @param timeInterval The time interval considered for the corpus;
+     * @param numberOfKeyWords The number of keywords to be written.
+     *
+    * */
 
-        for (int i = 0; i < numberofKeyWords; i++){
+    public static void writeCsvFileWriter(String outputFilePath, int timeInterval, int numberOfKeyWords)
+            throws IOException, ParseException {
+
+        for (int i = 0; i < numberOfKeyWords; i++){
             FILE_HEADER += "," + i;
         }
 
@@ -50,11 +60,16 @@ public class CsvFileWriter_CommonFactor {
         tfIdf.getCosineMatrix(0.1);
 
         System.out.println(Dict.get(0));
+        Corpus corpus = new Corpus("data/corpusBoris");
+        Date date = new SimpleDateFormat("yyyy-MM-dd").parse("2015-10-13");
+        tfidf tfIdf = new tfidf(corpus, date, timeInterval);
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
 
         FileWriter fileWriter = null;
         try {
 
-            fileWriter = new FileWriter(fileName);
+            fileWriter = new FileWriter(outputFilePath);
 
             //Write the CSV file header
             fileWriter.append(FILE_HEADER);
@@ -66,10 +81,26 @@ public class CsvFileWriter_CommonFactor {
             for (int i = 0; i < numberofDocs; i++) {
 
                 double start = System.currentTimeMillis();
-//                List<String> keywords = tfIdf.getKeyWords(DocId_TfidfList.getValue(i), numberofKeyWords);
+//              List<String> keywords = tfIdf.getKeyWords(DocId_TfidfList.getValue(i), numberofKeyWords);
 
                 fileWriter.append(String.valueOf(i));
                 for (int j = 0; j < numberofKeyWords; j++){
+            for (int i = 0; i < tfIdf.getNumberOfDocuments(); i++) {
+
+                double start = System.currentTimeMillis();
+
+                Document2 doc = tfIdf.getCorpus().getDocument(i);
+                List<String> keywords = tfIdf.getKeyWords(doc.getTfidf(), numberOfKeyWords);
+                int pre = tfIdf.getClosestPredecessor2(doc.getTfidf(), doc.getIndex(), doc.getDate(),numberOfKeyWords, timeInterval, false, 0.25);
+         
+                String strDate = dateFormat.format(doc.getDate());
+                fileWriter.append(String.valueOf(strDate));
+                fileWriter.append(COMMA_DELIMITER);      
+                fileWriter.append(String.valueOf(doc.getIndex()));
+                fileWriter.append(COMMA_DELIMITER);                
+                fileWriter.append(String.valueOf(pre));
+
+                for (int j = 0; j < numberOfKeyWords; j++){
                     fileWriter.append(COMMA_DELIMITER);
                     fileWriter.append(keywords.get(j));
                 }
@@ -77,8 +108,8 @@ public class CsvFileWriter_CommonFactor {
                 double end = System.currentTimeMillis();
                 System.out.println(end-start);
                 System.out.println("Document " + i + " is done.");
-
             }
+            
 
             System.out.println("CSV file was created successfully!");
 
@@ -95,5 +126,10 @@ public class CsvFileWriter_CommonFactor {
             }
         }
 
+
+    }
+
+    public static String getFileHeader() {
+        return FILE_HEADER;
     }
 }

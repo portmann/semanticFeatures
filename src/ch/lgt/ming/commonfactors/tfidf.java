@@ -31,7 +31,7 @@ public class tfidf {
 
         Corpus corpus = new Corpus("data/corpusBoris");
         Date date = new SimpleDateFormat("yyyy-MM-dd").parse("2015-10-13");
-        tfidf tfIdf = new tfidf(corpus, corpus.getDocCount(), date, 50);
+        tfidf tfIdf = new tfidf(corpus, date, 50);
         tfIdf.calculateClosestPredecessor();
 
         /**
@@ -69,16 +69,18 @@ public class tfidf {
 
 
     /**
-     *  Constructor: calculate the tf-idf of a specific Corpus
+     *  Constructor: calculate the tf-idf of a specific corpus
      *
-     *  @param corpus the corpus to process
+     *  @param corpus the whole corpus, but we will built a smaller one based on the time span we are interested in
+     *  @param date the date which we will considered to construct the smaller corpus
+     *  @param timeInterval the smaller corpus will only includes the documents in the period of [date-timeInterval, date+timeInterval]
      */
 
-    public tfidf(Corpus corpus, int numberOfDocuments, Date date, int timeInterval) throws IOException {
+    public tfidf(Corpus corpus, Date date, int timeInterval) throws IOException {
 
-        for (int i = -timeInterval; i < timeInterval+1; i++){
+        for (int i = -timeInterval; i < 1; i++){
             Date date1 = DateUtil.addDays(date, i);
-            for (int j = 0; j < numberOfDocuments; j++){
+            for (int j = 0; j < corpus.getDocCount(); j++){
                 if (corpus.getDocument(j).getDate().equals(date1)){
                     this.corpus.addDocument(corpus.getDocument(j));
                 }
@@ -362,16 +364,44 @@ public class tfidf {
                 }
             }
         }
+        System.out.printf("The closest predecessor of doc %d within %d days is %d\n", id, timeHorizon, index);
+        return index;
+    }
+    
+    public int getClosestPredecessor2(List<Double> tfidf, int id, Date date, int n, int timeHorizon, boolean isCosine, double threshold){
+
+        double ratio = 0;
+        Integer index = -1;
+        for (int i = 0; i < timeHorizon + 1; i++){
+            Date date1 = DateUtil.addDays(date, -i);
+            for (int j = 0; j <  numberOfDocuments && corpus.getDocument(j).getIndex() != id; j++){
+                if (corpus.getDocument(j).getDate().equals(date1)){
+                    if (isCosine){
+                        double ratio2 = getCosineSimilarity(tfidf, corpus.getDocument(j).getTfidf());
+                        if (ratio2 > ratio && ratio2 > threshold){
+                            ratio = ratio2;
+                            index = corpus.getDocument(j).getIndex();
+                        }
+                    }else {
+                        double ratio2 = keyWordsOverlap(tfidf, corpus.getDocument(j).getTfidf(), n);
+                        if (ratio2 > ratio && ratio2 > threshold){
+                            ratio = ratio2;
+                            index = corpus.getDocument(j).getIndex();
+                        }
+                    }
+                }
+            }
+        }
 //        System.out.printf("The closest predecessor of doc %d within %d days is %d\n", id, timeHorizon, index);
         return index;
     }
-
+    
     public void calculateClosestPredecessor(){
         for (int i = 0; i < numberOfDocuments; i++){
             Document2 document = corpus.getDocument(i);
             List<Integer> closestDocuments = new ArrayList<>();
-            for (int j = 0; j < 8; j++){
-                int index = getClosestPredecessor(document.getTfidf(), document.getIndex(), document.getDate(), 50,j, false);
+            for (int j = 0; j < 4; j++){
+                int index = getClosestPredecessor(document.getTfidf(), document.getIndex(), document.getDate(), 50, j, false);
                 closestDocuments.add(j, index);
             }
             document.setClosestDocuments(closestDocuments);
@@ -427,6 +457,10 @@ public class tfidf {
 
     public int getTimeInterval() {
         return timeInterval;
+    }
+
+    public Corpus getCorpus() {
+        return corpus;
     }
 }
 

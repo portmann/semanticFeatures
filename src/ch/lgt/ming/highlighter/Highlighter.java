@@ -41,10 +41,9 @@ public class Highlighter {
         FileHandler fileHandler = new FileHandler();
         FileInputStream fileInputStream = null;
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 1; i++) {
             File folder = new File("data/corpus8/" + Folders.get(i));
             File[] listOfFiles = folder.listFiles();
-//            for (int j = 0; j < listOfFiles.length; j++){
             for (int j = 0; j < listOfFiles.length; j++) {
 
                 try {
@@ -52,14 +51,13 @@ public class Highlighter {
                     ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
                     Document document = (Document) objectInputStream.readObject();
                     String higlightedText = highlighter.highlight(document, companies.get(i));
-                    if (!higlightedText.equals("")) {
 
-                        higlightedText = htmlStrings.getBeforeTitle() + Folders.get(i) +
-                                htmlStrings.getAfterTitle() + higlightedText +
-                                htmlStrings.getEnd();
 
-                        fileHandler.saveStringAsFile("data/highlighted2/" + Folders.get(i) + "/" + document.getIndex() + ".html", higlightedText);
-                    }
+                    higlightedText = htmlStrings.getBeforeTitle() + Folders.get(i) +
+                            htmlStrings.getAfterTitle() + higlightedText +
+                            htmlStrings.getEnd();
+
+                    fileHandler.saveStringAsFile("data/highlighted2/" + Folders.get(i) + "/" + document.getIndex() + ".html", higlightedText);
 
                     System.out.printf("%d is done\n", j);
                 } catch (FileNotFoundException e) {
@@ -122,8 +120,6 @@ public class Highlighter {
         String highlightedString = "";
         SurpriseFeature surpriseFeature = new SurpriseFeature();
         UncertaintyFeature uncertatintyFeature = new UncertaintyFeature();
-
-        boolean highlighted = false;
 
         for (CoreMap sentenceStanford : document.getDocument().get(CoreAnnotations.SentencesAnnotation.class)) {
 
@@ -189,7 +185,6 @@ public class Highlighter {
                     }
                     highlightedString += before_highlighted + wordString +
                             "(" + company + ": Surprise & Uncertainty) " + after_highlighted;
-                    highlighted = true;
                     break;
                 }
                 case 2: {
@@ -211,7 +206,6 @@ public class Highlighter {
                     }
                     highlightedString += before_highlighted2 + wordString +
                             "(" + company + ": Surprise) " + after_highlighted;
-                    highlighted = true;
                     break;
                 }
                 case 3: {
@@ -230,7 +224,6 @@ public class Highlighter {
                     }
                     highlightedString += before_highlighted3 + wordString +
                             "(" + company + ": Uncertainty) " + after_highlighted;
-                    highlighted = true;
                     break;
                 }
                 case 4: {
@@ -247,8 +240,7 @@ public class Highlighter {
                             wordString += word + " ";
                         }
                     }
-                    highlightedString = wordString;
-                    highlighted = true;
+                    highlightedString += wordString;
                     break;
                 }
                 case 5: {
@@ -268,7 +260,6 @@ public class Highlighter {
                     }
                     highlightedString += before_highlighted + wordString +
                             " (Surprise & Uncertainty) " + after_highlighted;
-                    highlighted = true;
                     break;
                 }
                 case 6: {
@@ -288,7 +279,6 @@ public class Highlighter {
                     }
                     highlightedString += before_highlighted2 + wordString +
                             " (Surprise) " + after_highlighted;
-                    highlighted = true;
                     break;
                 }
                 case 7: {
@@ -305,7 +295,6 @@ public class Highlighter {
                     }
                     highlightedString += before_highlighted3 + wordString +
                             " (Uncertainty) " + after_highlighted;
-                    highlighted = true;
                     break;
                 }
                 case 8: {
@@ -315,10 +304,7 @@ public class Highlighter {
                 }
             }
         }
-        if (highlighted)
-            return highlightedString;
-        else
-            return "";
+        return highlightedString;
     }
 }
 
