@@ -38,10 +38,10 @@ public class CsvFileWriter_CommonFactor {
      *
     * */
 
-    public static void writeCsvFileWriter(String outputFilePath, int timeInterval, int numberOfKeyWords)
-            throws IOException, ParseException {
+    //public static void writeCsvFileWriter(String outputFilePath, int timeInterval, int numberOfKeyWords)
+    //        throws IOException, ParseException {
 
-        for (int i = 0; i < numberOfKeyWords; i++){
+        for (int i = 0; i < numberofKeyWords; i++){
             FILE_HEADER += "," + i;
         }
 
@@ -64,7 +64,6 @@ public class CsvFileWriter_CommonFactor {
         Date date = new SimpleDateFormat("yyyy-MM-dd").parse("2015-10-13");
         tfidf tfIdf = new tfidf(corpus, date, timeInterval);
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
 
         FileWriter fileWriter = null;
         try {
@@ -90,8 +89,8 @@ public class CsvFileWriter_CommonFactor {
                 double start = System.currentTimeMillis();
 
                 Document2 doc = tfIdf.getCorpus().getDocument(i);
-                List<String> keywords = tfIdf.getKeyWords(doc.getTfidf(), numberOfKeyWords);
-                int pre = tfIdf.getClosestPredecessor2(doc.getTfidf(), doc.getIndex(), doc.getDate(),numberOfKeyWords, timeInterval, false, 0.25);
+                List<String> keywords = tfIdf.getKeyWords(doc.getTfidf(), numberofKeyWords);
+                int pre = tfIdf.getClosestPredecessor2(doc.getTfidf(), doc.getIndex(), doc.getDate(),numberofKeyWords, timeInterval, false, 0.25);
          
                 String strDate = dateFormat.format(doc.getDate());
                 fileWriter.append(String.valueOf(strDate));
@@ -100,7 +99,7 @@ public class CsvFileWriter_CommonFactor {
                 fileWriter.append(COMMA_DELIMITER);                
                 fileWriter.append(String.valueOf(pre));
 
-                for (int j = 0; j < numberOfKeyWords; j++){
+                for (int j = 0; j < numberofKeyWords; j++){
                     fileWriter.append(COMMA_DELIMITER);
                     fileWriter.append(keywords.get(j));
                 }
