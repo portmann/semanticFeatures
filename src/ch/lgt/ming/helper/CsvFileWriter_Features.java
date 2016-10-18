@@ -6,6 +6,8 @@ import ch.lgt.ming.datastore.*;
 import ch.lgt.ming.extraction.sentnence.*;
 import edu.stanford.nlp.pipeline.Annotation;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
@@ -26,6 +28,7 @@ public class CsvFileWriter_Features {
     private static String FILE_HEADER;
 
 
+    
     public static void main(String[] args) {
         /**
          * This part of code writes featuresBoris using annotated documents
@@ -33,10 +36,12 @@ public class CsvFileWriter_Features {
 //        String inputFilePath = "data/corpusBorisSer";
 //        String outputFilePath = "data/featureFiles/featuresBoris.csv";
 //        CsvFileWriter_Features.writeCsvFile(inputFilePath, outputFilePath, 10, true);
+    	
+    	StanfordCore.init();
 
-        String inputFilePath = "data/corpus8/Amazon";
-        String outputFilePath = "data/featureFiles/featuresAmazon.csv";
-        CsvFileWriter_Features.writeCsvFile3(inputFilePath, outputFilePath, 10, true);
+        String inputFilePath = "data/CorpusBoris/DataForBoris_Topic2_500/";
+        String outputFilePath = "data/featureFiles/DataForBoris_Topic2_500.csv";
+        CsvFileWriter_Features.writeCsvFile1(inputFilePath, outputFilePath, 500, false);
 
         /**
          * This part of code writes featuresBoris using raw documents
@@ -49,7 +54,7 @@ public class CsvFileWriter_Features {
 //        String outputFilePath = "data/featureFiles/featuresAmazon.csv";
 //        CsvFileWriter_Features.writeCsvFile(inputFilePath, outputFilePath, 100, false);
     }
-
+																																													
     /**
      * This function writes the feature counts into a csv file, using annotated documents.
      *
@@ -108,9 +113,15 @@ public class CsvFileWriter_Features {
                 //Write new subjects to the CSV file
                 for (int key = 0; key < numberOfDocs; key++){
 
+                	//doing it with ser files
                     fileInputStream = new FileInputStream(inputFilePath + "/" + listOfFiles[key].getName());
                     ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
                     Document document = (Document) objectInputStream.readObject();
+                    
+                	//doing it with html files
+                	//String pathTemp = inputFilePath + listOfFiles[key].getName();
+                	//String out = String.join("\n", Files.readAllLines(Paths.get(pathTemp)));             	
+                    //Document document = new Document (out, Integer.parseInt(listOfFiles[key].getName().replace(".html", "")), new Date(1));
 
                     fileWriter.append(String.valueOf(document.getIndex()));
                     fileWriter.append(COMMA_DELIMITER);
@@ -212,7 +223,12 @@ public class CsvFileWriter_Features {
                 for (int key = 0; key < numberOfDocs; key++){
 
                     Integer index = Integer.valueOf(listOfFiles[key].getName().substring(0, listOfFiles[key].getName().lastIndexOf('.')));
-                    Document document = new Document(fileHandler.loadFileToString(listOfFiles[key].getPath()), index, DocTime.get(index));
+                    
+                    String stringDoc = fileHandler.loadFileToString(listOfFiles[key].getPath());
+                    
+                    if (stringDoc != null)
+                    {
+                    Document document = new Document(stringDoc, index, DocTime.get(index));
 
                     fileWriter.append(String.valueOf(document.getIndex()));
                     fileWriter.append(COMMA_DELIMITER);
@@ -257,7 +273,7 @@ public class CsvFileWriter_Features {
                     System.out.printf("%d is done\n", key);
                 }
                 System.out.println("CSV file was created successfully!");
-
+                }
             }catch (FileNotFoundException e) {
                 e.printStackTrace();
             }catch (ClassNotFoundException e) {
