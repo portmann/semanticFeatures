@@ -81,17 +81,17 @@ public class Document implements Serializable{
 		}
 
 		FileHandler fileHandler = new FileHandler();
-		File folder = new File("data/corpusBoris");
+		File folder = new File("data/Reuters");
 		File[] listOfFiles = folder.listFiles();
 
 		StanfordCore.init();
-		for (int i = 172; i < 1520; i++) {
+		for (int i = 0; i < listOfFiles.length; i++) {
 			Integer index = Integer.valueOf(listOfFiles[i].getName().substring(0, listOfFiles[i].getName().lastIndexOf('.')));
 			Document document = new Document(fileHandler.loadFileToString(listOfFiles[i].getPath()), index, DocTime.get(index));
 			System.out.printf("%d is done\n", i);
 			ObjectOutputStream objectOutputStream;
 			try {
-				objectOutputStream = new ObjectOutputStream(new FileOutputStream("data/corpusBoris2/" +
+				objectOutputStream = new ObjectOutputStream(new FileOutputStream("data/ReutersSer/" +
 						listOfFiles[i].getName().substring(0, listOfFiles[i].getName().lastIndexOf('.')) + ".ser"));
 				objectOutputStream.writeObject(document);
 			} catch (IOException e) {

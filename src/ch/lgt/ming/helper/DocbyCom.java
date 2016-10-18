@@ -27,10 +27,10 @@ public class DocbyCom {
         FileHandler fileHandler = new FileHandler();
         IdString DocId_Text = new IdString();
         IdSetString DocId_TokensSet = new IdSetString();
-        List<String> companies = Arrays.asList("microsoft","google","facebook","amazon","intel",
-                "goldman","delta","boeing","ford","netflix");
-        List<String> Folders = Arrays.asList("Microsoft","Google","Facebook","Amazon","Intel",
-                "Goldman_Sachs","Delta_Airline","Boeing","Ford","Netflix");
+        List<String> companies = Arrays.asList("amazon", "boeing", "delta", "facebook", "ford",
+                "goldman", "google", "intel", "microsoft", "netflix");
+        List<String> Folders = Arrays.asList("Amazon", "Boeing", "Delta_Airline", "Facebook", "Ford",
+                "Goldman_Sachs", "Google", "Intel", "Microsoft", "Netflix");
 
 
         //Load the documents

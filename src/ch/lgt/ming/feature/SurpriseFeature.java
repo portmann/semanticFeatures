@@ -44,11 +44,11 @@ public class SurpriseFeature {
         props.setProperty("annotators", "tokenize, ssplit, pos, lemma, ner, parse, tense");
         StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
         String[] myString = {
-                "I am not so surprised about the news. ",
-                "Not surprisingly, he refused me suggestion.",
-                "The 'Amazing' IPO Change That May Restart The Flow Of New Stocks.",
-                "Opinion: CFOs want a stunning 14% annual return on investments — and that’s holding back the economy",
-                "Gap shares slump as July sales disappoint, but analysts upbeat."
+                "Amazon shares soar on surprise profit , market value above Wal Mart 's | " +
+                        "Reuters By Anya George Tharakan and Mari Saito Amazon.com Inc ( AMZN.O ) " +
+                        "shares surged more than 17 percent on Thursday as the online retailer " +
+                        "posted an unexpected quarterly profit , pushing its market value above" +
+                        " that of Wal-Mart Stores Inc ( WMT.N ) , the world 's largest retailer ."
         };
         for (int i = 0; i < myString.length; i++) {
             System.out.printf("-------------------------------------Sentence %d ---------------------------------\n",i);
