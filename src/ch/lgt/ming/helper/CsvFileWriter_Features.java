@@ -28,39 +28,32 @@ public class CsvFileWriter_Features {
     private static String FILE_HEADER;
 
 
-    
     public static void main(String[] args) {
         /**
          * This part of code writes featuresBoris using annotated documents
-        * */
+         * */
 //        String inputFilePath = "data/corpusBorisSer";
 //        String outputFilePath = "data/featureFiles/featuresBoris.csv";
-<<<<<<< HEAD
 //        CsvFileWriter_Features.writeCsvFile3(inputFilePath, outputFilePath, 10, true);
 
 //        String inputFilePath = "data/corpus8/Amazon";
 //        String outputFilePath = "data/featureFiles/featuresAmazon.csv";
 //        CsvFileWriter_Features.writeCsvFile3(inputFilePath, outputFilePath, 10, true);
 
-//        String inputFilePath = "data/Empirical_Analysis/Seeking_AlphaSer_Company/Amazon";
-//        String outputFilePath = "data/featureFiles/AmazonSeeking_Alpha.csv";
-        String inputFilePath = "data/Empirical_Analysis/ReutersSer_Company/Apple";
-        String outputFilePath = "data/featureFiles/AppleReuters.csv";
-        CsvFileWriter_Features.writeCsvFile5(inputFilePath, outputFilePath, 595, true);
-//        CsvFileWriter_Features.writeCsvFile5(inputFilePath, outputFilePath, 20, true);
-=======
-//        CsvFileWriter_Features.writeCsvFile(inputFilePath, outputFilePath, 10, true);
-    	
-    	StanfordCore.init();
+        String inputFilePath = "data/Empirical_Analysis/ReutersSer_Company/Facebook";
+        String outputFilePath = "data/featureFiles/FacebookReuters.csv";
+        File folder = new File(inputFilePath);
+        File[] listOfFiles = folder.listFiles();
+        CsvFileWriter_Features.writeCsvFile5(inputFilePath, outputFilePath, listOfFiles.length, true);
 
-        String inputFilePath = "data/CorpusBoris/DataForBoris_Topic2_500/";
-        String outputFilePath = "data/featureFiles/DataForBoris_Topic2_500.csv";
-        CsvFileWriter_Features.writeCsvFile1(inputFilePath, outputFilePath, 500, false);
->>>>>>> 18a33b1225aa3b93514bd2dbf47119b2a1a70a88
+//        String inputFilePath = "data/CorpusBoris/DataForBoris_Topic2_500/";
+//        String outputFilePath = "data/featureFiles/DataForBoris_Topic2_500.csv";
+//        CsvFileWriter_Features.writeCsvFile1(inputFilePath, outputFilePath, 500, false);
 
         /**
          * This part of code writes featuresBoris using raw documents
          * */
+
 //        String inputFilePath = "data/corpusBoris";
 //        String outputFilePath = "data/featureFiles/featuresBoris1.csv";
 //        CsvFileWriter_Features.writeCsvFile3(inputFilePath, outputFilePath, 10, false);
@@ -1059,31 +1052,17 @@ public class CsvFileWriter_Features {
 
                     Annotation annotation = document.getDocument();
 
-                    List<Integer> result = Uncertainty.extract(annotation, "$UNCERTAINTY");
-                    int uncertainty_pos = result.get(0)+result.get(2)+result.get(4);
-                    fileWriter.append(String.valueOf(uncertainty_pos));
-                    fileWriter.append(COMMA_DELIMITER);
-                    int uncertainty_neg = result.get(1)+result.get(3)+result.get(5);
-                    fileWriter.append(String.valueOf(uncertainty_neg));
+                    List<Integer> result = FeatureAll.FeatureAllExtract(annotation);
+
+                    fileWriter.append(String.valueOf(result.get(0)));
                     fileWriter.append(COMMA_DELIMITER);
 
-
-                    int uncertainty_conditionality = 0;
-                    List<Integer> result2 = Uncertainty.extractConditionality(annotation, "$CONDITIONALITY");
-                    uncertainty_conditionality += result2.get(0) + result2.get(1) + result2.get(2);
-                    fileWriter.append(String.valueOf(uncertainty_conditionality));
+                    fileWriter.append(String.valueOf(result.get(1)));
                     fileWriter.append(COMMA_DELIMITER);
 
-                    List<Integer> result3 = Surprise.extract(annotation, "$SURPRISE");
-                    int surprise_pos = result3.get(0)+result3.get(2)+result3.get(4);
-                    fileWriter.append(String.valueOf(surprise_pos));
-                    fileWriter.append(COMMA_DELIMITER);
-                    int surprise_neg = result3.get(1)+result3.get(3)+result3.get(5);
-                    fileWriter.append(String.valueOf(surprise_neg));
+                    fileWriter.append(String.valueOf(result.get(2)));
                     fileWriter.append(COMMA_DELIMITER);
 
-                    fileWriter.append(String.valueOf(Surprise.extractComparative(annotation)));
-                    fileWriter.append(COMMA_DELIMITER);
                     fileWriter.append(String.valueOf((double)PosWordCount.extract(annotation)/document.getTokenText().size()));
                     fileWriter.append(COMMA_DELIMITER);
                     fileWriter.append(String.valueOf((double)NegWordCount.extract(annotation)/document.getTokenText().size()));

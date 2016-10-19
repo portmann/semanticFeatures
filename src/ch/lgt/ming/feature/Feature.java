@@ -26,7 +26,6 @@ public class Feature {
     private List<String> NegWordForNoun = Arrays.asList("no","little", "few");
     private List<String> NegWordForVerb = Arrays.asList("not","hardly", "barely", "rarely", "seldom", "scarcely");
     private List<String> NegWordForOthers = Arrays.asList("not", "hardly", "barely", "rarely", "seldom", "scarcely");
-    private String matchedWord = "";
 
     public Feature() {
 
@@ -66,23 +65,19 @@ public class Feature {
         env.bind("$CONDITIONALITY2", "([{word:/[Ii]f/}]&[tense:Future])[]*[{word:/(then)|,/}]?");
         env.bind("$CONDITIONALITY", "$CONDITIONALITY1|$CONDITIONALITY2");
 
+        env.bind("$VALUES","/sale.*|value.*|market value.*|share|shares|profit.*|revenue.*|earning.*|turnover/");
         env.bind("$POSITIVE","/above|grow|grows|growing|grew|increas.*|jump.*|" +
                 "rally|rise|rose|rising|strong|soar.*|surge.*|/");
-        env.bind("$VALUES","/sale.*|value.*|market value.*|share.*|profit.*|revenue.*|earning.*|turnover/");
 
         env.bind("$VALUES_SURPRISE","($VALUES[!{word:/[,.]/}]*?$SURPRISE)|($SURPRISE[!{word:/[,.]/}]*?$VALUES)");
-        env.bind("$VALUES_UNCERTAINTY","($VALUES[]*?$UNCERTAINTY)|($UNCERTAINTY[]*?$VALUES)");
+        env.bind("$VALUES_UNCERTAINTY","($VALUES[!{word:/[,.]/}]*?$UNCERTAINTY)|($UNCERTAINTY[!{word:/[,.]/}]*?$VALUES)");
         env.bind("$VALUES_POSITIVE","($VALUES[!{word:/[,.]/}]*?$POSITIVE)|($POSITIVE[!{word:/[,.]/}]*?$VALUES)");
 
     }
 
     public static void main(String[] args) {
         String inputPath = "data/Empirical_Analysis/ReutersSer_Company/Amazon";
-        String outputPath = "data/Reuters_Company/Amazon";
-
-
-        FileHandler fileHandler = new FileHandler();
-        FileInputStream fileInputStream = null;
+        FileInputStream fileInputStream;
 
         File folder = new File(inputPath);
         File[] listOfFiles = folder.listFiles();
@@ -121,8 +116,7 @@ public class Feature {
      * @param sentence the annotation of the sentence
      * @param reg regular expression of surprise sentiment
      *
-     * @return a list of integer of length 6, represent the counts of "noun_pos","noun_neg",
-     *          "verb_pos","verb_neg","othertype_pos","othertype_neg" of the document.
+     * @return a integer indicates the amount of appearance of certain regular expressions
      *
      * */
 
@@ -142,9 +136,5 @@ public class Feature {
 
 
         return count;
-    }
-
-    public String getMatchedWord() {
-        return matchedWord;
     }
 }

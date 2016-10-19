@@ -19,9 +19,9 @@ public class tfidf {
 
     private Corpus corpus = new Corpus();
     private int numberOfDocuments = 0;
-    private List<String> Dict = new ArrayList<>();                                     //60k Dictionary - List of String
-    private List<String> StopwordList = new ArrayList<>();                             //Stopword - List of stopwords
-    private List<Double> idfList = new ArrayList<>();                                  //List of idf of each word based on the whole corpus
+    private List<String> Dict = new ArrayList<>();                        //60k Dictionary - List of String
+    private List<String> StopwordList = new ArrayList<>();                //Stopword - List of stopwords
+    private List<Double> idfList = new ArrayList<>();                     //List of idf of each word based on the whole corpus
     private List<Integer> DocId_DocName = new ArrayList<>();
     private Date date = new Date();
     private int timeInterval;
@@ -73,7 +73,7 @@ public class tfidf {
      *
      *  @param corpus the whole corpus, but we will built a smaller one based on the time span we are interested in
      *  @param date the date which we will considered to construct the smaller corpus
-     *  @param timeInterval the smaller corpus will only includes the documents in the period of [date-timeInterval, date+timeInterval]
+     *  @param timeInterval the smaller corpus will only includes the documents in the period of [date-timeInterval, date]
      */
 
     public tfidf(Corpus corpus, Date date, int timeInterval) throws IOException {
