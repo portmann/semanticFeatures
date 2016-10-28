@@ -25,10 +25,47 @@ for (variable in Name) {
   ddd <- rbind(ddd, RunRegression(variable))
 }
 
-fit <- lm(ddd$CAR ~ ddd$CumPos + ddd$CumNeg + ddd$CumSurprise + ddd$CumUncertainty)
+ddd$PB <- (ddd$PB-mean(ddd$PB))/sd(ddd$PB)
+ddd$Vol <- (ddd$Vol-mean(ddd$Vol))/sd(ddd$Vol)
+ddd$SIZE <- (ddd$SIZE-mean(ddd$SIZE))/sd(ddd$SIZE)
+ddd$ROA <- (ddd$ROA-mean(ddd$ROA))/sd(ddd$ROA)
+ddd$SUE <- (ddd$SUE-mean(ddd$SUE))/sd(ddd$SUE)
+fit <- lm(ddd$CAR ~ ddd$CumPos + ddd$CumNeg + ddd$CumSurprise + ddd$CumUncertainty + ddd$PB + ddd$Vol +ddd$SIZE +ddd$ROA +ddd$SUE)
 summary(fit)
 
+na.lomf <- function(x, a=!is.na(x)){
+  
+  x[which(a)[c(1,1:sum(a))][cumsum(a)+1]]
+  
+}
+getCumsum <- function(IND, Vector) {
+  lis <- list()
+  for (i in 1:(length(IND)-1)) {
+    lis[[i]] <- cumsum(Vector[IND[i]:(IND[i+1]-1)])
+  }
+  lis
+}
+#This function calculate volatility between two EADs
+getVol <- function(IND, Vector){
+  lis <- list()
+  for (i in 1:(length(IND)-1)) {
+    r <- Vector[IND[i]:(IND[i+1]-1)]
+    r_bar <- mean(r)
+    RV <- sqrt((sum((r-r_bar)^2))/(length(r)-1))
+    lis[[i]] <- RV*rep(1,length(r))
+  }
+  lis
+}
+List2Vec <- function(List){
+  Vec <- c()
+  for (i in 1:length(List)) {
+    Vec <- c(Vec,List[[i]])
+  }
+  Vec
+}
+
 RunRegression <- function(Name,case = 1){
+
   ##### Load Earning Information #####
   dat <- readWorksheet(loadWorkbook("EarningSurprise.xlsx"),sheet = 1)
   dat <- dat[294:nrow(dat),]
@@ -42,6 +79,12 @@ RunRegression <- function(Name,case = 1){
   Earning[["Intel"]]<- dat[dat$X.INTEL.CORPORATION.!="NA",][,c(1,7)]
   Earning[["Microsoft"]]<- dat[dat$X.MICROSOFT.CORPORATION.!="NA",][,c(1,8)]
   Earning[["Netflix"]]<- dat[dat$X.NETFLIX.INCORPORATED.!="NA",][,c(1,6)]
+  for (name in c("Apple","Amazon","Boeing","Facebook","Ford","Intel","Microsoft","Netflix")) {
+    colnames(Earning[[name]]) <- c("Date",name)
+  }
+  ##### Earning Announcement Day #####
+  EAD <-  Earning[[Name]][,1]
+  ES <- as.double(Earning[[Name]][,2])
   ##### Load ROA Informaiton #####
   datROA <- readWorksheet(loadWorkbook("Variables.xlsx"),sheet = 1)
   datROA$ROA <- as.Date(as.character(datROA$ROA),"%Y-%m-%d")
@@ -49,8 +92,16 @@ RunRegression <- function(Name,case = 1){
   ROA <- list()
   for (name in c("Apple","Amazon","Boeing","Facebook","Ford","Intel","Microsoft","Netflix")) {
     col <- c("Date",name)
-    print(c(col))
     ROA[[name]] <- datROA[c(col)]
+  }
+  ##### Load SIZE Informaiton #####
+  datSIZE <- readWorksheet(loadWorkbook("Variables.xlsx"),sheet = 2)
+  datSIZE$SIZE <- as.Date(as.character(datSIZE$SIZE),"%Y-%m-%d")
+  colnames(datSIZE)[1] <- "Date"
+  SIZE <- list()
+  for (name in c("Apple","Amazon","Boeing","Facebook","Ford","Intel","Microsoft","Netflix")) {
+    col <- c("Date",name)
+    SIZE[[name]] <- datSIZE[c(col)]
   }
   ##### Stock Beta #####
   BetaSet <- list()
@@ -66,14 +117,15 @@ RunRegression <- function(Name,case = 1){
   file <-  paste("Stock\\", paste(Name, " - Copy.csv",sep = ""), sep = "")
   # file <-  paste("Stock\\", paste(Name, ".csv",sep = ""), sep = "")
   StockPrice <- read.csv(file, header = TRUE, sep = ",")
-  str(StockPrice)
   StockPrice$Date <- as.Date(StockPrice$Date,"%m/%d/%Y")
   StockPrice <- StockPrice[order(StockPrice$Date),]
   R <- diff(StockPrice$Adj.Close)/(StockPrice$Adj.Close[1:length(StockPrice$Adj.Close)-1])*100
   R <- c(0, R)
   StockPrice$R <- R
-  R_bar <- mean(R)
-  RV <- sqrt((sum(R^2))/(nrow(StockPrice)-1))
+  ##### Calculate the volatility between two EADs #####
+  EADIndexVol <- c(1,match(EAD,StockPrice$Date),nrow(StockPrice)+1)
+  Vol <- List2Vec(getVol(EADIndexVol, StockPrice$R))
+  StockPrice$Vol <- Vol
   ##### Risk-Free Rate #####
   file3 <- "DTB1YR.csv"
   Rf <- read.csv(file3,header = TRUE, sep = ",")
@@ -88,18 +140,22 @@ RunRegression <- function(Name,case = 1){
   Rm <- c(0, Rm)
   SP500$Rm <- Rm
   ##### Creating Price dataframe #####
-  Price <- merge(x = StockPrice[,c("Date","Adj.Close","Volume","R","PB")], y = Rf, by = "Date", all.x = T)
+  Price <- merge(x = StockPrice[,c("Date","Adj.Close","Volume","R","PB","Vol")], y = Rf, by = "Date", all.x = T)
   Price <- merge(x = Price, y = SP500[c("Date","Rm")], by = "Date", all.x = T)
-  az <- zoo(Price$Rf)
-  az <- na.locf(az)
-  Price$Rf <- as.vector(az)
+  Price <- merge(x = Price, y = ROA[[Name]], by = "Date", all.x = T)
+  colnames(Price)[colnames(Price) == Name] = "ROA"
+  Price <- merge(x = Price, y = SIZE[[Name]], by = "Date", all.x = T)
+  colnames(Price)[colnames(Price) == Name] = "SIZE"
+  Price <- merge(x = Price, y = Earning[[Name]], by = "Date", all.x = T)
+  colnames(Price)[colnames(Price) == Name] = "SUE"
+  Price$ROA <- na.lomf(Price$ROA)
+  Price$SIZE <- na.lomf(log(Price$SIZE))
+  Price$SUE <- na.lomf(as.double(Price$SUE))
+  Price$Rf <- na.lomf (Price$Rf)
   Beta = BetaSet[[Name]]
   Price$Re <- Price$Rf + Beta*(Price$Rm - Price$Rf) 
   Price$Ra <- Price$R - Price$Re
   Price$Rd <- ifelse(Price$Ra > 0, 1, 0)
-  ##### Earning Announcement Day #####
-  EAD <-  Earning[[Name]][,1]
-  ES <- as.double(Earning[[Name]][,2])
   ##### Feature #####
   file2 <-  paste("Features\\", paste(Name, "Reuters.csv",sep = ""), sep = "")
   FeaturesRaw <- read.csv(file2, header = TRUE, sep = ",")
@@ -134,24 +190,9 @@ RunRegression <- function(Name,case = 1){
   Feature <- merge(x = features1, y = features2, by = "Date", all = TRUE)
   ##### Calculate the culmulative return between two earning announcement days #####
   EADIndex <- c(1,match(EAD,Price$Date),nrow(Price)+1)
-  getCumsum <- function(IND, Vector) {
-    lis <- list()
-    for (i in 1:(length(IND)-1)) {
-        lis[[i]] <- cumsum(Vector[IND[i]:(IND[i+1]-1)])
-    }
-    lis
-  }
-  
-  List2Vec <- function(List){
-    Vec <- c()
-    for (i in 1:length(List)) {
-      Vec <- c(Vec,List[[i]])
-    }
-    Vec
-  }
   Price$CAR <- List2Vec(getCumsum(EADIndex,Price$Ra))
   ##### Calculate the culmulative value of features between two earning announcement days #####
-  EADIndex2 <- c(1,match(EAD,Feature$Date),nrow(Feature)+1)
+  EADIndex2 <- c(1,match(EAD,Feature$Date),nrow(Feature)+1)  #This are the indices of EADs
   EADIndex2 <- EADIndex2[!is.na(EADIndex2)]
   Feature$CumPos <- List2Vec(getCumsum(EADIndex2,Feature$Valence_Pos))
   Feature$CumNeg <- List2Vec(getCumsum(EADIndex2,Feature$Valence_Neg))
@@ -159,7 +200,7 @@ RunRegression <- function(Name,case = 1){
   Feature$CumSurprise <- List2Vec(getCumsum(EADIndex2,Feature$Surprise))
   ##### Integrate df #####
   if (case == 1) {
-    df <- merge(x = Feature, y = Price[,c("Date","Adj.Close","Volume","Ra","CAR","PB")], by = "Date", all.x = T)
+    df <- merge(x = Feature, y = Price[,c("Date","Volume","Ra","CAR","PB","Vol","SIZE","ROA","SUE")], by = "Date", all.x = T)
   }
   if (case == 2) {
     df <- merge(x = Features, y = Price[,c("Date","Adj.Close","Volume","Ra","CAR")], by = "Date", all.x = T)
@@ -168,13 +209,17 @@ RunRegression <- function(Name,case = 1){
     df <- merge(x = Features2, y = Price[,c("Date","Adj.Close","Volume","Ra","CAR")], by = "Date", all.x = T)
     
   }
-  na.lomf <- function(x,a=!is.na(x)){
-    x[which(a)[c(1,1:sum(a))][cumsum(a)+1]]
-  }
-  
+
   df$Ra <- na.lomf(df$Ra)
   df$CAR <- na.lomf(df$CAR)
   df$Volume <- na.lomf(df$Volume)
+  df$PB <- na.lomf(df$PB)
+  df$Vol <- na.lomf(df$Vol)
+  df$SIZE  <- na.lomf(df$SIZE )
+  df$ROA <- na.lomf(df$ROA)
+  df$SUE <- na.lomf(df$SUE)
+  
+  
   df[is.na(df)] <- 0
   df$Ra <- (df$Ra-mean(df$Ra))/sd(df$Ra)
   df$CAR <- (df$CAR-mean(df$CAR))/sd(df$CAR)
@@ -190,33 +235,25 @@ RunRegression <- function(Name,case = 1){
   if (case == 1) {
     ExtractDat <- function(df,IND){
       dff <- NULL
-      for (i in 1:length(IND)) {
-        if (IND[i] + 60 < nrow(df)) {
-          dff <- rbind(dff, df[IND[i]+60,])
+      for (i in 2:length(IND)) {
+        if (IND[i] + 56 < nrow(df)) {
+          dff <- rbind(dff, df[IND[i]+56,])
         }
       }
       dff
     }
     dff <- ExtractDat(df, EADIndex2)
-    dff$CumUncertainty <- (dff$CumUncertainty -mean(dff$CumUncertainty))/sd(dff$CumUncertainty)
-    dff$CumSurprise <- (dff$CumSurprise -mean(dff$CumSurprise))/sd(dff$CumSurprise)
   }
   ##### Regression Analysis of one company#####
-  plotcorr(cor(df[c("Ra","Valence_Pos","Valence_Neg","Value_Positive","Surprise","Uncertainty","Counts","Volume")]))
+  # plotcorr(cor(df[c("Ra","Valence_Pos","Valence_Neg","Value_Positive","Surprise","Uncertainty","Counts","Volume")]))
 
+  fit <- lm(df$CAR ~ df$CumPos + df$CumNeg + +df$CumSurprise + df$CumUncertainty  + df$PB)
   # fit <- lm(df$CAR ~ df$Valence_Pos + df$Valence_Neg + df$Surprise +  df$Uncertainty +df$Counts)
   # fit <- lm(df$CAR ~ df$Valence_Pos + df$Valence_Neg + df$Surprise +  df$Uncertainty)
   # fit <- lm(df$Ra ~ df$Valence_Pos + df$Valence_Neg + df$Surprise +  df$Uncertainty)
-  fit <- lm(df$CAR ~ df$CumPos + df$CumNeg + +df$CumSurprise + df$CumUncertainty  + df$PB)
   # fit <- lm(df$CAR ~ df$Valence_Pos + df$Valence_Neg + df$CumUncertainty +  df$CumSurprise)
   summary(fit)
   dff
-  
-  
-#   fit <- lm( df$Volume ~ df$Valence_Pos + df$Valence_Neg + df$Surprise +  df$Uncertainty)
-#   summary(fit)
-  ######
-  # dff
 }
 
 ##### Regression Analysis of many companies#####
