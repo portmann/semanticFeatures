@@ -65,9 +65,8 @@ public class Feature {
         env.bind("$CONDITIONALITY2", "([{word:/[Ii]f/}]&[tense:Future])[]*[{word:/(then)|,/}]?");
         env.bind("$CONDITIONALITY", "$CONDITIONALITY1|$CONDITIONALITY2");
 
-        env.bind("$VALUES","/sale.*|value.*|market value.*|share|shares|profit.*|revenue.*|earning.*|turnover/");
-        env.bind("$POSITIVE","/above|grow|grows|growing|grew|increas.*|jump.*|" +
-                "rally|rise|rose|rising|strong|soar.*|surge.*|/");
+        env.bind("$VALUES","/value|market value|share|shares|profit.*|revenue|earning.*|turnover/");
+        env.bind("$POSITIVE","/above|grow|grows|growing|grew|increas.*|jump.*|rally|rise|rose|rising|strong|soar.*|surge.*|/");
 
         env.bind("$VALUES_SURPRISE","($VALUES[!{word:/[,.]/}]*?$SURPRISE)|($SURPRISE[!{word:/[,.]/}]*?$VALUES)");
         env.bind("$VALUES_UNCERTAINTY","($VALUES[!{word:/[,.]/}]*?$UNCERTAINTY)|($UNCERTAINTY[!{word:/[,.]/}]*?$VALUES)");

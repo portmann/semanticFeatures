@@ -34,8 +34,9 @@ public class CsvFileWriter_CommonFactor {
     /**
      * This function writes the csv file of common factors.
      *
-     * @param inputFilePath The address where the csv file will be written;
+     * @param inputFilePath The address where the corpus will be read;
      * @param outputFilePath The address where the csv file will be written;
+     * @param date The date we are interested in;
      * @param timeInterval The time interval considered for the corpus;
      * @param numberOfKeyWords The number of keywords to be written.
      *

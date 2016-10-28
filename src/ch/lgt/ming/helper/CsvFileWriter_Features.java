@@ -32,6 +32,10 @@ public class CsvFileWriter_Features {
         /**
          * This part of code writes featuresBoris using annotated documents
          * */
+
+        List<String> companies = Arrays.asList("Amazon", "Apple", "Boeing", "Delta", "Facebook", "Ford",
+                "Goldman", "Google", "Intel", "Microsoft", "Netflix");
+
 //        String inputFilePath = "data/corpusBorisSer";
 //        String outputFilePath = "data/featureFiles/featuresBoris.csv";
 //        CsvFileWriter_Features.writeCsvFile3(inputFilePath, outputFilePath, 10, true);
@@ -40,8 +44,14 @@ public class CsvFileWriter_Features {
 //        String outputFilePath = "data/featureFiles/featuresAmazon.csv";
 //        CsvFileWriter_Features.writeCsvFile3(inputFilePath, outputFilePath, 10, true);
 
-        String inputFilePath = "data/Empirical_Analysis/ReutersSer_Company/Facebook";
-        String outputFilePath = "data/featureFiles/FacebookReuters.csv";
+//        String inputFilePath = "data/Empirical_Analysis/ReutersSer_Company/Microsoft";
+//        String outputFilePath = "empiricalAnalysis/Features/MicrosoftReuters.csv";
+
+        String inputFilePath = "data/Empirical_Analysis/ReutersSer_Company/Boeing";
+        String outputFilePath = "empiricalAnalysis/Features/BoeingReuters.csv";
+
+//        String inputFilePath = "data/Empirical_Analysis/Seeking_AlphaSer_Company/Boeing";
+//        String outputFilePath = "empiricalAnalysis/Features/BoeingSeeking_Alpha.csv";
         File folder = new File(inputFilePath);
         File[] listOfFiles = folder.listFiles();
         CsvFileWriter_Features.writeCsvFile5(inputFilePath, outputFilePath, listOfFiles.length, true);

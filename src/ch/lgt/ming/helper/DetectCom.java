@@ -20,8 +20,9 @@ public class DetectCom {
 
 
     public static void main(String[] args) {
-        String inputPath = "data/Empirical_Analysis/ReutersSer";
-        String outputPath = "data/Empirical_Analysis/ReutersSer_Company/Apple";
+
+        String inputPath = "data/Empirical_Analysis/Seeking_AlphaSer";
+        String outputPath = "data/Empirical_Analysis/Seeking_AlphaSer_Company/Apple";
         File folder = new File(inputPath);
         File[] listOfFiles = folder.listFiles();
 

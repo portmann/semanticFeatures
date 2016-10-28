@@ -1,0 +1,11 @@
+amazon,AMZN,NASDAQ,1.0422
+apple,AAPL,NASDAQ,1.55
+boeing,BA,NYSE,1.0542
+delta airline,DAL,NYSE,1.2986
+facebook,FB,NASDAQ,0.7362
+ford,F,NYSE,1.0686
+goldman sachs,GS,NYSE,1.0967
+google,GOOG,NASDAQ,0.7512
+intel,INTC,NASDAQ,0.9332
+microsoft,MSFT,NASDAQ,0.8532
+netflix,NFLX,NASDAQ,0.8954

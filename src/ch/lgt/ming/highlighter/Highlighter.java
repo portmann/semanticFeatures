@@ -40,8 +40,8 @@ public class Highlighter {
 
         FileHandler fileHandler = new FileHandler();
         FileInputStream fileInputStream = null;
-        String inputPath = "data/Empirical_Analysis/ReutersSer_Company/Apple";
-        String outputPath = "data/Empirical_Analysis/Reuters_Company/Apple";
+        String inputPath = "data/Empirical_Analysis/ReutersSer_Company/Netflix";
+        String outputPath = "data/Empirical_Analysis/Reuters_Company/Netflix";
 
             File folder = new File(inputPath);
             File[] listOfFiles = folder.listFiles();
